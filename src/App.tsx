@@ -8,13 +8,12 @@ function App() {
       <PrivyProvider
         appId={`${process.env.REACT_APP_PRIVY_APP_ID}`}
         config={{
-          // Display email and wallet as login methods
-          loginMethods: ["email", "wallet"],
-          // Customize Privy's appearance in your app
+          loginMethods: ["wallet"],
           appearance: {
-            theme: "light",
+            theme: "dark",
             accentColor: "#1E2211",
-            logo: "https://www.onchainarmy.xyz/static/media/soldier-1.e32781844491acdf5400660b848ad420.svg",
+            logo: "https://www.onchainarmy.xyz/logo192.png",
+            landingHeader: 'Connect Wallet', 
           },
           // Create embedded wallets for users who don't have a wallet
           embeddedWallets: {
