@@ -15,7 +15,7 @@ const SignIn = () => {
           className="bg-red-600 text-white py-4 px-8 text-[25px] font-soli hover:bg-red-700 transition mt-10 clip-button"
           onClick={() => connectWallet({ walletList: ["detected_wallets"] })}
         >
-          Sign In Soldier!
+          Sign in Soldier!
         </button>
       </div>
     </div>
