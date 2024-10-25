@@ -1,10 +1,12 @@
 import React from "react";
 import mainSoldier from "../../assets/images/soldier-asset-1.svg";
 import { usePrivy } from "@privy-io/react-auth";
+import soldierVector from "../../assets/images/camo-background.svg";
 const SignIn = () => {
   const { ready, authenticated, login, connectWallet } = usePrivy();
   return (
     <div className="flex justify-center items-center h-screen">
+      <img src={soldierVector} alt="" className="absolute top-0" />
       <div className="flex justify-center items-center flex-col">
         <img
           src={mainSoldier}
