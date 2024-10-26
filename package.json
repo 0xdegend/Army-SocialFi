@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@privy-io/react-auth": "^1.92.2",
+    "@solana/spl-token": "^0.4.9",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
@@ -14,6 +15,8 @@
     "@types/node": "^16.18.115",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "big-integer": "^1.6.52",
+    "buffer": "^6.0.3",
     "dotenv": "^16.4.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
