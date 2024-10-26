@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import mainSoldier from "../../assets/images/soldier-asset-1.svg";
 import { usePrivy, useLogin } from "@privy-io/react-auth";
 import { useSolanaWallets } from "@privy-io/react-auth/solana";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import soldierVector from "../../assets/images/camo-background.svg";
 const SignIn = () => {
+  const { connection } = useConnection();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const { ready, authenticated, connectWallet, user } = usePrivy();
 
@@ -41,6 +43,7 @@ const SignIn = () => {
     // Only call handleMessage if the wallet is connected and the address is available
     if (isWalletConnected && address) {
       handleMessage();
+      console.log(connection);
     }
   }, [isWalletConnected, address]);
 
@@ -52,7 +55,7 @@ const SignIn = () => {
   //   } else {
   //     console.log("No wallet connected");
   //   }
-  //console.log(signature);
+
   return (
     <div className="flex justify-center items-center h-screen">
       <img src={soldierVector} alt="" className="absolute top-0 w-[80%]" />
