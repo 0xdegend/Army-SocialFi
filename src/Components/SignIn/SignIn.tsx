@@ -142,7 +142,7 @@ const SignIn = () => {
 
             <p className="text-white text-[25px] font-soli">
               $ARMY Balance:{" "}
-              {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."}
+              {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading.."}
             </p>
           </div>
         )}
