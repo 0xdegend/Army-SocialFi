@@ -1,0 +1,109 @@
+//@ts-nocheck
+import React, { useEffect, useState } from "react";
+import {
+  getAssociatedTokenAddress,
+  getAccount,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
+import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useSolanaWallets } from "@privy-io/react-auth/solana";
+import * as bigInt from "big-integer";
+import { Navigate, useNavigate } from "react-router-dom";
+const Profile = () => {
+  const [solHolding, setSolHolding] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const { connection } = useConnection();
+  const [tokenBalance, setTokenBalance] = useState(0);
+  const armyAddress = "ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC";
+  const { wallets } = useSolanaWallets();
+  const wallet = wallets[0];
+  const address = wallet?.address;
+  const navigate = useNavigate();
+  const formatTokenBalance = (balance: any) => {
+    if (balance === null) return "Loading...";
+    if (balance >= 1_000_000) {
+      return `${(balance / 1_000_000).toFixed(1)}M $ARMY`;
+    } else if (balance >= 1_000) {
+      return `${(balance / 1_000).toFixed(1)}K $ARMY`;
+    } else {
+      return `${balance.toFixed(2)} $ARMY`;
+    }
+  };
+
+  useEffect(() => {
+    if (!connection || !address) {
+      navigate("/", { replace: true });
+    }
+  }, [connection, address, navigate]);
+
+  useEffect(() => {
+    const fetchSolBalance = () => {
+      if (!connection || !address) return;
+      try {
+        const publicKey = new PublicKey(address); // Convert address to PublicKey
+        setLoading(true);
+        connection
+          .getAccountInfo(publicKey)
+          .then((info) => {
+            setSolHolding(info ? info.lamports / LAMPORTS_PER_SOL : 0);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error fetching account info:", error);
+            setLoading(false);
+          });
+      } catch (error) {
+        console.error("Invalid public key format:", error);
+      }
+    };
+    fetchSolBalance();
+  }, [connection, address]);
+
+  useEffect(() => {
+    const getTokenBalance = async () => {
+      if (!address) return;
+
+      try {
+        const publicKey = new PublicKey(address); // Convert address to PublicKey
+        const tokenPublicKey = new PublicKey(armyAddress);
+        const associatedTokenAddress = await getAssociatedTokenAddress(
+          tokenPublicKey,
+          publicKey
+        );
+
+        const tokenAccount = await getAccount(
+          connection,
+          associatedTokenAddress
+        );
+        const tokenAmount = bigInt(tokenAccount.amount);
+
+        setTokenBalance(tokenAmount / 1000000);
+      } catch (error) {
+        console.error("Error fetching token balance", error);
+        setTokenBalance(null);
+      }
+    };
+    getTokenBalance();
+  }, [address, connection]);
+
+  return (
+    <div>
+      {address && (
+        <div className="flex gap-4 mt-4">
+          <p className="text-white text-[17px] font-soli">
+            Balance:{" "}
+            {solHolding ? `${solHolding.toFixed(2)} SOL` : "Loading..."}
+          </p>
+
+          <p className="text-white text-[17px] font-soli">
+            $ARMY Balance:{" "}
+            {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Profile;
