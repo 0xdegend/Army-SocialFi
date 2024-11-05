@@ -30,7 +30,7 @@ const SignIn = () => {
     try {
       await linkWallet({ loginMethods: ["wallet"], chains: ["solana"] });
       setIsWalletConnected(true);
-      navigate("/profile");
+      navigate("/profil");
       console.log(user);
     } catch (error) {
       setIsWalletConnected(false);
