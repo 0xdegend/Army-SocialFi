@@ -34,7 +34,7 @@ const SignIn = () => {
       console.log(user);
     } catch (error) {
       setIsWalletConnected(false);
-      console.error("Error signing:", error);
+      console.error("Error signing in:", error);
     }
   };
 
