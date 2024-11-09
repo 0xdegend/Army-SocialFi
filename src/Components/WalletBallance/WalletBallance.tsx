@@ -7,19 +7,19 @@ import {
 } from "@solana/spl-token";
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+
 import { useSolanaWallets } from "@privy-io/react-auth/solana";
 import * as bigInt from "big-integer";
-import { Navigate, useNavigate } from "react-router-dom";
-const Profile = () => {
+import { usePrivy } from "@privy-io/react-auth";
+const WalletBallance = () => {
   const [solHolding, setSolHolding] = useState(0);
   const [loading, setLoading] = useState(false);
   const { connection } = useConnection();
+  const { user } = usePrivy();
   const [tokenBalance, setTokenBalance] = useState(0);
   const armyAddress = "ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC";
-  const { wallets } = useSolanaWallets();
-  const wallet = wallets[0];
-  const address = wallet?.address;
-  const navigate = useNavigate();
+  const address = user?.wallet?.address;
+
   const formatTokenBalance = (balance: any) => {
     if (balance === null) return "Loading...";
     if (balance >= 1_000_000) {
@@ -32,12 +32,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (!connection || !address) {
-      navigate("/", { replace: true });
-    }
-  }, [connection, address, navigate]);
-
-  useEffect(() => {
+    console.log(user?.wallet?.address);
     const fetchSolBalance = () => {
       if (!connection || !address) return;
       try {
@@ -86,17 +81,16 @@ const Profile = () => {
     };
     getTokenBalance();
   }, [address, connection]);
-
   return (
-    <div>
+    <div className="float-end">
       {address && (
-        <div className="flex gap-4 mt-4">
-          <p className="text-white text-[17px] font-soli">
+        <div className="flex gap-4 mt-4 p-4">
+          <p className="text-[#1E2211FF] text-[17px] font-soli">
             Balance:{" "}
             {solHolding ? `${solHolding.toFixed(2)} SOL` : "Loading..."}
           </p>
 
-          <p className="text-white text-[17px] font-soli">
+          <p className="text-[#1E2211FF] text-[17px] font-soli">
             $ARMY Balance:{" "}
             {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."}
           </p>
@@ -106,4 +100,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default WalletBallance;

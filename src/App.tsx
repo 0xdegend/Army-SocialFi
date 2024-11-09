@@ -6,7 +6,8 @@ import SignIn from "./pages/SignIn/SignIn";
 import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./Guard/Guard";
-import Profile from "./pages/Profile/Profile";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import WalletBallance from "./Components/WalletBallance/WalletBallance";
 
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
@@ -43,13 +44,15 @@ function App() {
             <Routes>
               <Route path="/" element={<SignIn />} />
               <Route
-                path="/profile"
+                path="/dashboard"
                 element={
                   <ProtectedRoute>
-                    <Profile />
+                    <Dashboard />
                   </ProtectedRoute>
                 }
-              />
+              >
+                <Route path="" element={<WalletBallance />} />
+              </Route>
             </Routes>
           </Router>
         </PrivyProvider>
