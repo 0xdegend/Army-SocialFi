@@ -82,18 +82,19 @@ const WalletBallance = () => {
     getTokenBalance();
   }, [address, connection]);
   return (
-    <div className="float-end">
+    <div className=" w-full flex justify-end">
       {address && (
-        <div className="flex gap-4 mt-4 p-4">
-          <p className="text-[#1E2211FF] text-[17px] font-soli">
-            Balance:{" "}
-            {solHolding ? `${solHolding.toFixed(2)} SOL` : "Loading..."}
-          </p>
-
-          <p className="text-[#1E2211FF] text-[17px] font-soli">
-            $ARMY Balance:{" "}
-            {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."}
-          </p>
+        <div className="flex gap-4 p-4">
+          <div className="button-55 ">
+            <p className="text-[#FFF] text-[17px] font-soli text-center">
+              {solHolding ? `${solHolding.toFixed(2)} SOL` : "Loading..."}
+            </p>
+          </div>
+          <div className="  button-56">
+            <p className="text-[#1E2211FF] text-[17px] font-soli">
+              {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."}
+            </p>
+          </div>
         </div>
       )}
     </div>

@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./Guard/Guard";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import WalletBallance from "./Components/WalletBallance/WalletBallance";
+import Overview from "./Components/Overview/Overview";
 
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
@@ -51,7 +52,7 @@ function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route path="" element={<WalletBallance />} />
+                <Route path="" element={<Overview />} />
               </Route>
             </Routes>
           </Router>

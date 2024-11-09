@@ -47,13 +47,13 @@ const SignIn = () => {
           className="w-full md:w-1/2 lg:w-full xl:w-full"
         />
         <button
-          className="bg-red-600 text-white py-3 px-6 text-[25px] font-soli hover:bg-red-700 transition mt-10 clip-button"
+          className="bg-red-600 text-white py-3 px-6 text-[25px] font-soli hover:bg-red-700 transition mt-10 sign-in-button"
           onClick={handleConnectTwitter}
         >
           {user ? "Connected" : " Connect Twitter"}
         </button>
         <button
-          className="bg-red-600 text-white py-3 px-6 text-[25px] font-soli hover:bg-red-700 transition mt-10 clip-button"
+          className="bg-red-600 text-white py-3 px-6 text-[25px] font-soli hover:bg-red-700 transition mt-10 sign-in-button"
           onClick={handleSignIn}
         >
           {address ? "Connected" : " Connect Wallet"}
