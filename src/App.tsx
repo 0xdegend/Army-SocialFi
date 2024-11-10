@@ -9,6 +9,7 @@ import ProtectedRoute from "./Guard/Guard";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import WalletBallance from "./Components/WalletBallance/WalletBallance";
 import Overview from "./Components/Overview/Overview";
+import Leaderboard from "./pages/Dashboard/Leaderboard";
 
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
@@ -53,6 +54,7 @@ function App() {
                 }
               >
                 <Route path="" element={<Overview />} />
+                <Route path="leaderboard" element={<Leaderboard/>} />
               </Route>
             </Routes>
           </Router>
