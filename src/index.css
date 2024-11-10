@@ -156,6 +156,24 @@
   .sign-in-button:focus {
     box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 4px -6px;
   }
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .loading-gif {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 * {
