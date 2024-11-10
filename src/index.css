@@ -13,6 +13,32 @@
       0% 20px
     );
   }
+  .clip-top-left-bottom-right {
+    clip-path: polygon(
+      0 0,
+      calc(100% - 20px) 0,
+      100% 20px,
+      100% 100%,
+      20px 100%,
+      0 calc(100% - 20px)
+    );
+  }
+
+  .clip-top-left-bottom-right::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    clip-path: inherit; /* Inherit the same clip path for the border */
+    background: #1d2211;
+    padding: 3px; /* Adjust padding to control border thickness */
+    box-shadow: 0 0 8px rgba(124, 252, 0, 0.2);
+    border: 0.2px solid #a4c94d;
+  }
+
   .button-55 {
     align-self: center;
     background-color: #5d5541;

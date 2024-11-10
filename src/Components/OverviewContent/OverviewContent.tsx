@@ -1,9 +1,15 @@
 import React from "react";
+import camoImage from "../../assets/images/camo-background.svg";
 import { usePrivy } from "@privy-io/react-auth";
 const OverviewContent = () => {
   const { user } = usePrivy();
   return (
-    <div>
+    <div className="bg-[#1D2211] p-3 relative clip-top-left-bottom-right">
+      <img
+        src={camoImage}
+        alt="Army Camo"
+        className="absolute top-0 w-[40%] right-0"
+      />
       <div className="mx-auto flex flex-col justify-center items-center mt-10">
         <div className="flex flex-col justify-center items-center">
           <img
