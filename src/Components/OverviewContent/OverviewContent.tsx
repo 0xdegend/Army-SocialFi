@@ -18,7 +18,7 @@ const OverviewContent = () => {
             alt="Twitter Profile"
           />
           <h5 className="font-soli  text-[19px] text-white mt-7">
-            Gm, {`${user?.twitter?.name}`}
+            Gm, General {`${user?.twitter?.name}`}
           </h5>
         </div>
       </div>
