@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        soli: ["Soli Px W01 Regular", "regular"], // Add your custom handwriting font
+        soli: ["Soli Px W01 Regular", "regular"],
+        quantico: ["Quantico", "regular"],
       },
     },
   },

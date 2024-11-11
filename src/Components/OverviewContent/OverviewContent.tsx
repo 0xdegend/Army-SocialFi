@@ -17,7 +17,7 @@ const OverviewContent = () => {
             src={`${user?.twitter?.profilePictureUrl} `}
             alt="Twitter Profile"
           />
-          <h5 className="font-soli  text-[19px] text-white mt-7">
+          <h5 className="font-quantico  text-[19px] text-white mt-7">
             Gm, General {`${user?.twitter?.name}`}
           </h5>
         </div>
