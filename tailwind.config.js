@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         soli: ["Soli Px W01 Regular", "regular"],
-        quantico: ["Quantico", "regular"],
+        press: ["'Press Start 2P'", "system-ui"],
       },
     },
   },
