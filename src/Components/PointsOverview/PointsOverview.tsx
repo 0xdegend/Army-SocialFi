@@ -3,10 +3,10 @@ import React from "react";
 function PointsOverview() {
   return (
     <div className="flex justify-center items-center gap-5">
-      <div className="w-[50%] bg-[#1D2211] clip-top-left-bottom-right mt-10 p-10 flex justify-center items-center gap-[80px]">
+      <div className="w-[50%] bg-[#1D2211] clip-top-left-bottom-right mt-10 p-10 flex justify-center items-center gap-[60px]">
         <div>
-          <h1 className="font-soli text-[25px] text-[#FFF]">$ARMY Points</h1>
-          <p className="font-soli text-[20px] text-[#FFED41] mt-3">10,000</p>
+          <h1 className="font-soli text-[30px] text-[#FFF]">$ARMY Points</h1>
+          <p className="font-soli text-[25px] text-[#FFED41] mt-3">10,000</p>
         </div>
         <div className="multiplier">
           <h1 className="font-soli text-[30px] text-[#FFF]">Multiplier</h1>
