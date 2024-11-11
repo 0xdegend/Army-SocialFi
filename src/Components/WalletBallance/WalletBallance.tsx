@@ -72,7 +72,6 @@ const WalletBallance = () => {
           associatedTokenAddress
         );
         const tokenAmount = bigInt(tokenAccount.amount);
-
         setTokenBalance(tokenAmount / 1000000);
       } catch (error) {
         console.error("Error fetching token balance", error);
