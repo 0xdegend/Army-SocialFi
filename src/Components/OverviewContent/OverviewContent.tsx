@@ -1,6 +1,7 @@
 import React from "react";
 import camoImage from "../../assets/images/camo-background.svg";
 import twitterIcon from "../../assets/images/twitter-icon.svg";
+import armyBadge from "../../assets/images/army-badge.png";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
 import { usePrivy } from "@privy-io/react-auth";
@@ -11,7 +12,7 @@ const OverviewContent = () => {
       <img
         src={camoImage}
         alt="Army Camo"
-        className="absolute top-2.5 w-[50%] right-0"
+        className="absolute top-1 w-[50%] right-0"
       />
       <div className="mx-auto flex justify-between mt-5">
         <div className="flex gap-5">
@@ -24,14 +25,19 @@ const OverviewContent = () => {
               />
             </div>
           </div>
-          <div>
-            <h5 className="font-soli text-[24px] text-white mt-5 capitalize">
-              Gm,{" "}
-              <span className="text-[#FFED41] capitalize">{`${user?.twitter?.name}`}</span>
-            </h5>
-            <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">
-              {user?.wallet?.address}
-            </h5>
+          <div className="flex flex-col">
+            <div className="flex">
+              <h5 className="font-soli text-[24px] text-white mt-5 capitalize">
+                Gm,{" "}
+                <span className="text-[#FFED41] capitalize">{`${user?.twitter?.name}`}</span>
+              </h5>
+              <img src={armyBadge} alt="" className="w-[50px]" />
+            </div>
+            <div>
+              <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">
+                {user?.wallet?.address}
+              </h5>
+            </div>
           </div>
         </div>
         <div className="socials flex flex-col gap-2 justify-center items-center z-10">
