@@ -72,7 +72,6 @@ const WalletBallance = () => {
           associatedTokenAddress
         );
         const tokenAmount = bigInt(tokenAccount.amount);
-
         setTokenBalance(tokenAmount / 1000000);
       } catch (error) {
         console.error("Error fetching token balance", error);
@@ -86,12 +85,12 @@ const WalletBallance = () => {
       {address && (
         <div className="flex gap-4 p-4">
           <div className="button-55 ">
-            <p className="text-[#FFF] text-[17px] font-soli text-center">
+            <p className="text-[#FFF] text-[19px] font-soli text-center">
               {solHolding ? `${solHolding.toFixed(2)} SOL` : "Loading..."}
             </p>
           </div>
           <div className="  button-56">
-            <p className="text-[#1E2211FF] text-[17px] font-soli">
+            <p className="text-[#F83726] text-[19px] font-soli">
               {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."}
             </p>
           </div>
