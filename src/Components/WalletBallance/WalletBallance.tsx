@@ -96,7 +96,6 @@ const WalletBallance = () => {
               {loading
                 ? "Loading..."
                 : `${formatTokenBalance(tokenBalance) || "0.0"} `}
-              {/* {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."} */}
             </p>
           </div>
         </div>
