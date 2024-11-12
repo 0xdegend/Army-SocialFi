@@ -1,7 +1,8 @@
 import React from "react";
 import camoImage from "../../assets/images/camo-background.svg";
 import twitterIcon from "../../assets/images/twitter-icon.svg";
-import armyBadge from "../../assets/images/army-badge.png";
+//@ts-ignore
+import armyBadge from "../../assets/images/general-rank.PNG";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
 import { usePrivy } from "@privy-io/react-auth";
@@ -31,9 +32,9 @@ const OverviewContent = () => {
                 Gm,{" "}
                 <span className="text-[#FFED41] capitalize">{`${user?.twitter?.name}`}</span>
               </h5>
-              <img src={armyBadge} alt="" className="w-[50px]" />
+              <img src={armyBadge} alt="" className="w-[55px]" />
             </div>
-            <div>
+            <div className="flex">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">
                 {user?.wallet?.address}
               </h5>
