@@ -58,7 +58,7 @@ const WalletBallance = () => {
   useEffect(() => {
     const getTokenBalance = async () => {
       if (!address) return;
-
+      setLoading(true);
       try {
         const publicKey = new PublicKey(address); // Convert address to PublicKey
         const tokenPublicKey = new PublicKey(armyAddress);
@@ -75,7 +75,9 @@ const WalletBallance = () => {
         setTokenBalance(tokenAmount / 1000000);
       } catch (error) {
         console.error("Error fetching token balance", error);
-        setTokenBalance(null);
+        setTokenBalance(0);
+      } finally {
+        setLoading(false);
       }
     };
     getTokenBalance();
@@ -86,12 +88,15 @@ const WalletBallance = () => {
         <div className="flex gap-4 p-4">
           <div className="button-55 ">
             <p className="text-[#FFF] text-[19px] font-soli text-center">
-              {solHolding ? `${solHolding.toFixed(2)} SOL` : "Loading..."}
+              {loading ? "Loading..." : `${solHolding.toFixed(2)} SOL`}
             </p>
           </div>
           <div className="  button-56">
             <p className="text-[#F83726] text-[19px] font-soli">
-              {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."}
+              {loading
+                ? "Loading..."
+                : `${formatTokenBalance(tokenBalance) || "0.0"} `}
+              {/* {tokenBalance ? formatTokenBalance(tokenBalance) : "Loading..."} */}
             </p>
           </div>
         </div>
