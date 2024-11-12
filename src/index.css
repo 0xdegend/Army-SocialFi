@@ -174,13 +174,16 @@
     width: 100px;
     height: 100px;
   }
+
+  .styled-border-radius {
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  }
 }
 
 * {
   margin: 0;
   padding: 0;
 }
-
 
 .flow-hide {
   overflow-y: scroll;

@@ -1,8 +1,11 @@
-import {useState} from "react";
+import { useState } from "react";
 import LeaderboardTable from "../../Components/LeaderboardTable/LeaderboardTable";
 import WalletBallance from "../../Components/WalletBallance/WalletBallance";
 import OverviewContent from "../../Components/OverviewContent/OverviewContent";
-import { generalLeaderBoardData, campaignLeaderBoardData } from "../../utils/mockData";
+import {
+  generalLeaderBoardData,
+  campaignLeaderBoardData,
+} from "../../utils/mockData";
 const Leaderboard = () => {
   const [isGeneral, setIsGeneral] = useState(true);
   return (
@@ -31,22 +34,11 @@ const Leaderboard = () => {
             Campaign LeaderBoard
           </button>
         </div>
-        {
-          isGeneral && (
-
-            <LeaderboardTable data={generalLeaderBoardData} />
-          )
-        }
-        {
-          !isGeneral && (
-
-            <LeaderboardTable data={campaignLeaderBoardData} />
-          )
-        }
+        {isGeneral && <LeaderboardTable data={generalLeaderBoardData} />}
+        {!isGeneral && <LeaderboardTable data={campaignLeaderBoardData} />}
       </div>
     </div>
   );
 };
 
 export default Leaderboard;
-

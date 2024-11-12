@@ -21,10 +21,10 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
   }, [query]);
 
   return (
-    <div className="w-full font-inconsolata text-[20px] font-[600] flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide">
+    <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide">
       <div className="flex items-center gap-5 mb-4 ">
         <h1 className="text-white ">Search:</h1>
-        <div className="w-full lg:w-1/2 max-w-[400px] border border-white border-opacity-60 rounded-md h-10 px-2 flex items-center">
+        <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
           <input
             type="text"
             className=" w-full border-none outline-none bg-transparent text-white "
