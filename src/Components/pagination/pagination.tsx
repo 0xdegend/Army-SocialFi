@@ -66,7 +66,7 @@ const Pagination = ({ data, itemsPerPage, setCurrentData }: paginationData) => {
   };
 
   return (
-    <div className="w-full flex flex-row font-soli ">
+    <div className="w-full flex flex-row font-inconsolata ">
       <div className="w-full flex flex-row justify-between items-center">
         <div className="flex">
           <button

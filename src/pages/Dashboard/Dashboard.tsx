@@ -11,12 +11,12 @@ const Dashboard = () => {
           <SideBar />
         </div>
         <div
-          className={` bg-cover bg-center h-screen flex-[6]  pt-10 pb-5 bg-[#F9FAFB] ml-[250px]`}
+          className={`bg-cover bg-center h-screen flex-[6]  pt-10 pb-5 ml-[250px]`}
           style={{
             backgroundImage: `url(${armyBackground})`,
           }}
         >
-          <div className="w-[97%] mx-auto lg:h-screen flow-hide ">
+          <div className="w-[97%] mx-auto lg:h-screen flow-hide">
             <Outlet />
           </div>
         </div>

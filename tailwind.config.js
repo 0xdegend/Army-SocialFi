@@ -6,6 +6,8 @@ module.exports = {
       fontFamily: {
         soli: ["Soli Px W01 Regular", "regular"],
         press: ["'Press Start 2P'", "system-ui"],
+        orbitron: ["Orbitron", "sans-sarif"],
+        inconsolata: ["Inconsolata", "sans-sarif"],
       },
       colors: {
         ash: "rgba(63, 63, 70, 0.6)",
