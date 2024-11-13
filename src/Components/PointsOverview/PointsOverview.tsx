@@ -6,7 +6,7 @@ import { generalLeaderBoardData } from "../../utils/mockData";
 function PointsOverview() {
   return (
     <>
-      <div className="flex justify-center items-center gap-5">
+      <div className="flex justify-around items-center">
         <MainPointsOverview />
         <Missions />
       </div>
