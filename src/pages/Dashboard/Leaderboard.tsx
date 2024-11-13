@@ -1,6 +1,5 @@
 import { useState } from "react";
 import LeaderboardTable from "../../Components/LeaderboardTable/LeaderboardTable";
-import WalletBallance from "../../Components/WalletBallance/WalletBallance";
 import OverviewContent from "../../Components/OverviewContent/OverviewContent";
 import armyBackground from "../../assets/images/army-background.webp";
 import {

@@ -178,6 +178,13 @@
   .styled-border-radius {
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   }
+
+  .og-border-radius {
+    border: 1px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-image-source: linear-gradient(to left, #00c853, #b2ff59);
+  }
 }
 
 * {

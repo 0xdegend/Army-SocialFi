@@ -1,9 +1,11 @@
 import React from "react";
 import camoImage from "../../assets/images/camo-background.svg";
 import twitterIcon from "../../assets/images/twitter-icon.svg";
-import armyBadge from "../../assets/images/army-badge.png";
+//@ts-ignore
+import armyBadge from "../../assets/images/general-rank.PNG";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
+
 import { usePrivy } from "@privy-io/react-auth";
 const OverviewContent = () => {
   const { user } = usePrivy();
@@ -17,23 +19,28 @@ const OverviewContent = () => {
       <div className="mx-auto flex justify-between mt-5">
         <div className="flex gap-5">
           <div className="h-[100px] w-[100px] rounded-[50%] bg-[#68604B] flex justify-center items-center">
-            <div className="h-[90px] w-[90px] rounded-[50%] bg-[#E1DDCC] flex justify-center items-center">
+            <div className=" relative h-[90px] w-[90px] rounded-[50%] bg-[#E1DDCC] flex justify-center items-center">
               <img
                 className="w-[70px] h-[70px] rounded-[50%]"
                 src={`${user?.twitter?.profilePictureUrl} `}
                 alt="Twitter Profile"
               />
+              <div className="absolute bottom-[-10px] h-[30px] w-[50px] bg-[#1D2211] flex justify-center items-center p-1 og-border-radius">
+                <h5 className="text-center text-[20px] text-[#FFF] font-inconsolata font-extrabold">
+                  OG
+                </h5>
+              </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <div className="flex">
+            <div className="flex items-center">
               <h5 className="font-soli text-[24px] text-white mt-5 capitalize">
                 Gm,{" "}
                 <span className="text-[#FFED41] capitalize">{`${user?.twitter?.name}`}</span>
               </h5>
-              <img src={armyBadge} alt="" className="w-[50px]" />
+              <img src={armyBadge} alt="" className="w-[60px] h-[45px]" />
             </div>
-            <div>
+            <div className="flex">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">
                 {user?.wallet?.address}
               </h5>
