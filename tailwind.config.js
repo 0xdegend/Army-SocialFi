@@ -15,6 +15,7 @@ module.exports = {
         dark: "#1f1f1f",
         primary: "#1D2211",
         secondary: "#4B5320",
+        customYellow: "#DFC865",
       },
     },
   },

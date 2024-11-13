@@ -10,7 +10,7 @@ function PointsOverview() {
         <MainPointsOverview />
         <Missions />
       </div>
-      <div className="mt-5">
+      <div className="mt-5 pb-4">
         <LeaderboardTable data={generalLeaderBoardData} />
       </div>
     </>

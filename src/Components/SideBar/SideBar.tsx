@@ -6,12 +6,28 @@ import { usePrivy } from "@privy-io/react-auth";
 import LogoutButton from "../utils/buttons/LogoutButton";
 import { useNavigate } from "react-router-dom";
 function SideBar() {
-  const buttonName: ISidebarButtonName[] = [
-    "dashboard",
-    "leaderboard",
-    "campaigns",
-    "my points",
-    "meme bank",
+  const buttonName = [
+    {
+      name: "dashboard",
+      url:"dashboard"
+    },
+    {
+      name: "leaderboard",
+      url:"leaderboard"
+    },
+    {
+      name: "campaigns",
+      url:"campaigns"
+    },
+    {
+      name: "my points",
+      url:"my-points"
+    },
+    {
+      name: "meme bank",
+      url:"meme-bank"
+    },
+  
   ];
   const { logout } = usePrivy();
   const navigate = useNavigate();
@@ -28,7 +44,7 @@ function SideBar() {
           </div>
           <div>
             {buttonName.map((item, i: number) => (
-              <SideBarButton key={i} name={item} />
+              <SideBarButton key={i} name={item?.name} url={item?.url} />
             ))}
           </div>
         </div>

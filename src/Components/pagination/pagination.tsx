@@ -58,7 +58,9 @@ const Pagination = ({ data, itemsPerPage, setCurrentData }: paginationData) => {
         key={pageNumber}
         onClick={() => goToPage(pageNumber)}
         disabled={currentPage === pageNumber || pageNumber === "..."}
-        className=" hover:border hover:border-[#DFC865] px-2 hover:text-[#DFC865] rounded-[100px]"
+        className={` hover:border hover:border-[#DFC865] px-2 hover:text-[#DFC865] rounded-[100px] ${
+          currentPage === pageNumber ? "border border-[#DFC865]" : ""
+        } `}
       >
         {pageNumber}
       </button>
@@ -79,19 +81,19 @@ const Pagination = ({ data, itemsPerPage, setCurrentData }: paginationData) => {
           </button>
         </div>
 
-        {/* <div className="flex gap-4">
-       {pages.map((pageNumber: any) => (
+        <div className="flex gap-4">
+       {/* {pages.map((pageNumber: any) => (
           <button
-            key={pageNumber}
-            onClick={() => goToPage(pageNumber)}
-            disabled={currentPage === pageNumber}
-            className="hover:border-[#DFC865] hover:border hover:rounded-[100px] hover:px-2 hover:text-[#fff] "
+           key={pageNumber}
+           onClick={() => goToPage(pageNumber)}
+           disabled={currentPage === pageNumber}
+           className={`${currentPage === pageNumber ? "border border-customYellow":""} hover:border-[#DFC865] hover:border hover:rounded-[100px] hover:px-2 hover:text-[#fff] `}
           >
             {pageNumber}
           </button>
-        ))}
+        ))} */}
 
-       </div> */}
+       </div>
         <div className="flex gap-8 text-[#8A8577] text-[12px]">
           {renderPageNumbers()}
         </div>
