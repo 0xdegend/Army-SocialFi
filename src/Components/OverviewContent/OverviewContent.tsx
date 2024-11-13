@@ -38,7 +38,7 @@ const OverviewContent = () => {
                 Gm,{" "}
                 <span className="text-[#FFED41] capitalize">{`${user?.twitter?.name}`}</span>
               </h5>
-              <img src={armyBadge} alt="" className="w-[50px]" />
+              <img src={armyBadge} alt="" className="w-[60px] h-[45px]" />
             </div>
             <div className="flex">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">
