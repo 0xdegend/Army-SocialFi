@@ -172,13 +172,13 @@ const SingleRow = ({
           <span>
             <Options>
               <div className="w-full flex flex-col py-4 px-2 gap-2">
-                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
+                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md">
                   Update Access Level
                 </button>
-                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
+                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md">
                   Add Tag
                 </button>
-                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
+                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md">
                   Remove Tag
                 </button>
               </div>
