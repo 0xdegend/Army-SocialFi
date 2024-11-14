@@ -10,6 +10,7 @@ interface dashboard {
   children?: any;
 
   current: number;
+
 }
 const DashboardLayout = ({ children, current }: dashboard) => {
   const [open, setOpen] = useState(false);
@@ -35,7 +36,7 @@ const DashboardLayout = ({ children, current }: dashboard) => {
               )}
             </div>
 
-            <div className="w-full  flow-hide lg:px-4 general-bg ">{children}</div>
+            <div className={`w-full  flow-hide lg:px-4 ${current === 10 ? "bg-primary" : "general-bg"}  `}>{children}</div>
           </div>
         </div>
       </div>
