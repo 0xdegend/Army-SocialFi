@@ -5,7 +5,6 @@ import twitterIcon from "../../assets/images/twitter-icon.svg";
 import armyBadge from "../../assets/images/general-rank.PNG";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
-
 import { usePrivy } from "@privy-io/react-auth";
 const OverviewContent = () => {
   const { user } = usePrivy();
@@ -38,7 +37,7 @@ const OverviewContent = () => {
                 Gm,{" "}
                 <span className="text-[#FFED41] capitalize">{`${user?.twitter?.name}`}</span>
               </h5>
-              <img src={armyBadge} alt="" className="w-[60px] h-[45px]" />
+              <img src={armyBadge} alt="" className="w-[45px] h-[38px]" />
             </div>
             <div className="flex">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">
