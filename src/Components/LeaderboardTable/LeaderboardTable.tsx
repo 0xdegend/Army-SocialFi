@@ -34,28 +34,31 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
         </div>
       </div>
       {/* end of input space */}
-      <table className="table-fixed min-w-full">
-        <thead className="w-full bg-secondary   h-12 flex items-center rounded-md ">
-          <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 ">
-            <th className=" w-full flex justify-start">Rank</th>
-            <th className=" w-full flex justify-start">Name</th>
-            <th className=" w-full flex justify-start">Activity Points</th>
-            <th className=" w-full flex justify-start">Multiplier</th>
-          </tr>
-        </thead>
-        <tbody className="gap-4 mt-4">
-          {currentData?.map((item: any, index: number) => {
-            return <SingleRow item={item} index={index} key={index} />;
-          })}
-        </tbody>
-      </table>
-      <div className="w-full px-4">
-        <Pagination
-          data={filteredData}
-          itemsPerPage={10}
-          setCurrentData={setCurrentData}
-          currentData={currentData}
-        />
+      <div className="w-full flow-hide-x">
+        <table className="table-fixed min-w-max lg:min-w-full">
+          <thead className="w-full bg-secondary   h-12 flex items-center rounded-md ">
+            <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 ">
+              <th className=" w-full flex justify-start">Rank</th>
+              <th className=" w-full flex justify-start">Name</th>
+              <th className=" w-full flex justify-start">Activity Points</th>
+              <th className=" w-full flex justify-start">Multiplier</th>
+            </tr>
+          </thead>
+          <tbody className="gap-4 mt-4">
+            {currentData?.map((item: any, index: number) => {
+              return <SingleRow item={item} index={index} key={index} />;
+            })}
+          </tbody>
+        </table>
+
+          </div>
+        <div className="w-full px-4">
+          <Pagination
+            data={filteredData}
+            itemsPerPage={10}
+            setCurrentData={setCurrentData}
+            currentData={currentData}
+          />
       </div>
     </div>
   );
@@ -66,7 +69,7 @@ export default LeaderboardTable;
 const SingleRow = ({ item, index }: { item: any; index: number }) => {
   return (
     <tr
-      className="w-full grid grid-cols-4   text-white place-items-center   px-4 h-10 mt-3 "
+      className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
       key={index}
     >
       <td className=" w-full flex justify-start">
