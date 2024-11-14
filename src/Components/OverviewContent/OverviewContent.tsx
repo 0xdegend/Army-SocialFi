@@ -5,6 +5,8 @@ import twitterIcon from "../../assets/images/twitter-icon.svg";
 import armyBadge from "../../assets/images/general-rank.PNG";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
+import coingeckoIcon from "../../assets/svg/coingecko.svg";
+import cmcIcon from "../../assets/svg/cmc.webp";
 import { usePrivy } from "@privy-io/react-auth";
 const OverviewContent = () => {
   const { user } = usePrivy();
@@ -73,6 +75,24 @@ const OverviewContent = () => {
                 rel="noreferrer"
               >
                 <img src={dexscreenerIcon} alt="" className="w-[40px]" />
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://www.coingecko.com/en/coins/army"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={coingeckoIcon} alt="" className="w-[40px]" />
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://coinmarketcap.com/currencies/army/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={cmcIcon} alt="" className="w-[40px]" />
               </a>
             </div>
           </div>
