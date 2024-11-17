@@ -12,6 +12,7 @@ import Overview from "./Components/Overview/Overview";
 import Leaderboard from "./pages/Dashboard/Leaderboard";
 import LoadingOverlay from "./Components/LoadingOverlay/LoadingOverlay";
 import MemeBankPage from "./pages/MemeBank";
+import MyPointsPage from "./pages/Points/MyPoints";
 
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
@@ -59,6 +60,7 @@ function App() {
                 {/* <Route path="/sksks" element={<Overview />} /> */}
                 <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route path="/meme-bank" element={<MemeBankPage />} />
+                <Route path="/my-points" element={<MyPointsPage />} />
             </Routes>
           </Router>
         </PrivyProvider>
