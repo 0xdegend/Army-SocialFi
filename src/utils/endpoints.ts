@@ -1,5 +1,5 @@
 /** this would wrap all the api endpoints and base urls */
-export const baseUrl = process.env.REACT_BASE_URL;
+export const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const url = {
   login: "/user",

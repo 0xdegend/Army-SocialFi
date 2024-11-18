@@ -14,6 +14,7 @@ import { usePrivy } from "@privy-io/react-auth";
 const WalletBallance = () => {
   const [solHolding, setSolHolding] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [armyLoading, setArmyLoading] = useState(false);
   const { connection } = useConnection();
   const { user } = usePrivy();
   const [tokenBalance, setTokenBalance] = useState(0);
@@ -32,7 +33,6 @@ const WalletBallance = () => {
   };
 
   useEffect(() => {
-    console.log(user?.wallet?.address);
     const fetchSolBalance = () => {
       if (!connection || !address) return;
       try {
@@ -53,12 +53,12 @@ const WalletBallance = () => {
       }
     };
     fetchSolBalance();
-  }, [connection, address]);
+  }, [address]);
 
   useEffect(() => {
     const getTokenBalance = async () => {
       if (!address) return;
-      setLoading(true);
+      setArmyLoading(true);
       try {
         const publicKey = new PublicKey(address); // Convert address to PublicKey
         const tokenPublicKey = new PublicKey(armyAddress);
@@ -77,11 +77,11 @@ const WalletBallance = () => {
         console.error("Error fetching token balance", error);
         setTokenBalance(0);
       } finally {
-        setLoading(false);
+        setArmyLoading(false);
       }
     };
     getTokenBalance();
-  }, [address, connection]);
+  }, [armyAddress]);
   return (
     <div className=" w-full flex justify-end">
       {address && (
