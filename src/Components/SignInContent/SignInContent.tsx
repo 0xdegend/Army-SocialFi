@@ -7,22 +7,37 @@ import { useNavigate } from "react-router-dom";
 import soldierVector from "../../assets/images/camo-background.svg";
 
 const SignInContent = () => {
+  const ENCODED_TRUE = btoa("true");
+  const ENCODED_FALSE = btoa("false");
+
   const navigate = useNavigate();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
+
   const { linkWallet, login, logout, user } = usePrivy();
+
   const address = user?.wallet?.address;
+  const isWalletLinked = localStorage.getItem("walletLinked");
   const handleConnectTwitter = async () => {
     try {
-      await login({ loginMethods: ["twitter"] });
+      if (isWalletLinked === ENCODED_TRUE) {
+        await login({ loginMethods: ["wallet"], chains: ["solana"] });
+      } else {
+        await login({ loginMethods: ["twitter"] });
+      }
     } catch (error) {
       console.error("Error signing in:", error);
     }
   };
   const handleSignIn = async () => {
     try {
-      await linkWallet({ loginMethods: ["wallet"], chains: ["solana"] });
-      setIsWalletConnected(true);
-      navigate("/dashboard");
+      if (isWalletLinked === ENCODED_TRUE) {
+        await login({ loginMethods: ["wallet"], chains: ["solana"] });
+        console.log("Logged in with existing wallet:", user);
+      } else {
+        await linkWallet({ loginMethods: ["wallet"], chains: ["solana"] });
+        localStorage.setItem("walletLinked", ENCODED_TRUE);
+        console.log("Wallet linked:", user);
+      }
       console.log(user);
     } catch (error) {
       setIsWalletConnected(false);
@@ -38,12 +53,12 @@ const SignInContent = () => {
   return (
     <div>
       <div className="flex justify-center items-center h-screen">
-        <img src={soldierVector} alt="" className="absolute top-0 w-[60%]" />
+        <img src={soldierVector} alt="" className="absolute top-0 w-[60%] z-0" />
         <div className="flex justify-center items-center flex-col">
           <img
             src={mainSoldier}
             alt=""
-            className="w-full md:w-1/2 lg:w-full xl:w-full"
+            className="w-full md:w-1/2 lg:w-full xl:w-full z-10"
           />
           <div className="sign-in-steps">
             <h4 className="font-soli text-white text-[30px] font-bold mt-1">
@@ -57,18 +72,30 @@ const SignInContent = () => {
                 className="bg-red-600 text-white py-3 px-6 text-[25px] hover:bg-red-700 transition mt-10 sign-in-button font-soli"
                 onClick={handleConnectTwitter}
               >
-                {user ? "Connected" : " Connect Twitter"}
+                {user
+                  ? "Connected"
+                  : isWalletLinked
+                  ? "Sign In Soldier!"
+                  : "Connect Twitter"}
               </button>
-              <div className="flex justify-center items-center mt-2">
-                <img src={arrowDown} alt="Arrow Down" className="w-[30px]" />
-              </div>
-              {!address && (
-                <button
-                  className="bg-red-600 text-white py-3 px-6 text-[25px] font-soli hover:bg-red-700 transition mt-5 sign-in-button"
-                  onClick={handleSignIn}
-                >
-                  Link Wallet
-                </button>
+              {!isWalletLinked && (
+                <>
+                  <div className="flex justify-center items-center mt-2">
+                    <img
+                      src={arrowDown}
+                      alt="Arrow Down"
+                      className="w-[30px]"
+                    />
+                  </div>
+                  {!address && (
+                    <button
+                      className="bg-red-600 text-white py-3 px-6 text-[25px] font-soli hover:bg-red-700 transition mt-5 sign-in-button"
+                      onClick={handleSignIn}
+                    >
+                      Link Wallet
+                    </button>
+                  )}
+                </>
               )}
             </div>
           </div>
