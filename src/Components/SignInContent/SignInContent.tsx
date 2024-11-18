@@ -14,7 +14,11 @@ import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import * as bigInt from "big-integer";
 import { APIService } from "../../utils/APIService";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../utils/AuthSlice";
+
 const SignInContent = () => {
+  const dispatch = useDispatch();
   const ENCODED_TRUE = btoa("true");
   const ENCODED_FALSE = btoa("false");
   const [tokenBalance, setTokenBalance] = useState(0);
@@ -101,19 +105,23 @@ const SignInContent = () => {
       if (user && address) {
         try {
           console.log("User in useEffect:", user);
-  
-          // Fetch the token balance
           const balance = await getTokenBalance();
-  
-          // Post data to the API
           const result = await APIService.post(`/user`, {
             address: address,
             twitterHandle: `@${user?.twitter?.username}`,
             twitterUsername: user?.twitter?.name,
-            balance: balance, // Use the fetched balance
+            balance: balance,
           });
-  
           console.log("API response:", result);
+
+          dispatch(
+            setUserData({
+              user,
+              address,
+              balance,
+              apiResponse: JSON.stringify(result, null, 2),
+            })
+          );
           console.log("Token balance in useEffect:", balance);
           console.log("Global balance in useEffect:", armyBalance); // Log the global balance if needed
           navigate("/dashboard");
@@ -122,9 +130,9 @@ const SignInContent = () => {
         }
       }
     };
-  
+
     fetchAndPostData(); // Call the async function
-  }, [user, address, armyBalance]); // Include armyBalance only if necessary
+  }, [user, address, armyBalance, dispatch]); // Include armyBalance only if necessary
   return (
     <div>
       <div className="flex justify-center items-center h-screen">

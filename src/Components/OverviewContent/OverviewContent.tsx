@@ -8,7 +8,11 @@ import dexscreenerIcon from "../../assets/images/dexscreener.svg";
 import coingeckoIcon from "../../assets/svg/coingecko.svg";
 import cmcIcon from "../../assets/svg/cmc.webp";
 import { usePrivy } from "@privy-io/react-auth";
+import { RootState } from "../../utils/AuthSlice";
+import { useSelector } from "react-redux";
 const OverviewContent = () => {
+  const userData = useSelector((state: RootState) => state.user);
+  console.log(userData);
   const { user } = usePrivy();
   return (
     <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right">
