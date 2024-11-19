@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import points from "../../assets/images/points.png";
+//@ts-ignore
+import points from "../../assets/images/army-points-illustration.PNG";
 import first from "../../assets/svg/first-pos.svg";
 import second from "../../assets/svg/second-pos.svg";
 import third from "../../assets/svg/third-pos.svg";
@@ -91,12 +92,14 @@ const SingleRow = ({ item, index, isAdmin }: { item: any; index: number, isAdmin
       </td>
       <td className=" w-full flex justify-start gap-2 items-center">
         <p>{item?.actPts}</p>
-        <img src={points} alt="points" className="w-3 h-3 rounded-full" />
+        <img src={points} alt="points" className="w-5 h-5 rounded-full" />
       </td>
 
       <td className=" w-full flex justify-between items-center gap-6">
       <div className="  flex  items-center gap-2">
         <p>{item?.multiplier}</p>
+        <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+
         <img src={points} alt="points" className="w-3 h-3 rounded-full" />
         </div>
         {

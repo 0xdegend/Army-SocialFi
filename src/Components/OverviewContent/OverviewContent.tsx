@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import camoImage from "../../assets/images/camo-background.svg";
 import twitterIcon from "../../assets/images/twitter-icon.svg";
 //@ts-ignore
 import armyBadge from "../../assets/images/general-rank.PNG";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
+import coingeckoIcon from "../../assets/svg/coingecko.svg";
+import cmcIcon from "../../assets/svg/cmc.webp";
 import { usePrivy } from "@privy-io/react-auth";
+import { RootState } from "../../utils/AuthSlice";
+import { useAppSelector, useAppDispatch } from "../../app/hook";
 const OverviewContent = () => {
+  const dispatch = useAppDispatch();
+  const userData = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    console.log(userData);
+  }, []);
   const { user } = usePrivy();
   return (
     <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right">
@@ -73,6 +83,24 @@ const OverviewContent = () => {
                 rel="noreferrer"
               >
                 <img src={dexscreenerIcon} alt="" className="w-[40px]" />
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://www.coingecko.com/en/coins/army"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={coingeckoIcon} alt="" className="w-[40px]" />
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://coinmarketcap.com/currencies/army/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={cmcIcon} alt="" className="w-[40px]" />
               </a>
             </div>
           </div>

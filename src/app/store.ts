@@ -17,13 +17,10 @@ import {
 // import storage from "redux-persist/lib/storage";
 import session from "redux-persist/lib/storage/session";
 
-import authReducer from "../features/auth/authSlice";
-
+import authReducer from "../utils/AuthSlice";
 
 const rootReducer = combineReducers({
-
   auth: authReducer,
- 
 });
 
 const persistConfig = {
