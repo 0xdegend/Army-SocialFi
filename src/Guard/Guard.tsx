@@ -7,11 +7,12 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user } = usePrivy();
+  const { user, logout } = usePrivy();
   const isAuthenticated = user && user.twitter?.username;
   const hasSolanaWallet = user?.wallet?.chainType === "solana";
+  const userAuth = localStorage.getItem("userAuth");
 
-  if (!isAuthenticated || !hasSolanaWallet) {
+  if (!isAuthenticated || !hasSolanaWallet || !userAuth) {
     return <Navigate to="/" replace />;
   }
 

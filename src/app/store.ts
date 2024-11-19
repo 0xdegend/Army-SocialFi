@@ -17,16 +17,16 @@ import {
 // import storage from "redux-persist/lib/storage";
 import session from "redux-persist/lib/storage/session";
 
-import authReducer from "../utils/AuthSlice";
+import  user  from "../utils/AuthSlice";
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  user
 });
 
 const persistConfig = {
   key: "root",
   storage: session,
-  whitelist: ["auth"], //add any reducer you want to be persisted here
+  whitelist: ["user"], //add any reducer you want to be persisted here
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

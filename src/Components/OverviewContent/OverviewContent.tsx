@@ -8,13 +8,14 @@ import dexscreenerIcon from "../../assets/images/dexscreener.svg";
 import coingeckoIcon from "../../assets/svg/coingecko.svg";
 import cmcIcon from "../../assets/svg/cmc.webp";
 import { usePrivy } from "@privy-io/react-auth";
-import { RootState } from "../../utils/AuthSlice";
+
 import { useAppSelector, useAppDispatch } from "../../app/hook";
+import { store } from "../../app/store";
+
 const OverviewContent = () => {
-  const userData = useAppSelector((state) => state.auth);
-  useEffect(() => {
-    console.log(userData);
-  }, []);
+  const dispatch = useAppDispatch();
+  const userData = useAppSelector((state) => state.user);
+  console.log(userData?.userMainData);
   const { user } = usePrivy();
   return (
     <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right">
