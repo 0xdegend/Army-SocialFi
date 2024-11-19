@@ -47,7 +47,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.token = payload?.data?.token;
         state.apiResponse = payload;
-
+        state.user = payload?.data?.user;
         console.log(payload);
       })
       .addCase(authenticateUser.rejected, (state, { payload }) => {
@@ -58,7 +58,7 @@ const userSlice = createSlice({
         console.log(payload);
       })
       .addCase(getUserProfile.fulfilled, (state, { payload }) => {
-        state.userMainData = payload;
+        state.userMainData = payload?.user;
         console.log(payload);
       })
       .addCase(getGeneralLeaderboard.fulfilled, (state, { payload }) => {

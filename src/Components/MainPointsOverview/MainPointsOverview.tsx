@@ -10,16 +10,16 @@ function MainPointsOverview() {
         <div>
           <h1 className="font-soli text-[30px] text-[#FFF]">$ARMY Points</h1>
           <p className="font-soli text-[25px] text-[#FFED41] mt-3">
-            {userData?.userMainData?.user?.points.toLocaleString()}
+            {userData?.userMainData?.points.toLocaleString()}
           </p>
         </div>
         <div className="multiplier">
           <h1 className="font-soli text-[30px] text-[#FFF]">Multiplier</h1>
-          <p className="font-soli text-[25px] text-[#FFED41] mt-3">x{userData?.userMainData?.user?.rank?.multiplier}</p>
+          <p className="font-soli text-[25px] text-[#FFED41] mt-3">x{userData?.userMainData?.rank?.multiplier}</p>
         </div>
         <div className="rank">
           <h1 className="font-soli text-[30px] text-[#FFF]">Rank</h1>
-          <p className="font-soli text-[25px] text-[#F83726] mt-3 ">{userData?.userMainData?.user?.rank?.name}</p>
+          <p className="font-soli text-[25px] text-[#F83726] mt-3 ">{userData?.userMainData?.rank?.name}</p>
         </div>
       </div>
     </>

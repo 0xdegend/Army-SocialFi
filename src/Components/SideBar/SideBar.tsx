@@ -5,29 +5,45 @@ import { ISidebarButtonName } from "../../types";
 import { usePrivy } from "@privy-io/react-auth";
 import LogoutButton from "../utils/buttons/LogoutButton";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../app/hook";
+interface UserData {
+  accessLevel?: string; // Add other fields as required
+  userMainData?: any;
+}
 function SideBar() {
+  const userData: UserData = useAppSelector((state) => state.user);
+
+  console.log(userData?.userMainData);
   const buttonName = [
     {
       name: "dashboard",
-      url:"dashboard"
+      url: "dashboard",
     },
     {
       name: "leaderboard",
-      url:"leaderboard"
+      url: "leaderboard",
     },
     {
       name: "campaigns",
-      url:"campaigns"
+      url: "campaigns",
     },
     {
       name: "my points",
-      url:"my-points"
+      url: "my-points",
     },
     {
       name: "meme bank",
-      url:"meme-bank"
+      url: "meme-bank",
     },
-  
+    ...(userData?.userMainData?.accessLevel === "super admin" ||
+    userData?.userMainData?.accessLevel === "admin"
+      ? [
+          {
+            name: "Admin",
+            url: "admin",
+          },
+        ]
+      : []),
   ];
   const { logout } = usePrivy();
   const navigate = useNavigate();
