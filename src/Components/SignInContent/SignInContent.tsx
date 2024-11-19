@@ -14,11 +14,11 @@ import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import * as bigInt from "big-integer";
 import { APIService } from "../../utils/APIService";
-import { useDispatch } from "react-redux";
-import { setUserData } from "../../utils/AuthSlice";
+import { useAppDispatch } from "../../app/hook";
+import { authenticateUser, setUserData } from "../../utils/AuthSlice";
 
 const SignInContent = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ENCODED_TRUE = btoa("true");
   const ENCODED_FALSE = btoa("false");
   const [tokenBalance, setTokenBalance] = useState(0);
@@ -99,40 +99,49 @@ const SignInContent = () => {
       console.error("Error signing in:", error);
     }
   };
+  const fetchAndPostData = async () => {
+    if (user && address) {
+      console.log("User in useEffect:", user);
+      const balance = await getTokenBalance();
+      const data = {
+        address: address,
+        twitterHandle: `@${user?.twitter?.username}`,
+        twitterUsername: user?.twitter?.name,
+        balance: balance,
+      };
+      await dispatch(authenticateUser(data));
+      navigate("/dashboard");
+      //if (payload?.status === "success") {
+      //setLoading(false);
+      // console.log("API response:", payload);
+      // console.log("Token balance in useEffect:", balance);
+      // console.log("Global balance in useEffect:", armyBalance); // Log the global balance if needed
+
+      //} else {
+      // console.error("Error in fetchAndPostData:");
+      //}
+
+      //try {
+
+      // const result = await APIService.post(`/user`, {
+      //   address: address,
+      //   twitterHandle: `@${user?.twitter?.username}`,
+      //   twitterUsername: user?.twitter?.name,
+      //   balance: balance,
+      // });
+
+      //} catch (error) {
+
+      //}
+    }
+  };
 
   useEffect(() => {
-    const fetchAndPostData = async () => {
-      if (user && address) {
-        try {
-          console.log("User in useEffect:", user);
-          const balance = await getTokenBalance();
-          const result = await APIService.post(`/user`, {
-            address: address,
-            twitterHandle: `@${user?.twitter?.username}`,
-            twitterUsername: user?.twitter?.name,
-            balance: balance,
-          });
-          console.log("API response:", result);
-
-          dispatch(
-            setUserData({
-              user,
-              address,
-              balance,
-              apiResponse: JSON.stringify(result, null, 2),
-            })
-          );
-          console.log("Token balance in useEffect:", balance);
-          console.log("Global balance in useEffect:", armyBalance); // Log the global balance if needed
-          navigate("/dashboard");
-        } catch (error) {
-          console.error("Error in fetchAndPostData:", error);
-        }
-      }
-    };
-
-    fetchAndPostData(); // Call the async function
-  }, [user, address, armyBalance, dispatch]); // Include armyBalance only if necessary
+    if (user && address) {
+      fetchAndPostData();
+    }
+    // Call the async function
+  }, [user, address, armyBalance]); // Include armyBalance only if necessary
   return (
     <div>
       <div className="flex justify-center items-center h-screen">
