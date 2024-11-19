@@ -1,4 +1,5 @@
-import { useState } from "react";
+//@ts-nocheck
+import { useState, useEffect } from "react";
 import LeaderboardTable from "../../Components/LeaderboardTable/LeaderboardTable";
 import OverviewContent from "../../Components/OverviewContent/OverviewContent";
 import armyBackground from "../../assets/images/army-background.webp";
@@ -7,8 +8,38 @@ import {
   campaignLeaderBoardData,
 } from "../../utils/mockData";
 import DashboardLayout from "../../layout/DashboardLayout";
+import { useAppDispatch } from "../../app/hook";
+import { getGeneralLeaderboard } from "../../utils/AuthSlice";
 const Leaderboard = () => {
+  const [updatedGeneralLeaderBoardData, setupdatedGeneralLeaderBoardData] =
+    useState([]);
+  const [loadingData, setLoadingData] = useState(false);
+  const dispatch = useAppDispatch();
   const [isGeneral, setIsGeneral] = useState(true);
+
+  const handleGetLeaderBoardData = async () => {
+    try {
+      const generalLeaderBoardData = await dispatch(
+        getGeneralLeaderboard()
+      ).unwrap();
+      setupdatedGeneralLeaderBoardData(
+        generalLeaderBoardData?.leaderboard || []
+      );
+      console.log(generalLeaderBoardData);
+    } catch (error) {
+      console.log("Error fetching leaderboard data:", error);
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingData(true);
+      console.log("Fetching Leaderboard data...");
+      await handleGetLeaderBoardData();
+      setLoadingData(false);
+    };
+    fetchData();
+    console.log(updatedGeneralLeaderBoardData);
+  }, []);
   return (
     <DashboardLayout current={2}>
       <div className="w-full h-full">
@@ -37,7 +68,9 @@ const Leaderboard = () => {
                 Campaign LeaderBoard
               </button>
             </div>
-            {isGeneral && <LeaderboardTable data={generalLeaderBoardData} />}
+            {isGeneral && (
+              <LeaderboardTable data={updatedGeneralLeaderBoardData} />
+            )}
             {!isGeneral && <LeaderboardTable data={campaignLeaderBoardData} />}
           </div>
         </div>

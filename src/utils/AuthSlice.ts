@@ -16,6 +16,7 @@ interface UserState {
   loading: boolean;
   token: string;
   userMainData: any;
+  leaderboard: any;
 }
 
 const initialState: UserState = {
@@ -26,6 +27,7 @@ const initialState: UserState = {
   loading: false,
   token: "",
   userMainData: null,
+  leaderboard: null,
 };
 
 const userSlice = createSlice({
@@ -57,7 +59,11 @@ const userSlice = createSlice({
       })
       .addCase(getUserProfile.fulfilled, (state, { payload }) => {
         state.userMainData = payload;
-        console.log(payload)
+        console.log(payload);
+      })
+      .addCase(getGeneralLeaderboard.fulfilled, (state, { payload }) => {
+        state.leaderboard = payload?.leaderboard;
+        console.log(payload);
       });
   },
 });
@@ -94,7 +100,23 @@ export const getUserProfile = createAsyncThunk(
     }
   }
 );
-
+export const getGeneralLeaderboard = createAsyncThunk(
+  "getGeneralLeaderboard",
+  async (payload: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.get(`${url.generalLeaderboard}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
 export const { setUserData } = userSlice.actions;
 
 export default userSlice.reducer;

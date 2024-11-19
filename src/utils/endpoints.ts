@@ -4,4 +4,5 @@ export const baseUrl = process.env.REACT_APP_BASE_URL;
 export const url = {
   login: "/user",
   profile: "/user/profile",
+  generalLeaderboard: "/leaderboard",
 };
