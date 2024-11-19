@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { store } from "./utils/AuthSlice";
+import { store } from "./app/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

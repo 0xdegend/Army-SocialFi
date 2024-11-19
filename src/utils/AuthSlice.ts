@@ -56,11 +56,7 @@ export const authenticateUser = createAsyncThunk(
   async (payload: any, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
     try {
-      const { data } = await APIService.post(`${url.login}`, payload, {
-        //   headers: {
-        //     Authorization: `Bearer ${auth?.token}`,
-        //   }
-      });
+      const { data } = await APIService.post(`${url.login}`, payload);
       return data;
     } catch (error: any) {
       return rejectWithValue(
@@ -72,11 +68,12 @@ export const authenticateUser = createAsyncThunk(
 
 export const { setUserData } = userSlice.actions;
 
+// export const userSelector = (state: any) => state.user;
+
+// export const store = configureStore({
+//   reducer: userSlice.reducer,
+// });
 export default userSlice.reducer;
 
-export const store = configureStore({
-  reducer: userSlice.reducer,
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+// export type RootState = ReturnType<typeof store.getState>;
+// export type AppDispatch = typeof store.dispatch;
