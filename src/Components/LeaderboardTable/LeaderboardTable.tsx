@@ -4,11 +4,13 @@ import first from "../../assets/svg/first-pos.svg";
 import second from "../../assets/svg/second-pos.svg";
 import third from "../../assets/svg/third-pos.svg";
 import Pagination from "../pagination/pagination";
+import Options from "../Options/OptionsMenu";
 
 const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(true);
   useEffect(() => {
     if (!query) {
       setFilteredData(data);
@@ -46,7 +48,7 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
           </thead>
           <tbody className="gap-4 mt-4">
             {currentData?.map((item: any, index: number) => {
-              return <SingleRow item={item} index={index} key={index} />;
+              return <SingleRow item={item} index={index} key={index} isAdmin={isAdmin} />;
             })}
           </tbody>
         </table>
@@ -66,7 +68,7 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
 
 export default LeaderboardTable;
 
-const SingleRow = ({ item, index }: { item: any; index: number }) => {
+const SingleRow = ({ item, index, isAdmin }: { item: any; index: number, isAdmin: boolean; }) => {
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -91,9 +93,32 @@ const SingleRow = ({ item, index }: { item: any; index: number }) => {
         <p>{item?.actPts}</p>
         <img src={points} alt="points" className="w-3 h-3 rounded-full" />
       </td>
-      <td className=" w-full flex justify-start items-center gap-2">
+
+      <td className=" w-full flex justify-between items-center gap-6">
+      <div className="  flex  items-center gap-2">
         <p>{item?.multiplier}</p>
         <img src={points} alt="points" className="w-3 h-3 rounded-full" />
+        </div>
+        {
+          isAdmin && (
+
+        <span>
+              <Options>
+                <div className="w-full flex flex-col py-4 px-2 gap-2">
+                  <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
+                    Update Access Level
+                </button>
+                  <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
+                    Add Tag
+                </button>
+                  <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
+                    Remove Tag
+                </button>
+                </div>
+</Options>
+        </span>
+          )
+        }
       </td>
     </tr>
   );
