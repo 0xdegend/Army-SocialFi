@@ -68,11 +68,7 @@ export const authenticateUser = createAsyncThunk(
 
 export const { setUserData } = userSlice.actions;
 
-// export const userSelector = (state: any) => state.user;
 
-// export const store = configureStore({
-//   reducer: userSlice.reducer,
-// });
 export default userSlice.reducer;
 
 // export type RootState = ReturnType<typeof store.getState>;
