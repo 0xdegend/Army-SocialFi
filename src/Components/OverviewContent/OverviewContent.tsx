@@ -11,9 +11,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { RootState } from "../../utils/AuthSlice";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 const OverviewContent = () => {
-  const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.auth);
-
   useEffect(() => {
     console.log(userData);
   }, []);
