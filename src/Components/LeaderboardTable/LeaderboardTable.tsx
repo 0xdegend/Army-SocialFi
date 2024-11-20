@@ -1,14 +1,11 @@
 //@ts-nocheck
 import { useState, useEffect } from "react";
 import points from "../../assets/images/army-points-illustration.PNG";
-import generalIcon from "../../assets/images/general-rank.PNG";
-import captainIcon from "../../assets/images/captain-rank.PNG";
-import sergeantIcon from "../../assets/images/master-sergeant-rank.PNG";
-import corporalIcon from "../../assets/images/corporal-rank.PNG";
-import privateIcon from "../../assets/images/private-rank.PNG";
+import rankIcons from "../../utils/rankIcons";
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
-
+import LoadingComponent from "../LoadingComponent/skeleton-loading";
+import { useAppSelector } from "../../app/hook";
 const LeaderboardTable = ({
   data,
   isGeneral,
@@ -20,7 +17,9 @@ const LeaderboardTable = ({
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const userData = useAppSelector((state) => state.user);
+  const [isAdmin, setIsAdmin] = useState(false);
+
   useEffect(() => {
     setIsLoading(true);
     const filtered = !query
@@ -30,7 +29,14 @@ const LeaderboardTable = ({
         );
     setCurrentData(filtered);
     setIsLoading(false);
-  }, [query, data]);
+
+    if (
+      userData?.userMainData?.accessLevel === "super admin" ||
+      userData?.userMainData?.accessLevel === "admin"
+    ) {
+      setIsAdmin(true);
+    }
+  }, [query, data, userData]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -82,9 +88,13 @@ const LeaderboardTable = ({
             ) : (
               <tr>
                 <td colSpan={5} className="text-center">
-                  {isLoading
-                    ? "Loading leaderboard data..."
-                    : "No leaderboard data available."}
+                  {isLoading ? (
+                    <>
+                      <LoadingComponent />
+                    </>
+                  ) : (
+                    "No leaderboard data available."
+                  )}
                 </td>
               </tr>
             )}
@@ -116,13 +126,6 @@ const SingleRow = ({
   isAdmin: boolean;
   isGeneral: boolean;
 }) => {
-  const rankIcons = {
-    General: generalIcon,
-    Captain: captainIcon,
-    Sergeant: sergeantIcon,
-    Corporal: corporalIcon,
-    Private: privateIcon,
-  };
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "

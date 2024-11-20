@@ -8,7 +8,7 @@ import dexscreenerIcon from "../../assets/images/dexscreener.svg";
 import coingeckoIcon from "../../assets/svg/coingecko.svg";
 import cmcIcon from "../../assets/svg/cmc.webp";
 import { usePrivy } from "@privy-io/react-auth";
-
+import rankIcons from "../../utils/rankIcons";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import { store } from "../../app/store";
 
@@ -16,6 +16,9 @@ const OverviewContent = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
   const { user } = usePrivy();
+  const rankName = userData?.userMainData?.rank?.name;
+  //@ts-ignore
+  const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
   return (
     <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right">
       <img
@@ -45,7 +48,12 @@ const OverviewContent = () => {
                 Gm,{" "}
                 <span className="text-[#FFED41] capitalize">{`${user?.twitter?.name}`}</span>
               </h5>
-              <img src={armyBadge} alt="" className="w-[45px] h-[38px]" />
+
+              <img
+                src={badgeSrc}
+                alt={`${rankName} badge`}
+                className="w-[45px] h-[38px]"
+              />
             </div>
             <div className="flex">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">

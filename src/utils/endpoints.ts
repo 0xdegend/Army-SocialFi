@@ -5,4 +5,5 @@ export const url = {
   login: "/user",
   profile: "/user/profile",
   generalLeaderboard: "/leaderboard",
+  campaign: "/admin/campaign",
 };

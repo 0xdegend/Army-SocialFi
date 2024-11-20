@@ -74,12 +74,7 @@ const Leaderboard = () => {
                 isGeneral={isGeneral}
               />
             )}
-            {!isGeneral && (
-              <LeaderboardTable
-                data={campaignLeaderBoardData}
-                isGeneral={isGeneral}
-              />
-            )}
+            {!isGeneral && <LeaderboardTable data={[]} isGeneral={isGeneral} />}
           </div>
         </div>
       </div>

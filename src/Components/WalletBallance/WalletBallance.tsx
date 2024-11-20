@@ -11,6 +11,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useSolanaWallets } from "@privy-io/react-auth/solana";
 import * as bigInt from "big-integer";
 import { usePrivy } from "@privy-io/react-auth";
+import { Spin } from "antd";
 const WalletBallance = () => {
   const [solHolding, setSolHolding] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -88,36 +89,13 @@ const WalletBallance = () => {
         <div className="flex gap-4 p-4">
           <div className="button-55 ">
             <p className="text-[#FFF] text-[19px] font-soli text-center">
-              {loading ? "Loading..." : `${solHolding.toFixed(2)} SOL`}
+              {loading ? <Spin/> : `${solHolding.toFixed(2)} SOL`}
             </p>
           </div>
           <div className="  button-56">
             <p className="text-[#F83726] text-[19px] font-soli">
               {loading ? (
-                <div className="flex">
-
-                <svg
-                  className="animate-spin h-8 w-8 mr-3 text-primary"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                    ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                    ></path>
-                  </svg>
-                  <span>Loading</span>
-                    </div>
+                <Spin />
               ) : (
                 `${formatTokenBalance(tokenBalance) || "0.0"} `
               )}

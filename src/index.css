@@ -230,3 +230,6 @@
   background-size: cover;
   width: 100%;
 }
+.ant-spin .ant-spin-dot-holder {
+  color: #fff !important;
+}
