@@ -19,7 +19,7 @@ const DashboardLayout = ({ children, current }: dashboard) => {
     <>
       <div className="w-full flex flex-col overflow-y-hidden">
         <div className="w-full h-screen  relative   md:flex  ">
-          <div className="hidden xl:flex xl:w-3/12 xl:max-w-[266px]  ">
+          <div className="hidden xl:flex xl:w-3/12 xl:max-w-[266px] border-r border-r-secondary border-opacity-50  ">
             <SideBar />
           </div>
 

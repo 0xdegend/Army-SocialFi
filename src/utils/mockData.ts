@@ -155,7 +155,20 @@ export const pointMockData = [
 ];
 
 
-
+export const campaignData = [
+  {
+    name: "Stix Campaign",
+    status: true,
+    participant: 20,
+    tweetsNo:21,
+  },
+  {
+    name: "December Campaign",
+    status: false,
+    participant: 21,
+    tweetsNo:26,
+  },
+]
 
 export const generalLeaderBoardData = [
   {
