@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../app/hook";
 import { getGeneralLeaderboard } from "../../utils/AuthSlice";
 function PointsOverview() {
   const [loadingData, setLoadingData] = useState(false);
+  const [isGeneral, setIsGeneral] = useState(true);
   const [leaderboardData, setLeaderBoardData] = useState([]);
   const dispatch = useAppDispatch();
 
@@ -31,6 +32,7 @@ function PointsOverview() {
     };
     fetchData();
     console.log(leaderboardData);
+    console.log(isGeneral);
   }, []);
   return (
     <>
@@ -39,7 +41,7 @@ function PointsOverview() {
         <Missions />
       </div>
       <div className="mt-5 pb-4">
-        <LeaderboardTable data={leaderboardData} />
+        <LeaderboardTable data={leaderboardData} isGeneral={isGeneral} />
       </div>
     </>
   );

@@ -69,9 +69,17 @@ const Leaderboard = () => {
               </button>
             </div>
             {isGeneral && (
-              <LeaderboardTable data={updatedGeneralLeaderBoardData} />
+              <LeaderboardTable
+                data={updatedGeneralLeaderBoardData}
+                isGeneral={isGeneral}
+              />
             )}
-            {!isGeneral && <LeaderboardTable data={campaignLeaderBoardData} />}
+            {!isGeneral && (
+              <LeaderboardTable
+                data={campaignLeaderBoardData}
+                isGeneral={isGeneral}
+              />
+            )}
           </div>
         </div>
       </div>

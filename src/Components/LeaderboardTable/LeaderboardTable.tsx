@@ -9,7 +9,13 @@ import privateIcon from "../../assets/images/private-rank.PNG";
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
 
-const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
+const LeaderboardTable = ({
+  data,
+  isGeneral,
+}: {
+  data: {}[] | any;
+  isGeneral: boolean;
+}) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
@@ -20,7 +26,7 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
     const filtered = !query
       ? data
       : data.filter((item: any) =>
-          item?.name?.toLowerCase()?.includes(query.toLowerCase())
+          item?.twitterUsername?.toLowerCase()?.includes(query.toLowerCase())
         );
     setCurrentData(filtered);
     setIsLoading(false);
@@ -54,9 +60,12 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
             <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 ">
               <th className=" w-full flex justify-start">Rank</th>
               <th className=" w-full flex justify-start">Name</th>
-              <th className=" w-full flex justify-start">Activity Points</th>
+              {!isGeneral ? (
+                <th className=" w-full flex justify-start">Views</th>
+              ) : (
+                <th className=" w-full flex justify-start">Activity Points</th>
+              )}
               <th className=" w-full flex justify-start">Multiplier</th>
-              
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">
@@ -67,6 +76,7 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
                   index={index}
                   key={item.id || index}
                   isAdmin={isAdmin}
+                  isGeneral={isGeneral}
                 />
               ))
             ) : (
@@ -99,10 +109,12 @@ const SingleRow = ({
   item,
   index,
   isAdmin,
+  isGeneral,
 }: {
   item: any;
   index: number;
   isAdmin: boolean;
+  isGeneral: boolean;
 }) => {
   const rankIcons = {
     General: generalIcon,
@@ -136,8 +148,16 @@ const SingleRow = ({
         <p className="text-base">{item?.twitterUsername}</p>
       </td>
       <td className=" w-full flex justify-start gap-2 items-center">
-        <p>{item?.points}</p>
-        <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+        {!isGeneral ? (
+          <>
+            <p>0</p>
+          </>
+        ) : (
+          <>
+            <p>{item?.points?.toLocaleString()}</p>
+            <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+          </>
+        )}
       </td>
 
       <td className=" w-full flex justify-between items-center gap-6">
