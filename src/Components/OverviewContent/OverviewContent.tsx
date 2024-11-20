@@ -15,7 +15,6 @@ import { store } from "../../app/store";
 const OverviewContent = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
-  console.log(userData?.userMainData);
   const { user } = usePrivy();
   return (
     <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right">

@@ -104,7 +104,7 @@ const SignInContent = () => {
         const balance = await getTokenBalance();
         const data = {
           address: address,
-          twitterHandle: `@${user?.twitter?.username}`,
+          twitterHandle: `${user?.twitter?.username}`,
           twitterUsername: user?.twitter?.name,
           balance: balance,
         };

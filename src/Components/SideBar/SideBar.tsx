@@ -12,8 +12,6 @@ interface UserData {
 }
 function SideBar() {
   const userData: UserData = useAppSelector((state) => state.user);
-
-  console.log(userData?.userMainData);
   const buttonName = [
     {
       name: "dashboard",

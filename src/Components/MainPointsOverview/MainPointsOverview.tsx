@@ -3,7 +3,6 @@ import React from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 function MainPointsOverview() {
   const userData = useAppSelector((state) => state.user);
-  console.log(userData?.userMainData);
   return (
     <>
       <div className="w-[45%] bg-[#1D2211] clip-top-left-bottom-right mt-10 p-10 flex justify-center items-center gap-[60px]">

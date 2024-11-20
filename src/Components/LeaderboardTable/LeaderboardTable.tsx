@@ -16,15 +16,15 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true);
   useEffect(() => {
-    if (!query) {
-      setFilteredData(data);
-    } else {
-      const filtered = data.filter((item: any) =>
-        item?.name?.toLowerCase()?.includes(query.toLowerCase())
-      );
-      setFilteredData(filtered);
-    }
-  }, [query]);
+    setIsLoading(true);
+    const filtered = !query
+      ? data
+      : data.filter((item: any) =>
+          item?.name?.toLowerCase()?.includes(query.toLowerCase())
+        );
+    setCurrentData(filtered);
+    setIsLoading(false);
+  }, [query, data]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -56,6 +56,7 @@ const LeaderboardTable = ({ data }: { data: {}[] | any }) => {
               <th className=" w-full flex justify-start">Name</th>
               <th className=" w-full flex justify-start">Activity Points</th>
               <th className=" w-full flex justify-start">Multiplier</th>
+              
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">

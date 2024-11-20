@@ -63,7 +63,7 @@ const userSlice = createSlice({
       })
       .addCase(getGeneralLeaderboard.fulfilled, (state, { payload }) => {
         state.leaderboard = payload?.leaderboard;
-        console.log(payload);
+       
       });
   },
 });
