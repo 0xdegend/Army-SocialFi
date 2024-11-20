@@ -1,11 +1,7 @@
 //@ts-nocheck
 import { useState, useEffect } from "react";
 import points from "../../assets/images/army-points-illustration.PNG";
-import generalIcon from "../../assets/images/general-rank.PNG";
-import captainIcon from "../../assets/images/captain-rank.PNG";
-import sergeantIcon from "../../assets/images/master-sergeant-rank.PNG";
-import corporalIcon from "../../assets/images/corporal-rank.PNG";
-import privateIcon from "../../assets/images/private-rank.PNG";
+import rankIcons from "../../utils/rankIcons";
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
@@ -121,13 +117,6 @@ const SingleRow = ({
   isAdmin: boolean;
   isGeneral: boolean;
 }) => {
-  const rankIcons = {
-    General: generalIcon,
-    Captain: captainIcon,
-    Sergeant: sergeantIcon,
-    Corporal: corporalIcon,
-    Private: privateIcon,
-  };
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "

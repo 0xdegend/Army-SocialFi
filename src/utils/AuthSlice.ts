@@ -56,6 +56,7 @@ const userSlice = createSlice({
       .addCase(getUserProfile.rejected, (state, { payload }) => {
         state.loading = false;
         console.log(payload);
+        localStorage.removeItem("userAuth");
       })
       .addCase(getUserProfile.fulfilled, (state, { payload }) => {
         state.userMainData = payload?.user;
@@ -63,7 +64,9 @@ const userSlice = createSlice({
       })
       .addCase(getGeneralLeaderboard.fulfilled, (state, { payload }) => {
         state.leaderboard = payload?.leaderboard;
-       
+      })
+      .addCase(getGeneralLeaderboard.rejected, (state, { payload }) => {
+        localStorage.removeItem("userAuth");
       });
   },
 });
