@@ -120,6 +120,25 @@ export const getGeneralLeaderboard = createAsyncThunk(
     }
   }
 );
+
+export const createCampaign = createAsyncThunk(
+  "createCampaign",
+  async (payload: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.post(`${url.campaign}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
 export const { setUserData } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 //@ts-ignore
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
-
+import { Spin } from "antd";
 import ReUseModal from "../Modal/ReuseableModal";
 import { FaTimes } from "react-icons/fa";
 import { useAppSelector } from "../../app/hook";
@@ -10,6 +10,7 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
+
   const userData = useAppSelector((state) => state.user);
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
@@ -47,10 +48,8 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
           <thead className="w-full bg-secondary   h-12 flex items-center rounded-md ">
             <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 ">
               <th className=" w-full flex justify-start">Campaign Name</th>
-              <th className=" w-full flex justify-start">
-                Number of Participant
-              </th>
-              <th className=" w-full flex justify-start">Number of Tweets</th>
+              <th className=" w-full flex justify-start">Participants</th>
+              <th className=" w-full flex justify-start">Tweets</th>
               <th className=" w-full flex justify-start">Status</th>
             </tr>
           </thead>
@@ -92,6 +91,7 @@ const SingleRow = ({
   isAdmin: boolean;
 }) => {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
