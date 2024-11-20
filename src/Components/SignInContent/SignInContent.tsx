@@ -15,7 +15,11 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import * as bigInt from "big-integer";
 import { APIService } from "../../utils/APIService";
 import { useAppDispatch } from "../../app/hook";
-import { authenticateUser, setUserData } from "../../utils/AuthSlice";
+import {
+  authenticateUser,
+  getUserProfile,
+  setUserData,
+} from "../../utils/AuthSlice";
 
 const SignInContent = () => {
   const dispatch = useAppDispatch();
@@ -26,12 +30,13 @@ const SignInContent = () => {
   const { connection } = useConnection();
   const navigate = useNavigate();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const { linkWallet, login, user, ready, authenticated } = usePrivy();
+  const { linkWallet, login, user, ready, authenticated, logout } = usePrivy();
 
   const address = user?.wallet?.address;
   //Getting ARMY Balance Implementation
   const armyAddress = "ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC";
   const isWalletLinked = localStorage.getItem("walletLinked");
+  const isUserExpired = localStorage.getItem("userAuth");
   let armyBalance = 0;
   // Set address when user is authenticated
   const getTokenBalance = async () => {
@@ -67,13 +72,6 @@ const SignInContent = () => {
         //@ts-ignore
         await login({ loginMethods: ["wallet"], chains: ["solana"] });
         console.log(user);
-        if (ready && authenticated) {
-          //const balance = await getTokenBalance(); // Wait for the result
-          console.log("Fetched balance:", balance);
-          navigate("/dashboard");
-        } else {
-          console.error("User not authenticated");
-        }
       } else {
         await login({ loginMethods: ["twitter"] });
       }
@@ -100,48 +98,37 @@ const SignInContent = () => {
     }
   };
   const fetchAndPostData = async () => {
-    if (user && address) {
-      console.log("User in useEffect:", user);
-      const balance = await getTokenBalance();
-      const data = {
-        address: address,
-        twitterHandle: `@${user?.twitter?.username}`,
-        twitterUsername: user?.twitter?.name,
-        balance: balance,
-      };
-      await dispatch(authenticateUser(data));
-      navigate("/dashboard");
-      //if (payload?.status === "success") {
-      //setLoading(false);
-      // console.log("API response:", payload);
-      // console.log("Token balance in useEffect:", balance);
-      // console.log("Global balance in useEffect:", armyBalance); // Log the global balance if needed
-
-      //} else {
-      // console.error("Error in fetchAndPostData:");
-      //}
-
-      //try {
-
-      // const result = await APIService.post(`/user`, {
-      //   address: address,
-      //   twitterHandle: `@${user?.twitter?.username}`,
-      //   twitterUsername: user?.twitter?.name,
-      //   balance: balance,
-      // });
-
-      //} catch (error) {
-
-      //}
+    if (user && address && isUserExpired) {
+      try {
+        console.log("User in useEffect:", user);
+        const balance = await getTokenBalance();
+        const data = {
+          address: address,
+          twitterHandle: `${user?.twitter?.username}`,
+          twitterUsername: user?.twitter?.name,
+          balance: balance,
+        };
+        if (!isUserExpired || isUserExpired === "undefined") {
+          const authResponse = await dispatch(authenticateUser(data)).unwrap();
+          localStorage.setItem("userAuth", `${authResponse?.token}`);
+          console.log("Authenticated User:", authResponse);
+        } else {
+          const profile = await dispatch(getUserProfile()).unwrap();
+          console.log("Fetched Profile:", profile);
+        }
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Error in fetchAndPostData:", error);
+        logout();
+      }
     }
   };
 
   useEffect(() => {
-    if (user && address) {
+    if (user && address && authenticated) {
       fetchAndPostData();
     }
-    // Call the async function
-  }, [user, address, armyBalance]); // Include armyBalance only if necessary
+  }, [user, address]);
   return (
     <div>
       <div className="flex justify-center items-center h-screen">

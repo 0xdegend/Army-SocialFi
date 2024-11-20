@@ -15,6 +15,8 @@ interface UserState {
   apiResponse: any;
   loading: boolean;
   token: string;
+  userMainData: any;
+  leaderboard: any;
 }
 
 const initialState: UserState = {
@@ -24,6 +26,8 @@ const initialState: UserState = {
   apiResponse: null,
   loading: false,
   token: "",
+  userMainData: null,
+  leaderboard: null,
 };
 
 const userSlice = createSlice({
@@ -43,10 +47,23 @@ const userSlice = createSlice({
         state.loading = false;
         state.token = payload?.data?.token;
         state.apiResponse = payload;
+        state.user = payload?.data?.user;
         console.log(payload);
       })
       .addCase(authenticateUser.rejected, (state, { payload }) => {
         state.loading = false;
+      })
+      .addCase(getUserProfile.rejected, (state, { payload }) => {
+        state.loading = false;
+        console.log(payload);
+      })
+      .addCase(getUserProfile.fulfilled, (state, { payload }) => {
+        state.userMainData = payload?.user;
+        console.log(payload);
+      })
+      .addCase(getGeneralLeaderboard.fulfilled, (state, { payload }) => {
+        state.leaderboard = payload?.leaderboard;
+       
       });
   },
 });
@@ -66,8 +83,41 @@ export const authenticateUser = createAsyncThunk(
   }
 );
 
+export const getUserProfile = createAsyncThunk(
+  "getUserProfile",
+  async (payload: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.get(`${url.profile}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+export const getGeneralLeaderboard = createAsyncThunk(
+  "getGeneralLeaderboard",
+  async (payload: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.get(`${url.generalLeaderboard}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
 export const { setUserData } = userSlice.actions;
-
 
 export default userSlice.reducer;
 
