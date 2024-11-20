@@ -96,32 +96,29 @@ const SingleRow = ({ item, index, isAdmin }: { item: any; index: number, isAdmin
       </td>
 
       <td className=" w-full flex justify-between items-center gap-6">
-      <div className="  flex  items-center gap-2">
-        <p>{item?.multiplier}</p>
-        <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+        <div className="  flex  items-center gap-2">
+          <p>{item?.multiplier}</p>
+          <img src={points} alt="points" className="w-5 h-5 rounded-full" />
 
-        <img src={points} alt="points" className="w-3 h-3 rounded-full" />
+          <img src={points} alt="points" className="w-3 h-3 rounded-full" />
         </div>
-        {
-          isAdmin && (
-
-        <span>
-              <Options>
-                <div className="w-full flex flex-col py-4 px-2 gap-2">
-                  <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
-                    Update Access Level
+        {isAdmin && (
+          <span>
+            <Options>
+              <div className="w-full flex flex-col py-2 px-4 gap-0 items-start">
+                <button className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md">
+                  Update Access Level
                 </button>
-                  <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
-                    Add Tag
+                <button className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md">
+                  Add Tag
                 </button>
-                  <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-primary h-10 rounded-md">
-                    Remove Tag
+                <button className="text-white w-full text-start pl-2 font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md">
+                  Remove Tag
                 </button>
-                </div>
-</Options>
-        </span>
-          )
-        }
+              </div>
+            </Options>
+          </span>
+        )}
       </td>
     </tr>
   );
