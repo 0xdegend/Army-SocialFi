@@ -98,7 +98,7 @@ const SignInContent = () => {
     }
   };
   const fetchAndPostData = async () => {
-    if (user && address && isUserExpired) {
+    if (user && address) {
       try {
         console.log("User in useEffect:", user);
         const balance = await getTokenBalance();

@@ -8,6 +8,7 @@ import corporalIcon from "../../assets/images/corporal-rank.PNG";
 import privateIcon from "../../assets/images/private-rank.PNG";
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
+import LoadingComponent from "../LoadingComponent/skeleton-loading";
 
 const LeaderboardTable = ({
   data,
@@ -82,9 +83,13 @@ const LeaderboardTable = ({
             ) : (
               <tr>
                 <td colSpan={5} className="text-center">
-                  {isLoading
-                    ? "Loading leaderboard data..."
-                    : "No leaderboard data available."}
+                  {isLoading ? (
+                    <>
+                      <LoadingComponent />
+                    </>
+                  ) : (
+                    "No leaderboard data available."
+                  )}
                 </td>
               </tr>
             )}
