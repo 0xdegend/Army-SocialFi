@@ -5,12 +5,13 @@ import Options from "../Options/OptionsMenu";
 
 import ReUseModal from "../Modal/ReuseableModal";
 import { FaTimes } from "react-icons/fa";
-
+import { useAppSelector } from "../../app/hook";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const userData = useAppSelector((state) => state.user);
+  const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     if (!query) {
       setFilteredData(data);
@@ -20,8 +21,13 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
       );
       setFilteredData(filtered);
     }
+    if (
+      userData?.userMainData?.accessLevel === "super admin" ||
+      userData?.userMainData?.accessLevel === "admin"
+    ) {
+      setIsAdmin(true);
+    }
   }, [query]);
-
   return (
     <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide">
       <div className="flex items-center gap-5 mb-4 ">
@@ -41,7 +47,9 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
           <thead className="w-full bg-secondary   h-12 flex items-center rounded-md ">
             <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 ">
               <th className=" w-full flex justify-start">Campaign Name</th>
-              <th className=" w-full flex justify-start">Number of Participant</th>
+              <th className=" w-full flex justify-start">
+                Number of Participant
+              </th>
               <th className=" w-full flex justify-start">Number of Tweets</th>
               <th className=" w-full flex justify-start">Status</th>
             </tr>
@@ -82,8 +90,8 @@ const SingleRow = ({
   item: any;
   index: number;
   isAdmin: boolean;
-    }) => {
-    const [open, setOpen] = useState(false);
+}) => {
+  const [open, setOpen] = useState(false);
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -117,7 +125,10 @@ const SingleRow = ({
           <span>
             <Options>
               <div className="w-full flex flex-col py-2 px-4 gap-0 items-start">
-                <button className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md" onClick={() => setOpen(true)}>
+                <button
+                  className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md"
+                  onClick={() => setOpen(true)}
+                >
                   Add Tweet
                 </button>
                 <button className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md">
@@ -129,60 +140,57 @@ const SingleRow = ({
         )}
       </td>
       <ReUseModal open={open} setOpen={setOpen}>
-              <div className="w-full flex flex-col">
-                  <div className="flex items-center justify-between">
-                      
-          <h1 className="text-white font-inconsolata text-2xl">
-            Add Tweet
-                      </h1>
-                      <span className="text-secondary text-xl cursor-pointer" onClick={() => setOpen(false)}>
-                          <FaTimes />
-                      </span>
-                  </div>
-                  <div className="flex flex-col mt-6">
-                      <div className="flex flex-col">
-                          
-            <label
-              htmlFor=""
-              className="text-base text-white font-inconsolata mb-1"
-              >
-              Tweet Url
-            </label>
-            <input
-              type="text"
-              className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary "
-              placeholder="Enter url"
-              />
-              </div>
-                      <div className="flex flex-col mt-8">
-                          
-            <label
-              htmlFor=""
-              className="text-base text-white font-inconsolata mb-1"
-              >
-              Tweet Id
-            </label>
-            <input
-              type="text"
-              className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary "
-              placeholder="Enter Id"
-              />
-                      </div>
-                      <div className="flex items-center justify-between gap-5">
-                          
-            <button
-              className="sign-in-button mt-6 font-inconsolata cursor-pointer"
+        <div className="w-full flex flex-col">
+          <div className="flex items-center justify-between">
+            <h1 className="text-white font-inconsolata text-2xl">Add Tweet</h1>
+            <span
+              className="text-secondary text-xl cursor-pointer"
               onClick={() => setOpen(false)}
+            >
+              <FaTimes />
+            </span>
+          </div>
+          <div className="flex flex-col mt-6">
+            <div className="flex flex-col">
+              <label
+                htmlFor=""
+                className="text-base text-white font-inconsolata mb-1"
               >
-              Create
-            </button>
-            <button
-              className="button-56 mt-6 font-inconsolata cursor-pointer text-white "
-              onClick={() => setOpen(false)}
+                Tweet Url
+              </label>
+              <input
+                type="text"
+                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary "
+                placeholder="Enter url"
+              />
+            </div>
+            <div className="flex flex-col mt-8">
+              <label
+                htmlFor=""
+                className="text-base text-white font-inconsolata mb-1"
               >
-              Sync All
-            </button>
-                </div>
+                Tweet Id
+              </label>
+              <input
+                type="text"
+                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary "
+                placeholder="Enter Id"
+              />
+            </div>
+            <div className="flex items-center justify-between gap-5">
+              <button
+                className="sign-in-button mt-6 font-inconsolata cursor-pointer"
+                onClick={() => setOpen(false)}
+              >
+                Create
+              </button>
+              <button
+                className="button-56 mt-6 font-inconsolata cursor-pointer text-white "
+                onClick={() => setOpen(false)}
+              >
+                Sync All
+              </button>
+            </div>
           </div>
         </div>
       </ReUseModal>
