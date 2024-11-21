@@ -90,6 +90,7 @@ function Missions() {
               onPress={handleCreateCampaign}
               isValid={isLoading}
               isLoading={isLoading}
+              buttonType={"sign-in-button"}
             />
           </div>
         </div>
