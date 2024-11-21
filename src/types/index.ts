@@ -18,4 +18,5 @@ export interface IButtonProps {
   text: string | ReactNode;
   isValid?: boolean;
   isLoading?: boolean;
+  buttonType?: string;
 }

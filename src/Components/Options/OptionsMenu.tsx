@@ -3,7 +3,6 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
-
 import { HiDotsVertical } from "react-icons/hi";
 
 function classNames(...classes: any) {
@@ -20,11 +19,10 @@ export default function Options({ children, isLast }: optionProps) {
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className=" rounded-full flex items-center text-gray-400 hover:text-gray-600 bg-black p-1 z-10 ">
-                      <span className="sr-only">Open options</span>
-                      <span className="text-white">
-                          
-            <HiDotsVertical />
-                      </span>
+            <span className="sr-only">Open options</span>
+            <span className="text-white">
+              <HiDotsVertical />
+            </span>
           </Menu.Button>
         </div>
 

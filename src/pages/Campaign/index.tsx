@@ -34,7 +34,7 @@ const Campaigns = () => {
   }, []);
 
   useEffect(() => {
-    console.log(allCampaigns);
+
   }, [allCampaigns]);
   return (
     <DashboardLayout current={1}>

@@ -6,10 +6,11 @@ const ActionButton: React.FC<IButtonProps> = ({
   text,
   isValid,
   isLoading,
+  buttonType,
 }) => {
   return (
     <button
-      className={`sign-in-button w-[80px] mt-6 font-inconsolata cursor-pointer`}
+      className={`${buttonType} w-[120px] mt-6 font-inconsolata cursor-pointer`}
       onClick={onPress}
       disabled={isValid}
     >

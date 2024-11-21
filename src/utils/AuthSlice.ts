@@ -136,6 +136,28 @@ export const createCampaign = createAsyncThunk(
   }
 );
 
+export const addCampaignTweet = createAsyncThunk(
+  "addCampaignTweet",
+  async ({ campaignID, ...payload }: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.post(
+        `${url.addTweet}${campaignID}`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
 export const getAllCampaigns = createAsyncThunk(
   "getAllCampaigns",
   async (payload: any, { rejectWithValue, getState }) => {

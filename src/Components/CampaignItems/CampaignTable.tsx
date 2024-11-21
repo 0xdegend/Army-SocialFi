@@ -5,14 +5,17 @@ import Options from "../Options/OptionsMenu";
 import { Spin } from "antd";
 import ReUseModal from "../Modal/ReuseableModal";
 import { FaTimes } from "react-icons/fa";
-import { useAppSelector } from "../../app/hook";
+import { useAppSelector, useAppDispatch } from "../../app/hook";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
+import ActionButton from "../utils/buttons/ActionButton";
+import { addCampaignTweet } from "../../utils/AuthSlice";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const userData = useAppSelector((state) => state.user);
+
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     if (!query) {
@@ -113,8 +116,48 @@ const SingleRow = ({
   isAdmin: boolean;
 }) => {
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  console.log("Item:", item);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [tweetLink, setTweetLink] = useState("");
+  const [tweetID, setTweetID] = useState("");
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log(item);
+  }, [item]);
+
+  const handleTweetLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const link = e.target.value;
+    setTweetLink(link);
+    const id = link.match(/status\/(\d+)/)?.[1] || "";
+    setTweetID(id);
+  };
+
+  const handleAddTweet = async () => {
+    setIsLoading(true);
+    const data = {
+      campaignID: item?._id,
+      link: tweetLink,
+      tweetId: tweetID,
+    };
+    try {
+      const response = await dispatch(addCampaignTweet(data)).unwrap();
+      console.log(response);
+      setIsLoading(false);
+      console.log(tweetID);
+      console.log(tweetLink);
+    } catch (error) {
+      console.error("Error adding tweet:", error);
+      setIsLoading(false);
+    }
+    console.log(item?._id);
+    setOpen(false);
+  };
+
+  const handleSyncTweets = async () => {
+    console.log("Synced");
+  };
+
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -183,8 +226,10 @@ const SingleRow = ({
               </label>
               <input
                 type="text"
-                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary "
-                placeholder="Enter url"
+                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary font-inconsolata"
+                placeholder="Enter Tweet Link"
+                onChange={handleTweetLinkChange}
+                value={tweetLink}
               />
             </div>
             <div className="flex flex-col mt-8">
@@ -192,27 +237,32 @@ const SingleRow = ({
                 htmlFor=""
                 className="text-base text-white font-inconsolata mb-1"
               >
-                Tweet Id
+                Tweet ID
               </label>
               <input
                 type="text"
-                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary "
-                placeholder="Enter Id"
+                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary font-inconsolata cursor-not-allowed"
+                placeholder="Enter Tweet ID"
+                value={tweetID}
+                readOnly
               />
             </div>
             <div className="flex items-center justify-between gap-5">
-              <button
-                className="sign-in-button mt-6 font-inconsolata cursor-pointer"
-                onClick={() => setOpen(false)}
-              >
-                Create
-              </button>
-              <button
-                className="button-56 mt-6 font-inconsolata cursor-pointer text-white "
-                onClick={() => setOpen(false)}
-              >
-                Sync All
-              </button>
+              <ActionButton
+                isLoading={isLoading}
+                text={"Add Tweet"}
+                isValid={isLoading}
+                onPress={handleAddTweet}
+                buttonType="sign-in-button"
+              />
+
+              <ActionButton
+                isLoading={isSyncing}
+                text={"Sync All"}
+                isValid={isSyncing}
+                onPress={handleSyncTweets}
+                buttonType="button-56"
+              />
             </div>
           </div>
         </div>
