@@ -64,9 +64,6 @@ const userSlice = createSlice({
       })
       .addCase(getGeneralLeaderboard.fulfilled, (state, { payload }) => {
         state.leaderboard = payload?.leaderboard;
-      })
-      .addCase(getGeneralLeaderboard.rejected, (state, { payload }) => {
-        localStorage.removeItem("userAuth");
       });
   },
 });
@@ -128,6 +125,24 @@ export const createCampaign = createAsyncThunk(
     const token = localStorage.getItem("userAuth");
     try {
       const { data } = await APIService.post(`${url.campaign}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
+export const getAllCampaigns = createAsyncThunk(
+  "getAllCampaigns",
+  async (payload: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.get(`${url.allCampaign}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data;

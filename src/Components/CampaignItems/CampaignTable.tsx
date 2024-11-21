@@ -6,11 +6,12 @@ import { Spin } from "antd";
 import ReUseModal from "../Modal/ReuseableModal";
 import { FaTimes } from "react-icons/fa";
 import { useAppSelector } from "../../app/hook";
+import LoadingComponent from "../LoadingComponent/skeleton-loading";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const userData = useAppSelector((state) => state.user);
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
@@ -28,7 +29,16 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
     ) {
       setIsAdmin(true);
     }
-  }, [query]);
+  }, [query, data, userData]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (data?.length > 0) {
+      setCurrentData(data);
+      setIsLoading(false);
+    }
+  }, [data]);
+
   return (
     <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide">
       <div className="flex items-center gap-5 mb-4 ">
@@ -54,16 +64,28 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">
-            {currentData?.map((item: any, index: number) => {
-              return (
+            {currentData.length > 0 ? (
+              currentData.map((item: any, index: number) => (
                 <SingleRow
                   item={item}
                   index={index}
-                  key={index}
+                  key={item.id || index}
                   isAdmin={isAdmin}
                 />
-              );
-            })}
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="text-center">
+                  {isLoading ? (
+                    <>
+                      <LoadingComponent />
+                    </>
+                  ) : (
+                    "No leaderboard data available."
+                  )}
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -92,6 +114,7 @@ const SingleRow = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  console.log("Item:", item);
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -99,18 +122,18 @@ const SingleRow = ({
     >
       <td className=" w-full flex justify-start">
         {/* {item?.rank < 4 ? item?.rank : index + 1} */}
-        <p className="text-white font-inconsolata">{item?.name}</p>
+        <p className="text-white font-inconsolata capitalize">{item?.name}</p>
       </td>
       <td className=" w-full flex justify-start gap-3 items-center">
-        <p className="text-white font-inconsolata">{item?.participant}</p>
+        <p className="text-white font-inconsolata">{item?.users?.length}</p>
       </td>
       <td className=" w-full flex justify-start gap-2 items-center">
-        <p className="text-white font-inconsolata">{item?.tweetsNo}</p>
+        <p className="text-white font-inconsolata">{item?.tweets?.length}</p>
       </td>
 
       <td className=" w-full flex justify-between items-center gap-6">
         <div className="  flex  items-center gap-2">
-          {item?.status === true ? (
+          {item?.is_campaign_active === true ? (
             <p className="h-9 rounded-xl px-4 border-green-500 border text-green-500 flex items-center text-sm font-inconsolata">
               Active
             </p>
