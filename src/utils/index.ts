@@ -44,7 +44,7 @@ export const getSimplifiedError = (error: object | any) => {
     toast.error(errorObject?.message); //log here and perform action below
     if (errorObject?.message === "Please authenticate") {
       setTimeout(() => {
-        window.location.replace("/login");
+        window.location.replace("/");
       }, 1000);
     }
     if (errorObject?.message === "Forbidden: Not Verified or Not Permitted") {

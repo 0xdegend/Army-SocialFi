@@ -99,6 +99,7 @@ const SignInContent = () => {
   };
   const fetchAndPostData = async () => {
     if (user && address) {
+      localStorage.setItem("walletLinked", ENCODED_TRUE);
       try {
         console.log("User in useEffect:", user);
         const balance = await getTokenBalance();

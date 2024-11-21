@@ -4,7 +4,6 @@ import { Spin } from "antd";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import ActionButton from "../utils/buttons/ActionButton";
 import { createCampaign } from "../../utils/AuthSlice";
-import { E } from "@privy-io/react-auth/dist/dts/types-C2RbyZWT";
 
 function Missions() {
   const userData = useAppSelector((state) => state.user);
@@ -91,6 +90,7 @@ function Missions() {
               onPress={handleCreateCampaign}
               isValid={isLoading}
               isLoading={isLoading}
+              buttonType={"sign-in-button"}
             />
           </div>
         </div>
