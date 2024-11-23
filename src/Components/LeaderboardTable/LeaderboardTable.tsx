@@ -168,7 +168,7 @@ const SingleRow = ({
           <p>x{item?.rank?.multiplier}</p>
           <img src={points} alt="points" className="w-5 h-5 rounded-full" />
         </div>
-        {isAdmin && (
+        {!isAdmin && (
           <span>
             <Options>
               <div className="w-full flex flex-col py-4 px-2 gap-2">
