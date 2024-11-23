@@ -43,6 +43,7 @@ export const getSimplifiedError = (error: object | any) => {
   } else if (error?.response?.status === 401) {
     toast.error(errorObject?.message); //log here and perform action below
     if (errorObject?.message === "Please authenticate") {
+      localStorage.removeItem("userAuth");
       setTimeout(() => {
         window.location.replace("/");
       }, 1000);
