@@ -6,6 +6,10 @@ import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
 import { useAppSelector } from "../../app/hook";
+import ReUseModal from "../Modal/ReuseableModal";
+import PrimarySelect from "../Selects/PrimarySelect";
+import ActionButton from "../utils/buttons/ActionButton";
+import { dummyTags } from "../../utils/mockData";
 const LeaderboardTable = ({
   data,
   isGeneral,
@@ -71,7 +75,12 @@ const LeaderboardTable = ({
               ) : (
                 <th className=" w-full flex justify-start">Activity Points</th>
               )}
-              <th className=" w-full flex justify-start">Tweets</th>
+
+              {!isGeneral ? (
+                <th className=" w-full flex justify-start">Tweets</th>
+              ) : (
+                <th className=" w-full flex justify-start">Multiplier</th>
+              )}
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">
@@ -83,6 +92,7 @@ const LeaderboardTable = ({
                   key={item.id || index}
                   isAdmin={isAdmin}
                   isGeneral={isGeneral}
+                  total={currentData?.length}
                 />
               ))
             ) : (
@@ -120,22 +130,53 @@ const SingleRow = ({
   index,
   isAdmin,
   isGeneral,
+  total,
 }: {
   item: any;
   index: number;
   isAdmin: boolean;
   isGeneral: boolean;
+  total: number;
 }) => {
+  const [open, setOpen] = useState(false);
+  // const [openAdd, setOpenAdd] = useState(false);
+  // const [openRemove, setOpenRemove] = useState(false);
+  const [selectedRole, setSelectedRole] = useState({ name: "Select", id: 0 });
+  const [fecthingData, setfecthingData] = useState(false);
+  // const [tags, setTags] = useState<string[]>([]);
+  // const [inputValue, setInputValue] = useState<string>("");
+
+  // const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.key === "Enter" && inputValue.trim()) {
+  //     // Prevent duplicate tags
+  //     if (!tags.includes(inputValue.trim())) {
+  //       setTags([...tags, inputValue.trim()]);
+  //     }
+  //     setInputValue("");
+  //   }
+  // };
+
+  // const handleRemoveTag = (tag: string) => {
+  //   setTags(tags.filter((t) => t !== tag));
+  // };
+
+  // const [allTags, setAllTags] = useState(dummyTags);
+
+  // const handleRemoveSavedTag = (id: number) => {
+  //   const updatedTags = allTags.filter((tag) => tag.id !== id);
+  //   setAllTags(updatedTags);
+  // };
+  const handleUpdateAccessLevel = async () => {
+    setOpen(false);
+    console.log(selectedRole?.name);
+    console.log("Use Id", item?._id);
+  };
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
       key={index}
     >
       <td className=" w-full flex justify-start">
-        {/* {item?.rank < 4 ? item?.rank : index + 1} */}
-        {/* {item?.rank === 1 && <img src={first} alt="first" />}
-        {item?.rank === 2 && <img src={second} alt="first" />}
-        {item?.rank === 3 && <img src={third} alt="first" />} */}
         {item?.rank?.name && (
           <div className="flex items-center">
             <img
@@ -169,23 +210,158 @@ const SingleRow = ({
           <img src={points} alt="points" className="w-5 h-5 rounded-full" />
         </div>
         {isAdmin && (
-          <span>
+          <span className="z-10 overflow-visible">
             <Options>
               <div className="w-full flex flex-col py-4 px-2 gap-2">
-                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md">
+                <button
+                  className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md "
+                  onClick={() => setOpen(true)}
+                >
                   Update Access Level
                 </button>
-                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md">
+
+                {/* Add and Remove tag not in V 1.0 */}
+                {/* <button
+                  className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md"
+                  onClick={() => setOpenAdd(true)}
+                >
                   Add Tag
-                </button>
-                <button className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md">
+                </button> */}
+                {/* <button
+                  className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md"
+                  onClick={() => setOpenRemove(true)}
+                >
                   Remove Tag
-                </button>
+                </button> */}
               </div>
             </Options>
           </span>
         )}
       </td>
+      <ReUseModal open={open} setOpen={setOpen}>
+        <div className="w-full flex flex-col relative">
+          <h1 className="text-white font-inconsolata text-2xl">
+            Update Access Level
+          </h1>
+          <div className="flex items-center rounded-md h-12 border-secondary border px-4 mt-6 w-fit">
+            <p className="text-white font-inconsolata capitalize">
+              {item?.accessLevel}
+            </p>
+          </div>
+          <div className="w-full mt-6 ">
+            <PrimarySelect
+              label="Select New Access level"
+              selected={selectedRole}
+              setSelected={setSelectedRole}
+              data={[
+                { name: "user", id: 0 },
+                { name: "admin", id: 1 },
+                { name: "super admin", id: 2 },
+              ]}
+            />
+          </div>
+          <div className="w-full  flex justify-center mt-10">
+            <ActionButton
+              type="button"
+              text="Update"
+              onPress={handleUpdateAccessLevel}
+              buttonType="button-56"
+            />
+          </div>
+        </div>
+      </ReUseModal>
+
+      {/* Add Tag Modal not in V 1.0 */}
+      {/* <ReUseModal open={openAdd} setOpen={setOpenAdd}>
+        <div className="w-full flex flex-col relative">
+          <h1 className="text-white font-inconsolata text-2xl">Add Tags</h1>
+          <p className="font-inconsolata text-white mt-6">Saved Tags</p>
+          <div className="w-full  flex flex-wrap gap-4 items-center mt-2">
+            {dummyTags?.map((item, index) => {
+              return (
+                <div
+                  className="flex items-center rounded-md text-secondary h-auto min-h-9 text-sm font-inconsolata border-secondary border px-3  w-fit"
+                  key={index}
+                >
+                  <p className="text-white font-inconsolata">{item.name}</p>
+                </div>
+              );
+            })}
+          </div>
+          <p className="font-inconsolata text-white mt-6">New Tags</p>
+          <div className="w-full  flex flex-wrap gap-4 items-center mt-2">
+            {tags?.map((item) => {
+              return (
+                <div
+                  className="flex items-center rounded-md text-secondary h-auto min-h-9 text-sm font-inconsolata border-secondary border px-3  w-fit cursor-pointer"
+                  key={item}
+                  onClick={() => handleRemoveTag(item)}
+                >
+                  <p className="text-white font-inconsolata">{item}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className="w-full mt-6">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Add a tag and press Enter"
+              className="flex-grow focus:outline-none border-b border-b-secondary text-white bg-transparent w-full "
+            />
+          </div>
+          {tags.length > 0 && (
+            <p className="text-gray-400 text-sm mt-3">
+              Click a tag to remove it.
+            </p>
+          )}
+          <div className="w-full  flex justify-center mt-6">
+            <ActionButton
+              type="button"
+              text="Update"
+              onPress={() => setOpenAdd(false)}
+              buttonType="button-56"
+            />
+          </div>
+        </div>
+      </ReUseModal> */}
+
+      {/* Remove Tag not in V 1.0 */}
+      {/* <ReUseModal open={openRemove} setOpen={setOpenRemove}>
+        <div className="w-full flex flex-col relative">
+          <h1 className="text-white font-inconsolata text-2xl">Remove Tags</h1>
+          <p className="font-inconsolata text-white mt-6">List of Tags</p>
+          <div className="w-full  flex flex-wrap gap-4 items-center mt-2">
+            {allTags?.map((item, index) => {
+              return (
+                <div
+                  className="flex items-center cursor-pointer rounded-md text-secondary h-auto min-h-9 text-sm font-inconsolata border-secondary border px-3  w-fit"
+                  key={index}
+                  onClick={() => handleRemoveSavedTag(item.id)}
+                >
+                  <p className="text-white font-inconsolata">{item.name}</p>
+                </div>
+              );
+            })}
+          </div>
+
+          {allTags.length > 0 && (
+            <p className="text-gray-400 text-sm mt-3">
+              Click a tag to remove it.
+            </p>
+          )}
+          <div className="w-full  flex justify-center mt-6">
+            <ActionButton
+              type="button"
+              text="Update"
+              onPress={() => setOpenRemove(false)}
+              buttonType="button-56"
+            />
+          </div>
+        </div>
+      </ReUseModal> */}
     </tr>
   );
 };

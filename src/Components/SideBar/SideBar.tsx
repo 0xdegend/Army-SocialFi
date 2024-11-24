@@ -33,15 +33,17 @@ function SideBar() {
       name: "meme bank",
       url: "meme-bank",
     },
-    ...(userData?.userMainData?.accessLevel === "super admin" ||
-    userData?.userMainData?.accessLevel === "admin"
-      ? [
-          {
-            name: "Admin",
-            url: "admin",
-          },
-        ]
-      : []),
+
+    //Admin Navigation not in V1
+    // ...(userData?.userMainData?.accessLevel === "super admin" ||
+    // userData?.userMainData?.accessLevel === "admin"
+    //   ? [
+    //       {
+    //         name: "Admin",
+    //         url: "admin",
+    //       },
+    //     ]
+    //   : []),
   ];
   const { logout } = usePrivy();
   const navigate = useNavigate();

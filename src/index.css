@@ -54,7 +54,7 @@
     color: #41403e;
     cursor: pointer;
     display: inline-block;
-    font-family: Neucha, sans-serif;
+    font-family: Inconsolata, sans-sarif;
     font-size: 1rem;
     line-height: 23px;
     outline: none;
@@ -94,7 +94,7 @@
     color: #000;
     cursor: pointer;
     display: inline-block;
-    font-family: Neucha, sans-serif;
+    font-family: Inconsolata, sans-sarif;
     font-size: 1rem;
     line-height: 23px;
     outline: none;
@@ -210,6 +210,9 @@
   overflow-x: scroll;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.power-index {
+  z-index: 999 !important;
 }
 .flow-hide-x::-webkit-scrollbar {
   width: 0;
