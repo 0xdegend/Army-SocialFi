@@ -67,11 +67,11 @@ const LeaderboardTable = ({
               <th className=" w-full flex justify-start">Rank</th>
               <th className=" w-full flex justify-start">Name</th>
               {!isGeneral ? (
-                <th className=" w-full flex justify-start">Views</th>
+                <th className=" w-full flex justify-start">Points</th>
               ) : (
                 <th className=" w-full flex justify-start">Activity Points</th>
               )}
-              <th className=" w-full flex justify-start">Multiplier</th>
+              <th className=" w-full flex justify-start">Tweets</th>
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">
