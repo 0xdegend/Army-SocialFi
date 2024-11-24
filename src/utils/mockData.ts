@@ -1,6 +1,17 @@
 import armyLogo from "../assets/images/soldier-asset-1.svg";
 // Adjust the path to your actual image location
 
+
+export const dummyTags = [
+  {name:"Army", id:1},
+  {name:"Trending", id:2},
+  {name:"Live", id:3},
+  {name:"Sports", id:4},
+  {name:"Shoes", id:5},
+  {name:"Clothes", id:6},
+  {name:"Health", id:7},
+  {name:"Education", id:8},
+]
 export const pointMockData = [
   {
     image: armyLogo,
