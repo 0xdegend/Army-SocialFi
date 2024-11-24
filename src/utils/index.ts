@@ -41,7 +41,13 @@ export const getSimplifiedError = (error: object | any) => {
     // console.error(error?.response?.error);
     return errorObject?.message;
   } else if (error?.response?.status === 401) {
-    toast.error(errorObject?.message); //log here and perform action below
+    toast.error(`Stand down, Soldier! Claim your daily points by signing in.`);
+    //toast.error(errorObject?.message);
+    setTimeout(() => {
+      window.location.replace("/");
+    }, 1000);
+    localStorage.removeItem("userAuth"); //log here and perform action below
+    localStorage.removeItem("privy:token");
     if (errorObject?.message === "Please authenticate") {
       setTimeout(() => {
         window.location.replace("/");
@@ -49,7 +55,7 @@ export const getSimplifiedError = (error: object | any) => {
     }
     if (errorObject?.message === "Forbidden: Not Verified or Not Permitted") {
       setTimeout(() => {
-        window.location.replace("/login");
+        window.location.replace("/");
       }, 1000);
     }
     return "Token has expired, please log in";

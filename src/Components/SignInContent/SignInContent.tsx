@@ -20,6 +20,7 @@ import {
   getUserProfile,
   setUserData,
 } from "../../utils/AuthSlice";
+import { Spin } from "antd";
 
 const SignInContent = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,8 @@ const SignInContent = () => {
   const armyAddress = "ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC";
   const isWalletLinked = localStorage.getItem("walletLinked");
   const isUserExpired = localStorage.getItem("userAuth");
+  const [shouldFetchData, setShouldFetchData] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
   let armyBalance = 0;
   // Set address when user is authenticated
   const getTokenBalance = async () => {
@@ -71,6 +74,7 @@ const SignInContent = () => {
       if (isWalletLinked === ENCODED_TRUE) {
         //@ts-ignore
         await login({ loginMethods: ["wallet"], chains: ["solana"] });
+        setShouldFetchData(true);
         console.log(user);
       } else {
         await login({ loginMethods: ["twitter"] });
@@ -85,11 +89,12 @@ const SignInContent = () => {
       if (isWalletLinked === ENCODED_TRUE) {
         //@ts-ignore
         await login({ loginMethods: ["wallet"], chains: ["solana"] });
+        setShouldFetchData(true);
       } else {
         //@ts-ignore
         await linkWallet({ loginMethods: ["wallet"], chains: ["solana"] });
-        localStorage.setItem("walletLinked", ENCODED_TRUE);
         setIsWalletConnected(true);
+        setShouldFetchData(true);
       }
       console.log(user);
     } catch (error) {
@@ -98,6 +103,7 @@ const SignInContent = () => {
     }
   };
   const fetchAndPostData = async () => {
+    setPageLoading(true);
     if (user && address) {
       localStorage.setItem("walletLinked", ENCODED_TRUE);
       try {
@@ -121,17 +127,25 @@ const SignInContent = () => {
       } catch (error) {
         console.error("Error in fetchAndPostData:", error);
         logout();
+      } finally {
+        setPageLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    if (user && address && authenticated) {
+    if (shouldFetchData && user && address && authenticated) {
       fetchAndPostData();
     }
-  }, [user, address]);
+  }, [shouldFetchData, user, address, authenticated]);
+  useEffect(() => {
+    if (user && address && isUserExpired) {
+      navigate("/dashboard");
+    }
+  }, [user, address, authenticated]);
   return (
     <div>
+      {pageLoading && <Spin fullscreen />}
       <div className="flex justify-center items-center h-screen">
         <img
           src={soldierVector}
@@ -158,6 +172,8 @@ const SignInContent = () => {
               >
                 {user
                   ? "Connected"
+                  : user && isUserExpired === null
+                  ? "Sign In Soldier!"
                   : isWalletLinked
                   ? "Sign In Soldier!"
                   : "Connect Twitter"}

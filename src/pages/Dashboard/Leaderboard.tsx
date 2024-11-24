@@ -52,7 +52,7 @@ const Leaderboard = () => {
                 className={`px-6 h-10 flex items-center justify-center w-fit cursor-pointer font-medium ${
                   isGeneral
                     ? "text-white  rounded-md bg-primary "
-                    : "border-[2px] border-primary rounded-md "
+                    : "text-red-500 border-[2px] border-primary rounded-md "
                 }`}
               >
                 General LeaderBoard
@@ -62,7 +62,7 @@ const Leaderboard = () => {
                 className={`px-6 h-10 flex items-center justify-center w-fit cursor-pointer  ${
                   !isGeneral
                     ? "text-white font-medium  rounded-md bg-primary "
-                    : "border-[2px] border-primary rounded-md font-semibold "
+                    : "text-red-500 border-[2px] border-primary rounded-md font-semibold "
                 }`}
               >
                 Campaign LeaderBoard

@@ -120,6 +120,7 @@ const SingleRow = ({
   const [isSyncing, setIsSyncing] = useState(false);
   const [tweetLink, setTweetLink] = useState("");
   const [tweetID, setTweetID] = useState("");
+  const [userName, setUsername] = useState("");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -129,8 +130,11 @@ const SingleRow = ({
   const handleTweetLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value;
     setTweetLink(link);
-    const id = link.match(/status\/(\d+)/)?.[1] || "";
-    setTweetID(id);
+    const match = link.match(/x\.com\/([\w\d_]+)\/status\/(\d+)/);
+    const username = match?.[1] || "";
+    const tweetID = match?.[2] || "";
+    setTweetID(tweetID);
+    setUsername(username);
   };
 
   const handleAddTweet = async () => {
@@ -146,6 +150,7 @@ const SingleRow = ({
       setIsLoading(false);
       console.log(tweetID);
       console.log(tweetLink);
+      console.log(userName);
     } catch (error) {
       console.error("Error adding tweet:", error);
       setIsLoading(false);
@@ -244,6 +249,21 @@ const SingleRow = ({
                 className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary font-inconsolata cursor-not-allowed"
                 placeholder="Enter Tweet ID"
                 value={tweetID}
+                readOnly
+              />
+            </div>
+            <div className="flex flex-col mt-8">
+              <label
+                htmlFor=""
+                className="text-base text-white font-inconsolata mb-1"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary font-inconsolata cursor-not-allowed"
+                placeholder="Username"
+                value={userName}
                 readOnly
               />
             </div>

@@ -5,11 +5,12 @@ import rankIcons from "../../utils/rankIcons";
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
-import { useAppSelector } from "../../app/hook";
+import { useAppDispatch, useAppSelector } from "../../app/hook";
 import ReUseModal from "../Modal/ReuseableModal";
 import PrimarySelect from "../Selects/PrimarySelect";
 import ActionButton from "../utils/buttons/ActionButton";
 import { dummyTags } from "../../utils/mockData";
+import { updateAccessLevel } from "../../utils/AuthSlice";
 const LeaderboardTable = ({
   data,
   isGeneral,
@@ -71,11 +72,16 @@ const LeaderboardTable = ({
               <th className=" w-full flex justify-start">Rank</th>
               <th className=" w-full flex justify-start">Name</th>
               {!isGeneral ? (
-                <th className=" w-full flex justify-start">Views</th>
+                <th className=" w-full flex justify-start">Points</th>
               ) : (
                 <th className=" w-full flex justify-start">Activity Points</th>
               )}
-              <th className=" w-full flex justify-start">Multiplier</th>
+
+              {!isGeneral ? (
+                <th className=" w-full flex justify-start">Tweets</th>
+              ) : (
+                <th className=" w-full flex justify-start">Multiplier</th>
+              )}
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">
@@ -125,45 +131,62 @@ const SingleRow = ({
   index,
   isAdmin,
   isGeneral,
-  total
+  total,
 }: {
   item: any;
   index: number;
   isAdmin: boolean;
-    isGeneral: boolean;
-    total: number;
-  }) => {
-   
+  isGeneral: boolean;
+  total: number;
+}) => {
   const [open, setOpen] = useState(false);
-  const [openAdd, setOpenAdd] = useState(false);
-  const [openRemove, setOpenRemove] = useState(false);
-  const [selectedRole, setSelectedRole] = useState({ name: "Select", id: 0 })
-  const [tags, setTags] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>("");
+  // const [openAdd, setOpenAdd] = useState(false);
+  // const [openRemove, setOpenRemove] = useState(false);
+  const [selectedRole, setSelectedRole] = useState({ name: "Select", id: 0 });
+  const [updatingData, setUpdatingData] = useState(false);
+  const dispatch = useAppDispatch();
+  // const [tags, setTags] = useState<string[]>([]);
+  // const [inputValue, setInputValue] = useState<string>("");
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && inputValue.trim()) {
-      // Prevent duplicate tags
-      if (!tags.includes(inputValue.trim())) {
-        setTags([...tags, inputValue.trim()]);
-      }
-      setInputValue("");
+  // const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.key === "Enter" && inputValue.trim()) {
+  //     // Prevent duplicate tags
+  //     if (!tags.includes(inputValue.trim())) {
+  //       setTags([...tags, inputValue.trim()]);
+  //     }
+  //     setInputValue("");
+  //   }
+  // };
+
+  // const handleRemoveTag = (tag: string) => {
+  //   setTags(tags.filter((t) => t !== tag));
+  // };
+
+  // const [allTags, setAllTags] = useState(dummyTags);
+
+  // const handleRemoveSavedTag = (id: number) => {
+  //   const updatedTags = allTags.filter((tag) => tag.id !== id);
+  //   setAllTags(updatedTags);
+  // };
+  const handleUpdateAccessLevel = async () => {
+    setUpdatingData(true);
+    const data = {
+      userId: `${item?._id}`,
+      accessLevel: `${selectedRole?.name}`,
+    };
+    try {
+      const response = await dispatch(updateAccessLevel(data)).unwrap();
+
+      console.log(response);
+      console.log(response);
+      setUpdatingData(false);
+      setOpen(false);
+    } catch (error) {
+      console.error("Error updating Access Level:", error);
+      setUpdatingData(false);
+      setOpen(false);
     }
   };
-
-  const handleRemoveTag = (tag: string) => {
-    setTags(tags.filter((t) => t !== tag));
-  };
-
-   const [allTags, setAllTags] = useState(dummyTags);
-
-   const handleRemoveSavedTag = (id: number) => {
-     const updatedTags = allTags.filter((tag) => tag.id !== id);
-     setAllTags(updatedTags);
-   };
-  
-  console.log(selectedRole) 
-  // this is for olagboye to read the value of the selected role. 
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -212,18 +235,20 @@ const SingleRow = ({
                 >
                   Update Access Level
                 </button>
-                <button
+
+                {/* Add and Remove tag not in V 1.0 */}
+                {/* <button
                   className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md"
                   onClick={() => setOpenAdd(true)}
                 >
                   Add Tag
-                </button>
-                <button
+                </button> */}
+                {/* <button
                   className="text-white font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-8 rounded-md"
                   onClick={() => setOpenRemove(true)}
                 >
                   Remove Tag
-                </button>
+                </button> */}
               </div>
             </Options>
           </span>
@@ -235,7 +260,9 @@ const SingleRow = ({
             Update Access Level
           </h1>
           <div className="flex items-center rounded-md h-12 border-secondary border px-4 mt-6 w-fit">
-            <p className="text-white font-inconsolata">{item?.rank?.name}</p>
+            <p className="text-white font-inconsolata capitalize">
+              {item?.accessLevel}
+            </p>
           </div>
           <div className="w-full mt-6 ">
             <PrimarySelect
@@ -243,9 +270,9 @@ const SingleRow = ({
               selected={selectedRole}
               setSelected={setSelectedRole}
               data={[
-                { name: "User", id: 1 },
-                { name: "Admin", id: 1 },
-                { name: "Super Admin", id: 1 },
+                { name: "user", id: 0 },
+                { name: "admin", id: 1 },
+                { name: "super admin", id: 2 },
               ]}
             />
           </div>
@@ -253,13 +280,17 @@ const SingleRow = ({
             <ActionButton
               type="button"
               text="Update"
-              onPress={() => setOpen(false)}
+              onPress={handleUpdateAccessLevel}
               buttonType="button-56"
+              isLoading={updatingData}
+              isValid={updatingData}
             />
           </div>
         </div>
       </ReUseModal>
-      <ReUseModal open={openAdd} setOpen={setOpenAdd}>
+
+      {/* Add Tag Modal not in V 1.0 */}
+      {/* <ReUseModal open={openAdd} setOpen={setOpenAdd}>
         <div className="w-full flex flex-col relative">
           <h1 className="text-white font-inconsolata text-2xl">Add Tags</h1>
           <p className="font-inconsolata text-white mt-6">Saved Tags</p>
@@ -313,8 +344,10 @@ const SingleRow = ({
             />
           </div>
         </div>
-      </ReUseModal>
-      <ReUseModal open={openRemove} setOpen={setOpenRemove}>
+      </ReUseModal> */}
+
+      {/* Remove Tag not in V 1.0 */}
+      {/* <ReUseModal open={openRemove} setOpen={setOpenRemove}>
         <div className="w-full flex flex-col relative">
           <h1 className="text-white font-inconsolata text-2xl">Remove Tags</h1>
           <p className="font-inconsolata text-white mt-6">List of Tags</p>
@@ -346,7 +379,7 @@ const SingleRow = ({
             />
           </div>
         </div>
-      </ReUseModal>
+      </ReUseModal> */}
     </tr>
   );
 };

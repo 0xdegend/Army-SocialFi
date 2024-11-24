@@ -54,7 +54,7 @@
     color: #41403e;
     cursor: pointer;
     display: inline-block;
-    font-family: Neucha, sans-serif;
+    font-family: Inconsolata, sans-sarif;
     font-size: 1rem;
     line-height: 23px;
     outline: none;
@@ -94,7 +94,7 @@
     color: #000;
     cursor: pointer;
     display: inline-block;
-    font-family: Neucha, sans-serif;
+    font-family: Inconsolata, sans-sarif;
     font-size: 1rem;
     line-height: 23px;
     outline: none;
@@ -211,7 +211,7 @@
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
-.power-index{
+.power-index {
   z-index: 999 !important;
 }
 .flow-hide-x::-webkit-scrollbar {
@@ -226,7 +226,7 @@
 }
 
 .general-bg {
-  background: url("./assets/images/army-background.webp");
+  background: url("./assets/images/camo_army.JPG");
 
   background-position: center;
   background-repeat: no-repeat;

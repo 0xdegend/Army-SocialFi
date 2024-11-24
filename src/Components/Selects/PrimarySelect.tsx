@@ -38,8 +38,8 @@ export default function PrimarySelect({
           <div className="mt-1 relative w-full">
             <Listbox.Button
               className={`${
-                height ? height : "h-[50px] bg-transparent"
-              } relative w-full ${
+                height ? height : " cursor-pointer h-[50px] bg-transparent"
+              } relative w-full font-inconsolata ${
                 noBorder
                   ? "border-none outline-none"
                   : "border  border-secondary focus:ring-1 focus:ring-secondary focus:border-secondary shadow-sm"
@@ -74,9 +74,9 @@ export default function PrimarySelect({
                     className={({ active }) =>
                       classNames(
                         active
-                          ? "text-white bg-secondary "
-                          : "text-white",
-                        "cursor-default select-none relative py-2 pl-8 pr-4  border-b-secondary last:border-none"
+                          ? "text-white font-inconsolata bg-secondary "
+                          : "text-white font-inconsolata",
+                        "cursor-pointer select-none relative py-2 pl-8 pr-4  border-b-secondary last:border-none"
                       )
                     }
                     value={person}
@@ -85,16 +85,12 @@ export default function PrimarySelect({
                       <>
                         <span
                           className={classNames(
-                            selected
-                              ? "text-medium"
-                              : "font-normal capitalize",
+                            selected ? "text-medium" : "font-normal capitalize",
                             "block truncate"
                           )}
                         >
                           {person?.name}
                         </span>
-
-                       
                       </>
                     )}
                   </Listbox.Option>
