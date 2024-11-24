@@ -7,6 +7,7 @@ import {
 import { APIService } from "./APIService";
 import { url } from "./endpoints";
 import { getSimplifiedError } from ".";
+import { toast } from "react-hot-toast";
 
 interface UserState {
   user: any;
@@ -64,6 +65,9 @@ const userSlice = createSlice({
       })
       .addCase(getGeneralLeaderboard.fulfilled, (state, { payload }) => {
         state.leaderboard = payload?.leaderboard;
+      })
+      .addCase(updateAccessLevel.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Roger that, Soldier Level Updated");
       });
   },
 });
@@ -167,6 +171,28 @@ export const getAllCampaigns = createAsyncThunk(
       const { data } = await APIService.get(`${url.allCampaign}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
+export const updateAccessLevel = createAsyncThunk(
+  "updateAccessLevel",
+  async (payload: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.post(
+        `${url.updateAccessLevel}`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       return data;
     } catch (error: any) {
       return rejectWithValue(

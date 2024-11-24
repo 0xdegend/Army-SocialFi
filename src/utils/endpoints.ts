@@ -7,5 +7,6 @@ export const url = {
   generalLeaderboard: "/leaderboard",
   campaign: "/admin/campaign",
   allCampaign: "/leaderboard/campaign",
-  addTweet: "/admin/campaign/"
+  addTweet: "/admin/campaign/",
+  updateAccessLevel: "/admin/update-accesslevel",
 };

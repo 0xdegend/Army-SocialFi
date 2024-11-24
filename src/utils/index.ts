@@ -47,11 +47,11 @@ export const getSimplifiedError = (error: object | any) => {
       window.location.replace("/");
     }, 1000);
     localStorage.removeItem("userAuth"); //log here and perform action below
+    localStorage.removeItem("privy:token");
     if (errorObject?.message === "Please authenticate") {
       setTimeout(() => {
         window.location.replace("/");
       }, 1000);
-      localStorage.removeItem("userAuth");
     }
     if (errorObject?.message === "Forbidden: Not Verified or Not Permitted") {
       setTimeout(() => {

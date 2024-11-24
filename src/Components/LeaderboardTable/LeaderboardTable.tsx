@@ -5,11 +5,12 @@ import rankIcons from "../../utils/rankIcons";
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
-import { useAppSelector } from "../../app/hook";
+import { useAppDispatch, useAppSelector } from "../../app/hook";
 import ReUseModal from "../Modal/ReuseableModal";
 import PrimarySelect from "../Selects/PrimarySelect";
 import ActionButton from "../utils/buttons/ActionButton";
 import { dummyTags } from "../../utils/mockData";
+import { updateAccessLevel } from "../../utils/AuthSlice";
 const LeaderboardTable = ({
   data,
   isGeneral,
@@ -142,7 +143,8 @@ const SingleRow = ({
   // const [openAdd, setOpenAdd] = useState(false);
   // const [openRemove, setOpenRemove] = useState(false);
   const [selectedRole, setSelectedRole] = useState({ name: "Select", id: 0 });
-  const [fecthingData, setfecthingData] = useState(false);
+  const [updatingData, setUpdatingData] = useState(false);
+  const dispatch = useAppDispatch();
   // const [tags, setTags] = useState<string[]>([]);
   // const [inputValue, setInputValue] = useState<string>("");
 
@@ -167,9 +169,23 @@ const SingleRow = ({
   //   setAllTags(updatedTags);
   // };
   const handleUpdateAccessLevel = async () => {
-    setOpen(false);
-    console.log(selectedRole?.name);
-    console.log("Use Id", item?._id);
+    setUpdatingData(true);
+    const data = {
+      userId: `${item?._id}`,
+      accessLevel: `${selectedRole?.name}`,
+    };
+    try {
+      const response = await dispatch(updateAccessLevel(data)).unwrap();
+
+      console.log(response);
+      console.log(response);
+      setUpdatingData(false);
+      setOpen(false);
+    } catch (error) {
+      console.error("Error updating Access Level:", error);
+      setUpdatingData(false);
+      setOpen(false);
+    }
   };
   return (
     <tr
@@ -266,6 +282,8 @@ const SingleRow = ({
               text="Update"
               onPress={handleUpdateAccessLevel}
               buttonType="button-56"
+              isLoading={updatingData}
+              isValid={updatingData}
             />
           </div>
         </div>
