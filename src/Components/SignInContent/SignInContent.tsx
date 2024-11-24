@@ -20,6 +20,7 @@ import {
   getUserProfile,
   setUserData,
 } from "../../utils/AuthSlice";
+import { Spin } from "antd";
 
 const SignInContent = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ const SignInContent = () => {
   const isWalletLinked = localStorage.getItem("walletLinked");
   const isUserExpired = localStorage.getItem("userAuth");
   const [shouldFetchData, setShouldFetchData] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
   let armyBalance = 0;
   // Set address when user is authenticated
   const getTokenBalance = async () => {
@@ -101,6 +103,7 @@ const SignInContent = () => {
     }
   };
   const fetchAndPostData = async () => {
+    setPageLoading(true);
     if (user && address) {
       localStorage.setItem("walletLinked", ENCODED_TRUE);
       try {
@@ -124,6 +127,8 @@ const SignInContent = () => {
       } catch (error) {
         console.error("Error in fetchAndPostData:", error);
         logout();
+      } finally {
+        setPageLoading(false);
       }
     }
   };
@@ -140,6 +145,7 @@ const SignInContent = () => {
   }, [user, address, authenticated]);
   return (
     <div>
+      {pageLoading && <Spin fullscreen />}
       <div className="flex justify-center items-center h-screen">
         <img
           src={soldierVector}
