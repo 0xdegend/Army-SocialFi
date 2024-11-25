@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../../app/hook";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
 import ActionButton from "../utils/buttons/ActionButton";
 import { addCampaignTweet } from "../../utils/AuthSlice";
+import Toggler from "../Toggler";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -121,6 +122,7 @@ const SingleRow = ({
   const [tweetLink, setTweetLink] = useState("");
   const [tweetID, setTweetID] = useState("");
   const [userName, setUsername] = useState("");
+  const [isRetweet, setIsRetweet] = useState(false);
   const dispatch = useAppDispatch();
   const handleTweetLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value;
@@ -158,6 +160,7 @@ const SingleRow = ({
     console.log("Synced");
   };
 
+  console.log(isRetweet)
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -261,6 +264,15 @@ const SingleRow = ({
                 value={userName}
                 readOnly
               />
+            </div>
+            <div className="flex  mt-8 items-center gap-3 ">
+              <label
+                htmlFor=""
+                className="text-base text-white font-inconsolata mb-1"
+              >
+                Retweeted?
+              </label>
+            <Toggler enabled={isRetweet} setEnabled={setIsRetweet} />
             </div>
             <div className="flex items-center justify-between gap-5">
               <ActionButton
