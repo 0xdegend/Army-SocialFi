@@ -29,7 +29,7 @@ function MainPointsOverview() {
         <div>
           <h1 className="font-soli text-[30px] text-[#FFF]">$ARMY Points</h1>
           <p className="font-soli text-[25px] text-[#FFED41] mt-3">
-            {fetchProfile ? <Spin /> : userData?.userMainData?.points}
+            {fetchProfile ? <Spin /> : userData?.userMainData?.points?.toLocaleString()}
           </p>
         </div>
         <div className="multiplier">
