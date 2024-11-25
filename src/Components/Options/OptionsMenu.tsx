@@ -36,8 +36,8 @@ export default function Options({ children, isLast }: OptionProps) {
         >
           <Menu.Items
             className={classNames(
-              "absolute right-0 mt-2 w-[200px] rounded-[15px] shadow-2xl bg-primary",
-              "ring-1 ring-primary ring-opacity-5 focus:outline-none z-50"
+              "absolute top-0 right-0 mt-2 w-[200px] rounded-[15px] shadow-2xl bg-primary",
+              "ring-1 ring-primary ring-opacity-5 focus:outline-none"
             )}
           >
             <div className="py-1 z-50">{children}</div>

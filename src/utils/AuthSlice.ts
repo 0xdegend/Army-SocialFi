@@ -57,7 +57,6 @@ const userSlice = createSlice({
       .addCase(getUserProfile.rejected, (state, { payload }) => {
         state.loading = false;
         console.log(payload);
-        localStorage.removeItem("userAuth");
       })
       .addCase(getUserProfile.fulfilled, (state, { payload }) => {
         state.userMainData = payload?.user;
