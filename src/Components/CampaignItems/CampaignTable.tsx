@@ -160,7 +160,7 @@ const SingleRow = ({
     console.log("Synced");
   };
 
-  console.log(isRetweet)
+  console.log(isRetweet);
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -228,6 +228,7 @@ const SingleRow = ({
                 Tweet Url
               </label>
               <input
+                required
                 type="text"
                 className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary font-inconsolata"
                 placeholder="Enter Tweet Link"
@@ -272,7 +273,7 @@ const SingleRow = ({
               >
                 Retweeted?
               </label>
-            <Toggler enabled={isRetweet} setEnabled={setIsRetweet} />
+              <Toggler enabled={isRetweet} setEnabled={setIsRetweet} />
             </div>
             <div className="flex items-center justify-between gap-5">
               <ActionButton
@@ -283,13 +284,14 @@ const SingleRow = ({
                 buttonType="sign-in-button"
               />
 
-              <ActionButton
+              {/* Tweet Syncing not available in V 1.0 */}
+              {/* <ActionButton
                 isLoading={isSyncing}
                 text={"Sync All"}
                 isValid={isSyncing}
                 onPress={handleSyncTweets}
                 buttonType="button-56"
-              />
+              /> */}
             </div>
           </div>
         </div>
