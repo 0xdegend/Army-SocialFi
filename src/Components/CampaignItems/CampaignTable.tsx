@@ -122,11 +122,6 @@ const SingleRow = ({
   const [tweetID, setTweetID] = useState("");
   const [userName, setUsername] = useState("");
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    console.log(item);
-  }, [item]);
-
   const handleTweetLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value;
     setTweetLink(link);
