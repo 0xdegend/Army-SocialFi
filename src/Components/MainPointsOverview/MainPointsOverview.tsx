@@ -27,7 +27,7 @@ function MainPointsOverview() {
     <>
       <div className="w-[45%] bg-[#1D2211] clip-top-left-bottom-right mt-10 p-10 flex justify-center items-center gap-[60px]">
         <div>
-          <h1 className="font-soli text-[30px] text-[#FFF]">$ARMY Points</h1>
+          <h1 className="font-soli text-[30px] text-[#FFF]">$ARMY Point</h1>
           <p className="font-soli text-[25px] text-[#FFED41] mt-3">
             {fetchProfile ? <Spin /> : userData?.userMainData?.points?.toLocaleString()}
           </p>
