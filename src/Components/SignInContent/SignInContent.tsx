@@ -103,7 +103,6 @@ const SignInContent = () => {
     }
   };
   const fetchAndPostData = async () => {
-    setPageLoading(true);
     if (user && address) {
       localStorage.setItem("walletLinked", ENCODED_TRUE);
       try {
@@ -116,12 +115,16 @@ const SignInContent = () => {
           balance: balance,
         };
         if (!isUserExpired || isUserExpired === "undefined") {
+          setPageLoading(true);
           const authResponse = await dispatch(authenticateUser(data)).unwrap();
           localStorage.setItem("userAuth", `${authResponse?.token}`);
           console.log("Authenticated User:", authResponse);
+          setPageLoading(false);
         } else {
+          setPageLoading(true);
           const profile = await dispatch(getUserProfile()).unwrap();
           console.log("Fetched Profile:", profile);
+          setPageLoading(false);
         }
         navigate("/dashboard");
       } catch (error) {
