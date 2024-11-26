@@ -50,6 +50,7 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
         <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
           <input
             type="text"
+            placeholder="Search Username..."
             className=" w-full border-none outline-none bg-transparent text-white "
             value={query}
             onChange={(e: any) => setQuery(e.target.value)}

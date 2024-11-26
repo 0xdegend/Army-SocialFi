@@ -36,11 +36,12 @@ const OverviewContent = () => {
                 src={`${user?.twitter?.profilePictureUrl} `}
                 alt="Twitter Profile"
               />
-              <div className="absolute bottom-[-10px] h-[30px] w-[50px] bg-[#1D2211] flex justify-center items-center p-1 og-border-radius">
+              {/* OG Tag not in V 1.0 */}
+              {/* <div className="absolute bottom-[-10px] h-[30px] w-[50px] bg-[#1D2211] flex justify-center items-center p-1 og-border-radius">
                 <h5 className="text-center text-[20px] text-[#FFF] font-inconsolata font-extrabold">
                   OG
                 </h5>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="flex flex-col">
