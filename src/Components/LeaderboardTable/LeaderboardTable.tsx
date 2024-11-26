@@ -73,9 +73,9 @@ const LeaderboardTable = ({
       </div>
       {/* end of input space */}
       <div className="w-full flow-hide-x">
-        <table className="table-fixed  lg:min-w-full w-full min-w-[700px]">
-          <thead className="w-full bg-secondary   h-12 flex items-center rounded-md  ">
-            <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 min-w-full ">
+        <table className="table-auto  lg:min-w-full w-full min-w-[700px]">
+          <thead className="w-full bg-secondary h-12 flex items-center rounded-md  ">
+            <tr className="w-full grid grid-cols-4 text-white place-items-center   px-4 gap-2 min-w-full ">
               <th className=" w-full flex justify-start">Rank</th>
               <th className=" w-full flex justify-start">Name</th>
               {!isGeneral ? (

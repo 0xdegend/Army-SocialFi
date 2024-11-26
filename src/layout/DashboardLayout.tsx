@@ -18,38 +18,37 @@ interface dashboard {
   children?: any;
 
   current: number;
-
 }
 const DashboardLayout = ({ children, current }: dashboard) => {
   const [open, setOpen] = useState(false);
-    const buttonName = [
-      {
-        name: "dashboard",
-        url: "dashboard",
-      },
-      {
-        name: "leaderboard",
-        url: "leaderboard",
-      },
-      {
-        name: "campaigns",
-        url: "campaigns",
-      },
-      // {
-      //   name: "my points",
-      //   url: "my-points",
-      // },
-      {
-        name: "meme bank",
-        url: "meme-bank",
-      },
-    ];
-    const { logout } = usePrivy();
-    const navigate = useNavigate();
-    const handleLogout = () => {
-      logout();
-      navigate("/");
-    };
+  const buttonName = [
+    {
+      name: "dashboard",
+      url: "dashboard",
+    },
+    {
+      name: "leaderboard",
+      url: "leaderboard",
+    },
+    {
+      name: "campaigns",
+      url: "campaigns",
+    },
+    // {
+    //   name: "my points",
+    //   url: "my-points",
+    // },
+    {
+      name: "meme bank",
+      url: "meme-bank",
+    },
+  ];
+  const { logout } = usePrivy();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
   return (
     <>
       <div className="w-full flex flex-col overflow-y-hidden">
@@ -63,7 +62,7 @@ const DashboardLayout = ({ children, current }: dashboard) => {
             <div className="lg:hidden flex items-center w-full justify-between py-4 px-4 ">
               <div className="flex items-center">
                 <span
-                  className="text-customYellow text-2xl"
+                  className="text-customYellow text-2xl cursor-pointer"
                   onClick={() => setOpen(!open)}
                 >
                   <HiOutlineBars3BottomLeft />
@@ -93,9 +92,12 @@ const DashboardLayout = ({ children, current }: dashboard) => {
           </div>
         </div>
         {open && (
-          <div className="w-full h-screen fixed   flex flex-col bg-transparent backdrop-blur-[2px] px-4">
-            <div className="w-full h-16 " onClick={() => setOpen(false)}></div>
-            <div className="w-full bg-primary p-4 rounded-md flex flex-col">
+          <div
+            className="w-full h-screen fixed   flex flex-col bg-transparent backdrop-blur-[2px] px-4"
+            onClick={() => setOpen(false)}
+          >
+            <div className="w-full h-16 "></div>
+            <div className="w-full bg-primary p-4 clip-top-left-bottom-right flex flex-col">
               <div className=" flex flex-col gap-y-6  w-full mt-8">
                 <div>
                   {buttonName.map((item, i: number) => (
@@ -104,7 +106,8 @@ const DashboardLayout = ({ children, current }: dashboard) => {
                 </div>
               </div>
               <LogoutButton onPress={handleLogout} text="Logout" title="" />
-              <div className="flex gap-5 mt-6 justify-center">
+              <hr className="border-t-2 border-[#4a572b] w-full my-1" />
+              <div className="flex gap-5 mt-6 justify-center bg-[#2f381c] p-3">
                 <div>
                   <a
                     href="https://x.com/onchainarmy"
@@ -181,5 +184,3 @@ const DashboardLayout = ({ children, current }: dashboard) => {
 };
 
 export default DashboardLayout;
-
-
