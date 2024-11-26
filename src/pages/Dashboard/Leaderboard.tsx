@@ -43,6 +43,7 @@ const Leaderboard = () => {
           (a, b) => b.campaignPoints - a.campaignPoints
         );
       setCampaignLeaderBoard(sortedCampaignsData || []);
+      console.log(sortedCampaignsData)
     } catch (error) {
       console.log("Error fetching campaigns data:", error);
     }

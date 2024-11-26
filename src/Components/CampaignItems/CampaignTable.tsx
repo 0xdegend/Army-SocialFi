@@ -8,7 +8,7 @@ import { FaTimes } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
 import ActionButton from "../utils/buttons/ActionButton";
-import { addCampaignTweet, getAllCampaigns } from "../../utils/AuthSlice";
+import { addCampaignTweet, endCampaign, getAllCampaigns } from "../../utils/AuthSlice";
 import Toggler from "../Toggler";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
@@ -117,7 +117,9 @@ const SingleRow = ({
   isAdmin: boolean;
 }) => {
   const [open, setOpen] = useState(false);
+  const [endCampaignModalOpen, setEndCampaignModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [endingCampaign, setEndingCampaign] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false);
   const [tweetLink, setTweetLink] = useState("");
   const [tweetID, setTweetID] = useState("");
@@ -154,6 +156,22 @@ const SingleRow = ({
     console.log(item?._id);
     setOpen(false);
   };
+
+  const handleEndCampaign = async () => {
+    setEndingCampaign(true)
+    const data = {
+      campaignID: item?._id,
+    };
+    try{
+      const response = await dispatch(endCampaign(data)).unwrap();
+      console.log(response);
+      setEndingCampaign(false)
+    }catch (error){
+      console.error("Error ending campaign:", error);
+      setEndingCampaign(false)
+    }
+
+  }
 
   const handleSyncTweets = async () => {
     console.log("Synced");
@@ -197,7 +215,10 @@ const SingleRow = ({
                 >
                   Add Tweet
                 </button>
-                <button className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md">
+                <button
+                  className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md"
+                  onClick={() => setEndCampaignModalOpen(true)}
+                >
                   End Campaign
                 </button>
               </div>
@@ -289,6 +310,48 @@ const SingleRow = ({
                 onPress={handleSyncTweets}
                 buttonType="button-56"
               /> */}
+            </div>
+          </div>
+        </div>
+      </ReUseModal>
+      <ReUseModal open={endCampaignModalOpen} setOpen={setEndCampaignModalOpen}>
+        <div className="w-full flex flex-col">
+          <div className="flex items-center justify-between">
+            <h1 className="text-white font-inconsolata text-2xl">
+              End Campaign
+            </h1>
+            <span
+              className="text-secondary text-xl cursor-pointer"
+              onClick={() => setEndCampaignModalOpen(false)}
+            >
+              <FaTimes />
+            </span>
+          </div>
+          <div className="flex flex-col mt-6">
+            <div className="flex flex-col">
+              <label
+                htmlFor=""
+                className="text-base text-white font-inconsolata mb-1"
+              >
+                Campaign ID
+              </label>
+              <input
+                readOnly
+                type="text"
+                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary font-inconsolata cursor-not-allowed"
+                placeholder="Campaign ID"
+                value={item?._id}
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-5">
+              <ActionButton
+                isLoading={endingCampaign}
+                text={"End"}
+                isValid={endingCampaign}
+                onPress={handleEndCampaign}
+                buttonType="sign-in-button"
+              />
             </div>
           </div>
         </div>

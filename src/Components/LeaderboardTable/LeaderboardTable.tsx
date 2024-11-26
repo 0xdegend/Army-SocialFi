@@ -30,7 +30,13 @@ const LeaderboardTable = ({
     const filtered = !query
       ? data
       : data.filter((item: any) =>
-          item?.twitterUsername?.toLowerCase()?.includes(query.toLowerCase())
+          isGeneral
+            ? item?.twitterUsername
+                ?.toLowerCase()
+                ?.includes(query.toLowerCase())
+            : item?.userId?.twitterUsername
+                ?.toLowerCase()
+                ?.includes(query.toLowerCase())
         );
     setCurrentData(filtered);
     setIsLoading(false);
@@ -192,14 +198,14 @@ const SingleRow = ({
     >
       <td className=" w-full flex justify-start min-w-full">
         {!isGeneral
-          ? item?.rank?.name && (
+          ? item?.userId?.rank?.name && (
               <div className="flex items-center">
                 <img
-                  src={rankIcons[item.rank.name]}
-                  alt={`${item.rank.name} Icon`}
+                  src={rankIcons[item.userId?.rank?.name]}
+                  alt={`${item?.userId?.rank.name} Icon`}
                   className="w-6 h-6 mr-2" // Adjust size and spacing
                 />
-                <p>{item.rank.name}</p>
+                <p>{item?.userId?.rank?.name}</p>
               </div>
             )
           : item?.rank?.name && (
@@ -216,11 +222,11 @@ const SingleRow = ({
       <td className=" w-full flex justify-start gap-3 items-center">
         {!isGeneral ? (
           <>
-            <p>{item?.userId?.twitterUsername}</p>
+            <p className="capitalize">{item?.userId?.twitterUsername}</p>
           </>
         ) : (
           <>
-            <p className="text-base">{item?.twitterUsername}</p>
+            <p className="text-base capitalize">{item?.twitterUsername}</p>
             <img src={points} alt="points" className="w-5 h-5 rounded-full" />
           </>
         )}
