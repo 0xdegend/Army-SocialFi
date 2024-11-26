@@ -11,9 +11,12 @@ import PointsOverview from "../../Components/PointsOverview/PointsOverview";
 const Dashboard = () => {
   return (
     <DashboardLayout>
-      <div className="w-full h-[100vh] flex flex-col ">
+      <div className="w-full h-[100vh] flex flex-col  overflow-x-hidden">
         <WalletBallance />
+        <div className=" lg:px-0">
+
         <OverviewContent />
+        </div>
         <PointsOverview />
       </div>
     </DashboardLayout>

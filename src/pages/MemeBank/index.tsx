@@ -11,7 +11,7 @@ const MemeBankPage = () => {
   return (
     <DashboardLayout current={1}>
       <div className="bg-[#1D2211] w-full clip-top-left-bottom-right">
-        <div className="w-full flex flex-col mt-10 text-white p-8">
+        <div className="w-full flex flex-col mt-10 text-white py-4 lg:p-8">
           <div className="flex justify-center items-center relative">
             <img
               src={mapMeme}
@@ -40,11 +40,11 @@ const MemeBankPage = () => {
             </Link>
           </div>
           <div className="w-full flex-col mt-20 lg:mt-24">
-            <h1 className="text-white text-2xl lg:text-5xl font-semibold font-soli text-center mx-auto ">
+            <h1 className="text-white text-lg lg:text-5xl font-semibold font-soli text-center mx-auto ">
               HOW TO MAKE YOUR SOLDIER
             </h1>
             <img src={makeMeme} alt="make" className="w-full h-auto mt-12 " />
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-6 px-4">
               <Link
                 to={"https://x.com/i/lists/1825556187498119480"}
                 target="_blank"

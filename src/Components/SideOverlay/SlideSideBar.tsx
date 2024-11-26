@@ -31,10 +31,10 @@ export default function SlideSidebar({ current, open, setOpen }: any) {
           name: "campaigns",
           url: "campaigns",
         },
-        {
-          name: "my points",
-          url: "my-points",
-        },
+        // {
+        //   name: "my points",
+        //   url: "my-points",
+        // },
         {
           name: "meme bank",
           url: "meme-bank",

@@ -42,8 +42,8 @@ const Leaderboard = () => {
   }, []);
   return (
     <DashboardLayout current={2}>
-      <div className="w-full h-full">
-        <div className="w-full h-[100vh] pt-20 xl:px-6 ">
+      <div className="w-full h-full overflow-x-hidden ">
+        <div className="w-full min-h-[100vh] pt-20 xl:px-6 ">
           <OverviewContent />
           <div className="mt-8 pb-12">
             <div className="flex items-center justify-start font-soli mb-8 gap-5">
@@ -68,13 +68,16 @@ const Leaderboard = () => {
                 Campaign LeaderBoard
               </button>
             </div>
+            <div className="w-full">
+
             {isGeneral && (
               <LeaderboardTable
-                data={updatedGeneralLeaderBoardData}
-                isGeneral={isGeneral}
+              data={updatedGeneralLeaderBoardData}
+              isGeneral={isGeneral}
               />
             )}
-            {!isGeneral && <LeaderboardTable data={[]} isGeneral={isGeneral} />}
+            {!isGeneral && <LeaderboardTable data={updatedGeneralLeaderBoardData} isGeneral={isGeneral} />}
+            </div>
           </div>
         </div>
       </div>

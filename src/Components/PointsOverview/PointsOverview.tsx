@@ -36,7 +36,7 @@ function PointsOverview() {
   }, []);
   return (
     <>
-      <div className="flex justify-around items-center">
+      <div className="flex justify-around items-center flex-col lg:flex-row ">
         <MainPointsOverview />
         <Missions />
       </div>

@@ -52,7 +52,7 @@ const LeaderboardTable = ({
   }, [data]);
 
   return (
-    <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide">
+    <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide ">
       <div className="flex items-center gap-5 mb-4 ">
         <h1 className="text-white ">Search:</h1>
         <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
@@ -66,9 +66,9 @@ const LeaderboardTable = ({
       </div>
       {/* end of input space */}
       <div className="w-full flow-hide-x">
-        <table className="table-fixed min-w-max lg:min-w-full">
-          <thead className="w-full bg-secondary   h-12 flex items-center rounded-md ">
-            <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 ">
+        <table className="table-fixed  lg:min-w-full w-full min-w-[700px]">
+          <thead className="w-full bg-secondary   h-12 flex items-center rounded-md  ">
+            <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 min-w-full ">
               <th className=" w-full flex justify-start">Rank</th>
               <th className=" w-full flex justify-start">Name</th>
               {!isGeneral ? (
@@ -97,7 +97,7 @@ const LeaderboardTable = ({
                 />
               ))
             ) : (
-              <tr>
+              <tr className="w-full">
                 <td colSpan={5} className="text-center">
                   {isLoading ? (
                     <>
@@ -112,7 +112,7 @@ const LeaderboardTable = ({
           </tbody>
         </table>
       </div>
-      <div className="w-full px-4">
+      <div className="w-full px-4 mt-8">
         <Pagination
           data={filteredData}
           itemsPerPage={10}
@@ -177,8 +177,8 @@ const SingleRow = ({
     try {
       const response = await dispatch(updateAccessLevel(data)).unwrap();
 
-      console.log(response);
-      console.log(response);
+      
+     
       setUpdatingData(false);
       setOpen(false);
     } catch (error) {
@@ -189,10 +189,10 @@ const SingleRow = ({
   };
   return (
     <tr
-      className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
+      className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 min-w-full  "
       key={index}
     >
-      <td className=" w-full flex justify-start">
+      <td className=" w-full flex justify-start min-w-full">
         {item?.rank?.name && (
           <div className="flex items-center">
             <img

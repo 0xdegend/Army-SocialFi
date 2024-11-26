@@ -65,6 +65,12 @@ export const getSimplifiedError = (error: object | any) => {
   }
 };
 
+export function truncateWalletAddress(address: string | any): string {
+  if (address.length <= 7) {
+    return address; // No truncation needed if the address is too short
+  }
+  return `${address.slice(0, 10)}...${address.slice(-10)}`;
+}
 export const openInNewTab = (url: string): void => {
   const newWindow = window.open(url, "_blank", "noopener,noreferrer");
   if (newWindow) newWindow.opener = null;
