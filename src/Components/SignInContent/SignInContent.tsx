@@ -89,63 +89,58 @@ const SignInContent = () => {
       if (isWalletLinked === ENCODED_TRUE) {
         //@ts-ignore
         await login({ loginMethods: ["wallet"], chains: ["solana"] });
-        setShouldFetchData(true);
       } else {
         //@ts-ignore
         await linkWallet({ loginMethods: ["wallet"], chains: ["solana"] });
         setIsWalletConnected(true);
-        setShouldFetchData(true);
       }
+      setShouldFetchData(true);
       console.log(user);
     } catch (error) {
-      setIsWalletConnected(false);
       console.error("Error signing in:", error);
+      setIsWalletConnected(false);
     }
   };
   const fetchAndPostData = async () => {
-    if (user && address) {
-      localStorage.setItem("walletLinked", ENCODED_TRUE);
-      try {
-        console.log("User in useEffect:", user);
-        const balance = await getTokenBalance();
-        const data = {
-          address: address,
-          twitterHandle: `${user?.twitter?.username}`,
-          twitterUsername: user?.twitter?.name,
-          balance: balance,
-        };
-        if (!isUserExpired || isUserExpired === "undefined") {
-          setPageLoading(true);
-          const authResponse = await dispatch(authenticateUser(data)).unwrap();
-          localStorage.setItem("userAuth", `${authResponse?.token}`);
-          console.log("Authenticated User:", authResponse);
-          setPageLoading(false);
-        } else {
-          setPageLoading(true);
-          const profile = await dispatch(getUserProfile()).unwrap();
-          console.log("Fetched Profile:", profile);
-          setPageLoading(false);
-        }
-        navigate("/dashboard");
-      } catch (error) {
-        console.error("Error in fetchAndPostData:", error);
-        logout();
-      } finally {
-        setPageLoading(false);
+    if (!user || !address) return;
+
+    localStorage.setItem("walletLinked", ENCODED_TRUE);
+    try {
+      console.log("Fetching and posting data for user:", user);
+
+      const balance = await getTokenBalance();
+      const data = {
+        address: address,
+        twitterHandle: `${user?.twitter?.username}`,
+        twitterUsername: user?.twitter?.name,
+        balance: balance,
+      };
+      setPageLoading(true);
+
+      if (!isUserExpired || isUserExpired === "undefined") {
+        const authResponse = await dispatch(authenticateUser(data)).unwrap();
+        localStorage.setItem("userAuth", `${authResponse?.token}`);
+        console.log("Authenticated User:", authResponse);
+      } else {
+        const profile = await dispatch(getUserProfile()).unwrap();
+        console.log("Fetched Profile:", profile);
       }
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error in fetchAndPostData:", error);
+      logout();
+    } finally {
+      setPageLoading(false);
     }
   };
 
   useEffect(() => {
-    if (shouldFetchData && user && address && authenticated) {
+    if (shouldFetchData && user && address) {
       fetchAndPostData();
-    }
-  }, [shouldFetchData, user, address, authenticated]);
-  useEffect(() => {
-    if (user && address && isUserExpired) {
+    } else if (user && address && isUserExpired) {
       navigate("/dashboard");
     }
-  }, [user, address, authenticated]);
+  }, [shouldFetchData, user, address, isUserExpired]);
   return (
     <div>
       {pageLoading && <Spin fullscreen />}
@@ -171,17 +166,22 @@ const SignInContent = () => {
             <div className="flex flex-col">
               <button
                 className="bg-red-600 text-white py-3 px-6 text-[25px] hover:bg-red-700 transition mt-10 sign-in-button font-soli"
-                onClick={handleConnectTwitter}
+                onClick={
+                  user && address ? fetchAndPostData : handleConnectTwitter
+                }
               >
-                {user
-                  ? "Connected"
-                  : user && isUserExpired === null
-                  ? "Sign In Soldier!"
-                  : isWalletLinked
-                  ? "Sign In Soldier!"
-                  : "Connect Twitter"}
+                {isUserExpired && !user
+                  ? "X linked! Soldier, Sign in!" // If userAuth exists but no user
+                  : user && !address
+                  ? "X linked! Soldier, Link Wallet!" // If user exists but no wallet address
+                  : user && address
+                  ? "X linked! Soldier, Sign in!" // If user and address both exist
+                  : user
+                  ? "Connected" // If user exists but other conditions are false
+                  : "Connect Twitter"}{" "}
               </button>
-              {!isWalletLinked && (
+
+              {!isWalletLinked && !address && (
                 <>
                   <div className="flex justify-center items-center mt-2">
                     <img
