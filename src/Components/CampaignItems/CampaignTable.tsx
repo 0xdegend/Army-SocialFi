@@ -8,7 +8,7 @@ import { FaTimes } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
 import ActionButton from "../utils/buttons/ActionButton";
-import { addCampaignTweet } from "../../utils/AuthSlice";
+import { addCampaignTweet, getAllCampaigns } from "../../utils/AuthSlice";
 import Toggler from "../Toggler";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
@@ -140,14 +140,13 @@ const SingleRow = ({
       campaignID: item?._id,
       link: tweetLink,
       tweetId: tweetID,
+      username: userName,
+      retweeted: isRetweet,
     };
     try {
       const response = await dispatch(addCampaignTweet(data)).unwrap();
       console.log(response);
       setIsLoading(false);
-      console.log(tweetID);
-      console.log(tweetLink);
-      console.log(userName);
     } catch (error) {
       console.error("Error adding tweet:", error);
       setIsLoading(false);
@@ -159,8 +158,6 @@ const SingleRow = ({
   const handleSyncTweets = async () => {
     console.log("Synced");
   };
-
-  console.log(isRetweet);
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "

@@ -65,7 +65,12 @@ export const getSimplifiedError = (error: object | any) => {
   }
 };
 
-export function truncateWalletAddress(address: string | any): string {
+export function truncateWalletAddress(
+  address: string | undefined | null
+): string {
+  if (!address) {
+    return "N/A"; // Return a default value if address is null or undefined
+  }
   if (address.length <= 7) {
     return address; // No truncation needed if the address is too short
   }

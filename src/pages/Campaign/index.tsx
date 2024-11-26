@@ -17,7 +17,6 @@ const Campaigns = () => {
       //@ts-ignore
       const allCampaignsResponse = await dispatch(getAllCampaigns()).unwrap();
       setAllCampaigns(allCampaignsResponse?.campaigns || []);
-      console.log(allCampaignsResponse?.campaigns);
     } catch (error) {
       console.error(error);
     }

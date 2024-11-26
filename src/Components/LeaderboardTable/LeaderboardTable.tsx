@@ -177,8 +177,6 @@ const SingleRow = ({
     try {
       const response = await dispatch(updateAccessLevel(data)).unwrap();
 
-      
-     
       setUpdatingData(false);
       setOpen(false);
     } catch (error) {
@@ -193,24 +191,45 @@ const SingleRow = ({
       key={index}
     >
       <td className=" w-full flex justify-start min-w-full">
-        {item?.rank?.name && (
-          <div className="flex items-center">
-            <img
-              src={rankIcons[item.rank.name]}
-              alt={`${item.rank.name} Icon`}
-              className="w-6 h-6 mr-2" // Adjust size and spacing
-            />
-            <p>{item.rank.name}</p>
-          </div>
-        )}
+        {!isGeneral
+          ? item?.rank?.name && (
+              <div className="flex items-center">
+                <img
+                  src={rankIcons[item.rank.name]}
+                  alt={`${item.rank.name} Icon`}
+                  className="w-6 h-6 mr-2" // Adjust size and spacing
+                />
+                <p>{item.rank.name}</p>
+              </div>
+            )
+          : item?.rank?.name && (
+              <div className="flex items-center">
+                <img
+                  src={rankIcons[item.rank.name]}
+                  alt={`${item.rank.name} Icon`}
+                  className="w-6 h-6 mr-2" // Adjust size and spacing
+                />
+                <p>{item.rank.name}</p>
+              </div>
+            )}
       </td>
       <td className=" w-full flex justify-start gap-3 items-center">
-        <p className="text-base">{item?.twitterUsername}</p>
+        {!isGeneral ? (
+          <>
+            <p>{item?.userId?.twitterUsername}</p>
+          </>
+        ) : (
+          <>
+            <p className="text-base">{item?.twitterUsername}</p>
+            <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+          </>
+        )}
       </td>
       <td className=" w-full flex justify-start gap-2 items-center">
         {!isGeneral ? (
           <>
-            <p>0</p>
+            <p>{item?.campaignPoints.toLocaleString()}</p>
+            <img src={points} alt="points" className="w-5 h-5 rounded-full" />
           </>
         ) : (
           <>
@@ -222,8 +241,16 @@ const SingleRow = ({
 
       <td className=" w-full flex justify-between items-center gap-6">
         <div className="  flex  items-center gap-2">
-          <p>x{item?.rank?.multiplier}</p>
-          <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+          {!isGeneral ? (
+            <>
+              <p>{item?.tweets?.length}</p>
+            </>
+          ) : (
+            <>
+              <p>x{item?.rank?.multiplier}</p>
+              <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+            </>
+          )}
         </div>
         {isAdmin && (
           <span className="z-10 overflow-visible">

@@ -67,6 +67,12 @@ const userSlice = createSlice({
       })
       .addCase(updateAccessLevel.fulfilled, (state, { payload }) => {
         toast.success("🫡 Roger that, Soldier Level Updated");
+      })
+      .addCase(createCampaign.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Roger that, Campaign Created");
+      })
+      .addCase(addCampaignTweet.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Aye Aye, Tweet Added to Campaign");
       });
   },
 });
