@@ -11,6 +11,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import rankIcons from "../../utils/rankIcons";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import { store } from "../../app/store";
+import { truncateWalletAddress } from "../../utils";
 
 const OverviewContent = () => {
   const dispatch = useAppDispatch();
@@ -20,13 +21,13 @@ const OverviewContent = () => {
   //@ts-ignore
   const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
   return (
-    <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right">
+    <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right ">
       <img
         src={camoImage}
         alt="Army Camo"
         className="absolute top-1 w-[50%] right-0"
       />
-      <div className="mx-auto flex justify-between mt-5">
+      <div className="mx-auto flex lg:justify-between lg:mt-5 flex-col lg:flex-row gap-8">
         <div className="flex gap-5">
           <div className="h-[100px] w-[100px] rounded-[50%] bg-[#68604B] flex justify-center items-center">
             <div className=" relative h-[90px] w-[90px] rounded-[50%] bg-[#E1DDCC] flex justify-center items-center">
@@ -56,21 +57,24 @@ const OverviewContent = () => {
               />
             </div>
             <div className="flex">
-              <h5 className="mt-3 cursor-pointer font-soli text-[#F83726]">
+              <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate hidden md:flex ">
                 {user?.wallet?.address}
+              </h5>
+              <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate flex md:hidden ">
+                {truncateWalletAddress(user?.wallet?.address)}
               </h5>
             </div>
           </div>
         </div>
-        <div className="socials flex flex-col gap-2 justify-center items-center z-10">
-          <div className="flex gap-5">
+        <div className="socials flex flex-col lg:gap-2 justify-center items-center z-10">
+          <div className=" gap-5 hidden lg:flex">
             <div>
               <a
                 href="https://x.com/onchainarmy"
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={twitterIcon} alt="" className="w-[40px]" />
+                <img src={twitterIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
               </a>
             </div>
             <div>
@@ -79,7 +83,7 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={telegramIcon} alt="" className="w-[40px]" />
+                <img src={telegramIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
               </a>
             </div>
             <div>
@@ -88,7 +92,7 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={dexscreenerIcon} alt="" className="w-[40px]" />
+                <img src={dexscreenerIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
               </a>
             </div>
             <div>
@@ -97,7 +101,7 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={coingeckoIcon} alt="" className="w-[40px]" />
+                <img src={coingeckoIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
               </a>
             </div>
             <div>
@@ -106,7 +110,7 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={cmcIcon} alt="" className="w-[40px]" />
+                <img src={cmcIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
               </a>
             </div>
           </div>

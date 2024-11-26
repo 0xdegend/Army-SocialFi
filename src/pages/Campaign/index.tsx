@@ -40,7 +40,7 @@ const Campaigns = () => {
     <DashboardLayout current={1}>
       <div className="w-full flex flex-col min-h-screen pt-6">
         <OverviewContent />
-        <div className="flex justify-around items-center mb-10">
+        <div className="flex justify-around items-center mb-10 flex-col lg:flex-row">
           <MainPointsOverview />
           <Missions />
         </div>
