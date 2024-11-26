@@ -8,7 +8,7 @@ import { FaTimes } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
 import ActionButton from "../utils/buttons/ActionButton";
-import { addCampaignTweet } from "../../utils/AuthSlice";
+import { addCampaignTweet, endCampaign, getAllCampaigns } from "../../utils/AuthSlice";
 import Toggler from "../Toggler";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
@@ -50,6 +50,7 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
         <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
           <input
             type="text"
+            placeholder="Search Username..."
             className=" w-full border-none outline-none bg-transparent text-white "
             value={query}
             onChange={(e: any) => setQuery(e.target.value)}
@@ -117,7 +118,9 @@ const SingleRow = ({
   isAdmin: boolean;
 }) => {
   const [open, setOpen] = useState(false);
+  const [endCampaignModalOpen, setEndCampaignModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [endingCampaign, setEndingCampaign] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false);
   const [tweetLink, setTweetLink] = useState("");
   const [tweetID, setTweetID] = useState("");
@@ -140,14 +143,13 @@ const SingleRow = ({
       campaignID: item?._id,
       link: tweetLink,
       tweetId: tweetID,
+      username: userName,
+      retweeted: isRetweet,
     };
     try {
       const response = await dispatch(addCampaignTweet(data)).unwrap();
       console.log(response);
       setIsLoading(false);
-      console.log(tweetID);
-      console.log(tweetLink);
-      console.log(userName);
     } catch (error) {
       console.error("Error adding tweet:", error);
       setIsLoading(false);
@@ -156,11 +158,25 @@ const SingleRow = ({
     setOpen(false);
   };
 
+  const handleEndCampaign = async () => {
+    setEndingCampaign(true)
+    const data = {
+      campaignID: item?._id,
+    };
+    try{
+      const response = await dispatch(endCampaign(data)).unwrap();
+      console.log(response);
+      setEndingCampaign(false)
+    }catch (error){
+      console.error("Error ending campaign:", error);
+      setEndingCampaign(false)
+    }
+
+  }
+
   const handleSyncTweets = async () => {
     console.log("Synced");
   };
-
-  console.log(isRetweet);
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -200,7 +216,10 @@ const SingleRow = ({
                 >
                   Add Tweet
                 </button>
-                <button className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md">
+                <button
+                  className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md"
+                  onClick={() => setEndCampaignModalOpen(true)}
+                >
                   End Campaign
                 </button>
               </div>
@@ -292,6 +311,48 @@ const SingleRow = ({
                 onPress={handleSyncTweets}
                 buttonType="button-56"
               /> */}
+            </div>
+          </div>
+        </div>
+      </ReUseModal>
+      <ReUseModal open={endCampaignModalOpen} setOpen={setEndCampaignModalOpen}>
+        <div className="w-full flex flex-col">
+          <div className="flex items-center justify-between">
+            <h1 className="text-white font-inconsolata text-2xl">
+              End Campaign
+            </h1>
+            <span
+              className="text-secondary text-xl cursor-pointer"
+              onClick={() => setEndCampaignModalOpen(false)}
+            >
+              <FaTimes />
+            </span>
+          </div>
+          <div className="flex flex-col mt-6">
+            <div className="flex flex-col">
+              <label
+                htmlFor=""
+                className="text-base text-white font-inconsolata mb-1"
+              >
+                Campaign ID
+              </label>
+              <input
+                readOnly
+                type="text"
+                className="w-full flex border-secondary  h-10  text-white outline-none  border-b bg-transparent placeholder:text-secondary font-inconsolata cursor-not-allowed"
+                placeholder="Campaign ID"
+                value={item?._id}
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-5">
+              <ActionButton
+                isLoading={endingCampaign}
+                text={"End"}
+                isValid={endingCampaign}
+                onPress={handleEndCampaign}
+                buttonType="sign-in-button"
+              />
             </div>
           </div>
         </div>

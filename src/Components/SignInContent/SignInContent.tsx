@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useEffect, useState } from "react";
-import mainSoldier from "../../assets/images/army-all-round.png";
+import mainSoldier from "../../assets/images/army-cto.PNG";
 import { usePrivy, useLogin } from "@privy-io/react-auth";
 import arrowDown from "../../assets/images/arrow-down.svg";
 import { useNavigate } from "react-router-dom";
@@ -153,13 +153,13 @@ const SignInContent = () => {
         <img
           src={soldierVector}
           alt=""
-          className="absolute top-0 w-[60%] z-0"
+          className="absolute top-0 w-[80%] z-0"
         />
         <div className="flex justify-center items-center flex-col">
           <img
             src={mainSoldier}
             alt=""
-            className="w-full md:w-1/2 lg:w-full xl:w-full z-10"
+            className="w-[75%] md:w-[60%] lg:w-1/2 xl:w-1/2 z-10"
           />
           <div className="sign-in-steps">
             <h4 className="font-soli text-white text-[30px] font-bold mt-1">

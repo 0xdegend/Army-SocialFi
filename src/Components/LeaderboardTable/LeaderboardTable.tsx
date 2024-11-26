@@ -30,7 +30,13 @@ const LeaderboardTable = ({
     const filtered = !query
       ? data
       : data.filter((item: any) =>
-          item?.twitterUsername?.toLowerCase()?.includes(query.toLowerCase())
+          isGeneral
+            ? item?.twitterUsername
+                ?.toLowerCase()
+                ?.includes(query.toLowerCase())
+            : item?.userId?.twitterUsername
+                ?.toLowerCase()
+                ?.includes(query.toLowerCase())
         );
     setCurrentData(filtered);
     setIsLoading(false);
@@ -57,6 +63,7 @@ const LeaderboardTable = ({
         <h1 className="text-white ">Search:</h1>
         <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
           <input
+          placeholder="Search Username..."
             type="text"
             className=" w-full border-none outline-none bg-transparent text-white "
             value={query}
@@ -66,9 +73,9 @@ const LeaderboardTable = ({
       </div>
       {/* end of input space */}
       <div className="w-full flow-hide-x">
-        <table className="table-fixed  lg:min-w-full w-full min-w-[700px]">
-          <thead className="w-full bg-secondary   h-12 flex items-center rounded-md  ">
-            <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 min-w-full ">
+        <table className="table-auto  lg:min-w-full w-full min-w-[700px]">
+          <thead className="w-full bg-secondary h-12 flex items-center rounded-md  ">
+            <tr className="w-full grid grid-cols-4 text-white place-items-center   px-4 gap-2 min-w-full ">
               <th className=" w-full flex justify-start">Rank</th>
               <th className=" w-full flex justify-start">Name</th>
               {!isGeneral ? (
@@ -177,8 +184,6 @@ const SingleRow = ({
     try {
       const response = await dispatch(updateAccessLevel(data)).unwrap();
 
-      
-     
       setUpdatingData(false);
       setOpen(false);
     } catch (error) {
@@ -193,24 +198,45 @@ const SingleRow = ({
       key={index}
     >
       <td className=" w-full flex justify-start min-w-full">
-        {item?.rank?.name && (
-          <div className="flex items-center">
-            <img
-              src={rankIcons[item.rank.name]}
-              alt={`${item.rank.name} Icon`}
-              className="w-6 h-6 mr-2" // Adjust size and spacing
-            />
-            <p>{item.rank.name}</p>
-          </div>
-        )}
+        {!isGeneral
+          ? item?.userId?.rank?.name && (
+              <div className="flex items-center">
+                <img
+                  src={rankIcons[item.userId?.rank?.name]}
+                  alt={`${item?.userId?.rank.name} Icon`}
+                  className="w-6 h-6 mr-2" // Adjust size and spacing
+                />
+                <p>{item?.userId?.rank?.name}</p>
+              </div>
+            )
+          : item?.rank?.name && (
+              <div className="flex items-center">
+                <img
+                  src={rankIcons[item.rank.name]}
+                  alt={`${item.rank.name} Icon`}
+                  className="w-6 h-6 mr-2" // Adjust size and spacing
+                />
+                <p>{item.rank.name}</p>
+              </div>
+            )}
       </td>
       <td className=" w-full flex justify-start gap-3 items-center">
-        <p className="text-base">{item?.twitterUsername}</p>
+        {!isGeneral ? (
+          <>
+            <p className="capitalize">{item?.userId?.twitterUsername}</p>
+          </>
+        ) : (
+          <>
+            <p className="text-base capitalize">{item?.twitterUsername}</p>
+            <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+          </>
+        )}
       </td>
       <td className=" w-full flex justify-start gap-2 items-center">
         {!isGeneral ? (
           <>
-            <p>0</p>
+            <p>{item?.campaignPoints.toLocaleString()}</p>
+            <img src={points} alt="points" className="w-5 h-5 rounded-full" />
           </>
         ) : (
           <>
@@ -222,8 +248,16 @@ const SingleRow = ({
 
       <td className=" w-full flex justify-between items-center gap-6">
         <div className="  flex  items-center gap-2">
-          <p>x{item?.rank?.multiplier}</p>
-          <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+          {!isGeneral ? (
+            <>
+              <p>{item?.tweets?.length}</p>
+            </>
+          ) : (
+            <>
+              <p>x{item?.rank?.multiplier}</p>
+              <img src={points} alt="points" className="w-5 h-5 rounded-full" />
+            </>
+          )}
         </div>
         {isAdmin && (
           <span className="z-10 overflow-visible">

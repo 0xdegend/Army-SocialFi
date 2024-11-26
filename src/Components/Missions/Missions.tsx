@@ -18,10 +18,8 @@ function Missions() {
     const data = {
       name: `${campaignName}`,
       tag: `${campaignName}`,
-      winner_multiplier: 0,
-      first_place_point: 0,
-      second_place_point: 0,
-      third_place_point: 0,
+      likePoint: 100,
+      retweetPoint: 500,
     };
     try {
       const response = await dispatch(createCampaign(data)).unwrap();

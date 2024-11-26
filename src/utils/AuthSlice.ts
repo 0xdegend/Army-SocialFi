@@ -67,6 +67,15 @@ const userSlice = createSlice({
       })
       .addCase(updateAccessLevel.fulfilled, (state, { payload }) => {
         toast.success("🫡 Roger that, Soldier Level Updated");
+      })
+      .addCase(createCampaign.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Roger that, Campaign Created");
+      })
+      .addCase(addCampaignTweet.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Aye Aye, Tweet Added to Campaign");
+      })
+      .addCase(endCampaign.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Aye Aye, Campaign Ended");
       });
   },
 });
@@ -192,6 +201,24 @@ export const updateAccessLevel = createAsyncThunk(
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
+export const endCampaign = createAsyncThunk(
+  "endCampaign",
+  async ({ campaignID, ...payload }: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.get(`${url.endCampaign}${campaignID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return data;
     } catch (error: any) {
       return rejectWithValue(

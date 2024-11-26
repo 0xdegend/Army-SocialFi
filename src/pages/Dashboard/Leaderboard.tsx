@@ -9,10 +9,11 @@ import {
 } from "../../utils/mockData";
 import DashboardLayout from "../../layout/DashboardLayout";
 import { useAppDispatch } from "../../app/hook";
-import { getGeneralLeaderboard } from "../../utils/AuthSlice";
+import { getAllCampaigns, getGeneralLeaderboard } from "../../utils/AuthSlice";
 const Leaderboard = () => {
   const [updatedGeneralLeaderBoardData, setupdatedGeneralLeaderBoardData] =
     useState([]);
+  const [campaignLeaderBoard, setCampaignLeaderBoard] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
   const dispatch = useAppDispatch();
   const [isGeneral, setIsGeneral] = useState(true);
@@ -30,19 +31,38 @@ const Leaderboard = () => {
       console.log("Error fetching leaderboard data:", error);
     }
   };
+
+  const handleGetCampaignLeaderBoardData = async () => {
+    try {
+      const allCampaignsLeaderBoardData = await dispatch(
+        getAllCampaigns()
+      ).unwrap();
+
+      const sortedCampaignsData =
+        allCampaignsLeaderBoardData?.campaigns[0]?.users.sort(
+          (a, b) => b.campaignPoints - a.campaignPoints
+        );
+      setCampaignLeaderBoard(sortedCampaignsData || []);
+      console.log(sortedCampaignsData)
+    } catch (error) {
+      console.log("Error fetching campaigns data:", error);
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       setLoadingData(true);
       console.log("Fetching Leaderboard data...");
       await handleGetLeaderBoardData();
+      await handleGetCampaignLeaderBoardData();
       setLoadingData(false);
     };
     fetchData();
     console.log(updatedGeneralLeaderBoardData);
+    console.log(campaignLeaderBoard);
   }, []);
   return (
     <DashboardLayout current={2}>
-      <div className="w-full h-full overflow-x-hidden ">
+      <div className="w-full  overflow-x-hidden ">
         <div className="w-full min-h-[100vh] pt-20 xl:px-6 ">
           <OverviewContent />
           <div className="mt-8 pb-12">
@@ -69,14 +89,18 @@ const Leaderboard = () => {
               </button>
             </div>
             <div className="w-full">
-
-            {isGeneral && (
-              <LeaderboardTable
-              data={updatedGeneralLeaderBoardData}
-              isGeneral={isGeneral}
-              />
-            )}
-            {!isGeneral && <LeaderboardTable data={updatedGeneralLeaderBoardData} isGeneral={isGeneral} />}
+              {isGeneral && (
+                <LeaderboardTable
+                  data={updatedGeneralLeaderBoardData}
+                  isGeneral={isGeneral}
+                />
+              )}
+              {!isGeneral && (
+                <LeaderboardTable
+                  data={campaignLeaderBoard}
+                  isGeneral={isGeneral}
+                />
+              )}
             </div>
           </div>
         </div>
