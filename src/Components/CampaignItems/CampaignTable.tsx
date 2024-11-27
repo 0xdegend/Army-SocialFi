@@ -8,7 +8,11 @@ import { FaTimes } from "react-icons/fa";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import LoadingComponent from "../LoadingComponent/skeleton-loading";
 import ActionButton from "../utils/buttons/ActionButton";
-import { addCampaignTweet, endCampaign, getAllCampaigns } from "../../utils/AuthSlice";
+import {
+  addCampaignTweet,
+  endCampaign,
+  getAllCampaigns,
+} from "../../utils/AuthSlice";
 import Toggler from "../Toggler";
 const CampaignTable = ({ data }: { data: {}[] | any }) => {
   const [query, setQuery] = useState("");
@@ -50,7 +54,7 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
         <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
           <input
             type="text"
-            placeholder="Search Username..."
+            placeholder="Search Campaign..."
             className=" w-full border-none outline-none bg-transparent text-white "
             value={query}
             onChange={(e: any) => setQuery(e.target.value)}
@@ -94,19 +98,16 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
           </tbody>
         </table>
       </div>
-      {
-        filteredData?.length > 10 && (
-
-      <div className="w-full px-4 mt-8">
-        <Pagination
-          data={filteredData}
-          itemsPerPage={10}
-          setCurrentData={setCurrentData}
-          currentData={currentData}
-        />
-      </div>
-        )
-      }
+      {filteredData?.length > 10 && (
+        <div className="w-full px-4 mt-8">
+          <Pagination
+            data={filteredData}
+            itemsPerPage={10}
+            setCurrentData={setCurrentData}
+            currentData={currentData}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -125,7 +126,7 @@ const SingleRow = ({
   const [open, setOpen] = useState(false);
   const [endCampaignModalOpen, setEndCampaignModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [endingCampaign, setEndingCampaign] = useState(false)
+  const [endingCampaign, setEndingCampaign] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [tweetLink, setTweetLink] = useState("");
   const [tweetID, setTweetID] = useState("");
@@ -154,32 +155,33 @@ const SingleRow = ({
     try {
       const response = await dispatch(addCampaignTweet(data)).unwrap();
       console.log(response);
-      setIsLoading(false);
       //@ts-ignore
-      await dispatch(getAllCampaigns()).unwrap();
+      // const latestCampaign = await dispatch(getAllCampaigns()).unwrap();
+      // console.log(latestCampaign);
+      setIsLoading(false);
+      setOpen(false);
     } catch (error) {
       console.error("Error adding tweet:", error);
       setIsLoading(false);
+      setOpen(false);
     }
     console.log(item?._id);
-    setOpen(false);
   };
 
   const handleEndCampaign = async () => {
-    setEndingCampaign(true)
+    setEndingCampaign(true);
     const data = {
       campaignID: item?._id,
     };
-    try{
+    try {
       const response = await dispatch(endCampaign(data)).unwrap();
       console.log(response);
-      setEndingCampaign(false)
-    }catch (error){
+      setEndingCampaign(false);
+    } catch (error) {
       console.error("Error ending campaign:", error);
-      setEndingCampaign(false)
+      setEndingCampaign(false);
     }
-
-  }
+  };
 
   const handleSyncTweets = async () => {
     console.log("Synced");
