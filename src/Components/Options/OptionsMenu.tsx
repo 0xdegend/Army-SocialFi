@@ -17,7 +17,7 @@ export default function Options({ children, isLast }: OptionProps) {
     <>
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="rounded-full flex items-center text-gray-400 hover:text-gray-600 bg-black p-1 z-10">
+          <Menu.Button className="rounded-full flex items-center text-gray-400 hover:text-gray-600 bg-black p-1 z-50">
             <span className="sr-only">Open options</span>
             <span className="text-white">
               <HiDotsVertical />
@@ -36,11 +36,11 @@ export default function Options({ children, isLast }: OptionProps) {
         >
           <Menu.Items
             className={classNames(
-              "absolute top-0 right-0 mt-2 w-[200px] rounded-[15px] shadow-2xl bg-primary",
+              "absolute right-0 top-[-10px] w-[170px] rounded-[15px] shadow-2xl bg-primary z-50",
               "ring-1 ring-primary ring-opacity-5 focus:outline-none"
             )}
           >
-            <div className="py-1 z-50">{children}</div>
+            <div className="py-1">{children}</div>
           </Menu.Items>
         </Transition>
       </Menu>
