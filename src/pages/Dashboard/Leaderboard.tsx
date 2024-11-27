@@ -66,7 +66,7 @@ const Leaderboard = () => {
         <div className="w-full min-h-[100vh] pt-20 xl:px-6 ">
           <OverviewContent />
           <div className="mt-8 pb-12">
-            <div className="flex items-center justify-start font-soli mb-8 gap-5">
+            <div className="flex items-center justify-start font-inconsolata mb-8 gap-5">
               <button
                 onClick={() => setIsGeneral(true)}
                 className={`px-6 h-10 flex items-center justify-center w-fit cursor-pointer font-medium ${
@@ -75,7 +75,7 @@ const Leaderboard = () => {
                     : "text-red-500 border-[2px] border-primary rounded-md "
                 }`}
               >
-                General LeaderBoard
+                General
               </button>
               <button
                 onClick={() => setIsGeneral(false)}
@@ -85,7 +85,7 @@ const Leaderboard = () => {
                     : "text-red-500 border-[2px] border-primary rounded-md font-semibold "
                 }`}
               >
-                Campaign LeaderBoard
+                Campaign
               </button>
             </div>
             <div className="w-full">
