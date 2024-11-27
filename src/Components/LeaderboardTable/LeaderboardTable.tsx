@@ -119,6 +119,7 @@ const LeaderboardTable = ({
           </tbody>
         </table>
       </div>
+      
       <div className="w-full px-4 mt-8">
         <Pagination
           data={filteredData}

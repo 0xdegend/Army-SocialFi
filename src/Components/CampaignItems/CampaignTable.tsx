@@ -94,6 +94,9 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
           </tbody>
         </table>
       </div>
+      {
+        filteredData?.length > 10 && (
+
       <div className="w-full px-4 mt-8">
         <Pagination
           data={filteredData}
@@ -102,6 +105,8 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
           currentData={currentData}
         />
       </div>
+        )
+      }
     </div>
   );
 };
