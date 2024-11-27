@@ -155,6 +155,8 @@ const SingleRow = ({
       const response = await dispatch(addCampaignTweet(data)).unwrap();
       console.log(response);
       setIsLoading(false);
+      //@ts-ignore
+      await dispatch(getAllCampaigns()).unwrap();
     } catch (error) {
       console.error("Error adding tweet:", error);
       setIsLoading(false);

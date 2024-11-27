@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useEffect, useState } from "react";
-import mainSoldier from "../../assets/images/army-cto.PNG";
+import mainSoldier from "../../assets/images/onchain-sign-in-cto.PNG";
 import { usePrivy, useLogin } from "@privy-io/react-auth";
 import arrowDown from "../../assets/images/arrow-down.svg";
 import { useNavigate } from "react-router-dom";
@@ -170,7 +170,15 @@ const SignInContent = () => {
                   user && address ? fetchAndPostData : handleConnectTwitter
                 }
               >
-                {isUserExpired && !user
+                {!user
+                  ? isUserExpired === ""
+                    ? "X linked! Soldier, Sign in!"
+                    : "Connect Twitter"
+                  : !address
+                  ? "X linked! Soldier, Link Wallet!"
+                  : "X linked! Soldier, Sign in!"}
+
+                {/* {!isUserExpired && !user
                   ? "X linked! Soldier, Sign in!" // If userAuth exists but no user
                   : user && !address
                   ? "X linked! Soldier, Link Wallet!" // If user exists but no wallet address
@@ -178,7 +186,7 @@ const SignInContent = () => {
                   ? "X linked! Soldier, Sign in!" // If user and address both exist
                   : user
                   ? "Connected" // If user exists but other conditions are false
-                  : "Connect Twitter"}{" "}
+                  : "Connect Twitter"}{" "} */}
               </button>
 
               {!isWalletLinked && !address && (
