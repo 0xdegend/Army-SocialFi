@@ -63,7 +63,7 @@ const LeaderboardTable = ({
         <h1 className="text-white ">Search:</h1>
         <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
           <input
-          placeholder="Search Username..."
+            placeholder="Search Username..."
             type="text"
             className=" w-full border-none outline-none bg-transparent text-white "
             value={query}
@@ -119,15 +119,16 @@ const LeaderboardTable = ({
           </tbody>
         </table>
       </div>
-      
-      <div className="w-full px-4 mt-8">
-        <Pagination
-          data={filteredData}
-          itemsPerPage={10}
-          setCurrentData={setCurrentData}
-          currentData={currentData}
-        />
-      </div>
+      {data?.length > 10 && (
+        <div className="w-full px-4 mt-8">
+          <Pagination
+            data={filteredData}
+            itemsPerPage={10}
+            setCurrentData={setCurrentData}
+            currentData={currentData}
+          />
+        </div>
+      )}
     </div>
   );
 };
