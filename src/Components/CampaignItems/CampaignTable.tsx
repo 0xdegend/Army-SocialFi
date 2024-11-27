@@ -59,7 +59,7 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
       </div>
       {/* end of input space */}
       <div className="w-full flow-hide-x">
-        <table className="table-fixed min-w-max lg:min-w-full">
+        <table className="table-fixed min-w-max lg:min-w-full lg:min-h-[140px]">
           <thead className="w-full bg-secondary   h-12 flex items-center rounded-md ">
             <tr className="w-full grid grid-cols-4   text-white place-items-center   px-4 gap-2 ">
               <th className=" w-full flex justify-start">Campaign Name</th>

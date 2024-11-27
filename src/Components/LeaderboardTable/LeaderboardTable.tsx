@@ -63,7 +63,7 @@ const LeaderboardTable = ({
         <h1 className="text-white ">Search:</h1>
         <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
           <input
-          placeholder="Search Username..."
+            placeholder="Search Username..."
             type="text"
             className=" w-full border-none outline-none bg-transparent text-white "
             value={query}
@@ -73,7 +73,7 @@ const LeaderboardTable = ({
       </div>
       {/* end of input space */}
       <div className="w-full flow-hide-x">
-        <table className="table-auto  lg:min-w-full w-full min-w-[700px]">
+        <table className="table-auto lg:min-h-[220px]  lg:min-w-full w-full min-w-[700px]">
           <thead className="w-full bg-secondary h-12 flex items-center rounded-md  ">
             <tr className="w-full grid grid-cols-4 text-white place-items-center   px-4 gap-2 min-w-full ">
               <th className=" w-full flex justify-start">Rank</th>
@@ -119,15 +119,16 @@ const LeaderboardTable = ({
           </tbody>
         </table>
       </div>
-      
-      <div className="w-full px-4 mt-8">
-        <Pagination
-          data={filteredData}
-          itemsPerPage={10}
-          setCurrentData={setCurrentData}
-          currentData={currentData}
-        />
-      </div>
+      {data?.length > 10 && (
+        <div className="w-full px-4 mt-8">
+          <Pagination
+            data={filteredData}
+            itemsPerPage={10}
+            setCurrentData={setCurrentData}
+            currentData={currentData}
+          />
+        </div>
+      )}
     </div>
   );
 };
