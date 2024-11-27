@@ -128,7 +128,7 @@ const SignInContent = () => {
       navigate("/dashboard");
     } catch (error) {
       console.error("Error in fetchAndPostData:", error);
-      logout();
+      //logout();
     } finally {
       setPageLoading(false);
     }

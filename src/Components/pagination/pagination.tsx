@@ -102,7 +102,7 @@ const Pagination = ({ data, itemsPerPage, setCurrentData }: paginationData) => {
           <button
             disabled={currentPage === pages.length}
             onClick={goToNextPage}
-          >
+          > 
             <div className="flex flex-row gap-1 items-center border border-[#DFC865] py-1 px-6 rounded-[50px] text-white">
               <p className="text-white ">Next</p>
               <IoIosArrowForward />

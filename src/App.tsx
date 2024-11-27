@@ -56,13 +56,43 @@ function App() {
                     <Dashboard />
                   </ProtectedRoute>
                 }
-              >
-              </Route>
-                {/* <Route path="/sksks" element={<Overview />} /> */}
-                <Route path="/leaderboard" element={<Leaderboard />} />
-                <Route path="/campaigns" element={<Campaigns />} />
-                <Route path="/meme-bank" element={<MemeBankPage />} />
-                <Route path="/my-points" element={<MyPointsPage />} />
+              ></Route>
+
+              <Route
+                path="/leaderboard"
+                element={
+                  <ProtectedRoute>
+                    {" "}
+                    <Leaderboard />{" "}
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/campaigns"
+                element={
+                  <ProtectedRoute>
+                    <Campaigns />{" "}
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/meme-bank"
+                element={
+                  <ProtectedRoute>
+                    {" "}
+                    <MemeBankPage />{" "}
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-points"
+                element={
+                  <ProtectedRoute>
+                    {" "}
+                    <MyPointsPage />{" "}
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </Router>
         </PrivyProvider>
