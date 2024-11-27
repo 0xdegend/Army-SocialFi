@@ -48,6 +48,7 @@ function SideBar() {
   const { logout } = usePrivy();
   const navigate = useNavigate();
   const handleLogout = () => {
+    localStorage.setItem("userAuth", "");
     logout();
     navigate("/");
   };
