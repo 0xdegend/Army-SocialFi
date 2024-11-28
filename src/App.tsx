@@ -14,7 +14,7 @@ import LoadingOverlay from "./Components/LoadingOverlay/LoadingOverlay";
 import MemeBankPage from "./pages/MemeBank";
 import MyPointsPage from "./pages/Points/MyPoints";
 import Campaigns from "./pages/Campaign";
-
+import { usePrivy } from "@privy-io/react-auth";
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
   shouldAutoConnect: true,
@@ -26,6 +26,10 @@ if (!window.Buffer) {
   window.Buffer = Buffer;
 }
 function App() {
+  const { user, logout } = usePrivy();
+  const isAuthenticated = user && user.twitter?.username;
+  const hasSolanaWallet = user?.wallet?.chainType === "solana";
+  const userAuth = localStorage.getItem("userAuth");
   return (
     <>
       <ConnectionProvider endpoint={endpoint}>
@@ -49,50 +53,51 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<SignIn />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              ></Route>
-
-              <Route
-                path="/leaderboard"
-                element={
-                  <ProtectedRoute>
-                    {" "}
-                    <Leaderboard />{" "}
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/campaigns"
-                element={
-                  <ProtectedRoute>
-                    <Campaigns />{" "}
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/meme-bank"
-                element={
-                  <ProtectedRoute>
-                    {" "}
-                    <MemeBankPage />{" "}
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/my-points"
-                element={
-                  <ProtectedRoute>
-                    {" "}
-                    <MyPointsPage />{" "}
-                  </ProtectedRoute>
-                }
-              />
+              <>
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                ></Route>
+                <Route
+                  path="/leaderboard"
+                  element={
+                    <ProtectedRoute>
+                      {" "}
+                      <Leaderboard />{" "}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/campaigns"
+                  element={
+                    <ProtectedRoute>
+                      <Campaigns />{" "}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/meme-bank"
+                  element={
+                    <ProtectedRoute>
+                      {" "}
+                      <MemeBankPage />{" "}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/my-points"
+                  element={
+                    <ProtectedRoute>
+                      {" "}
+                      <MyPointsPage />{" "}
+                    </ProtectedRoute>
+                  }
+                />
+              </>
             </Routes>
           </Router>
         </PrivyProvider>
