@@ -49,10 +49,20 @@ const LeaderboardTable = ({
     }
   }, [query, data, userData]);
 
+
   useEffect(() => {
     setIsLoading(true);
+  
     if (data?.length > 0) {
-      setCurrentData(data);
+      const sortedData = [...data]?.sort((a, b) => {
+        // Compare points first
+        if (b?.points !== a?.points) {
+          return b?.points - a?.points;
+        }
+        // If points are equal, compare rank multiplier
+        return b?.rank.multiplier - a?.rank.multiplier;
+      });
+      setCurrentData(sortedData);
       setIsLoading(false);
     }
   }, [data]);
