@@ -75,7 +75,11 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={twitterIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
+                <img
+                  src={twitterIcon}
+                  alt=""
+                  className="lg:w-[40px] w-6 h-auto"
+                />
               </a>
             </div>
             <div>
@@ -84,7 +88,11 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={telegramIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
+                <img
+                  src={telegramIcon}
+                  alt=""
+                  className="lg:w-[40px] w-6 h-auto"
+                />
               </a>
             </div>
             <div>
@@ -93,7 +101,11 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={dexscreenerIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
+                <img
+                  src={dexscreenerIcon}
+                  alt=""
+                  className="lg:w-[40px] w-6 h-auto"
+                />
               </a>
             </div>
             <div>
@@ -102,7 +114,11 @@ const OverviewContent = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={coingeckoIcon} alt="" className="lg:w-[40px] w-6 h-auto" />
+                <img
+                  src={coingeckoIcon}
+                  alt=""
+                  className="lg:w-[40px] w-6 h-auto"
+                />
               </a>
             </div>
             <div>
@@ -116,7 +132,17 @@ const OverviewContent = () => {
             </div>
           </div>
           <div>
-            <button className="font-soli sign-in-button ">Buy $ARMY</button>
+            <button
+              className="font-soli sign-in-button "
+              onClick={() => {
+                window.open(
+                  "https://jup.ag/swap/SOL-ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC",
+                  "_blank"
+                );
+              }}
+            >
+              Buy $ARMY
+            </button>
           </div>
         </div>
       </div>
