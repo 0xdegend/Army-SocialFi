@@ -28,6 +28,7 @@ const OverviewContent = () => {
   const [loopNum, setLoopNum] = useState<number>(0);
   const [typingSpeed, setTypingSpeed] = useState<number>(50);
   const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
   const armyText = [
     `Welcome to Barracks, ${rankName}🪖`,
     "You’ve joined an unstoppable force—$ARMY.",
@@ -44,8 +45,14 @@ const OverviewContent = () => {
 
     const handleTyping = () => {
       if (!isDeleting && displayText === armyText[index]) {
-        // Pause when typing is complete
-        setTimeout(() => setIsDeleting(true), 500);
+        // Pause when typing is complete for the current string
+        if (index === armyText.length - 1) {
+          // If it's the last string, mark typing as complete
+          setIsTypingActive(false);
+          setIsTypingComplete(true);
+        } else {
+          setTimeout(() => setIsDeleting(true), 500);
+        }
       } else if (isDeleting && displayText === "") {
         // Move to the next string
         setIsDeleting(false);
@@ -216,7 +223,7 @@ const OverviewContent = () => {
       <ReUseModal open={open} setOpen={setOpen}>
         <div className="w-full flex flex-col">
           <div className="flex items-center justify-between">
-            <h1 className="text-white font-inconsolata text-3xl mb-8">
+            <h1 className="text-white font-inconsolata text-3xl mb-8 font-bold">
               Claim Points!
             </h1>
             <span
@@ -229,13 +236,15 @@ const OverviewContent = () => {
               <FaTimes />
             </span>
           </div>
-          <h1 className="text-white  text-xl sm:text-2xl  xl:text-3xl  font-bold red-hat xl:leading-[40px]  ">
+          <h1 className="text-white  text-xl sm:text-1xl  xl:text-2xl font-bold red-hat xl:leading-[40px]  ">
             <span className="text-white font-inconsolata">{displayText}</span>
             <span className="border-r-0 border-white text-white animate-blink font-inconsolata">
               _
             </span>
           </h1>
-          <button className="sign-in-button font-soli mt-6">Tweet Now</button>
+          {isTypingComplete && (
+            <button className="sign-in-button font-soli mt-6">Tweet Now</button>
+          )}
         </div>
       </ReUseModal>
     </div>
