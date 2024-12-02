@@ -83,7 +83,7 @@ const OverviewContent = () => {
     setConfirmTweet(true);
 
     // Pre-fill tweet message (optional)
-    const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy https://army-barrack.vercel.app/`;
+    const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy\n\nhttps://army-barrack.vercel.app/`;
     const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       tweetMessage
     )}`;

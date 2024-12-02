@@ -7,7 +7,7 @@ import { generalLeaderBoardData } from "../../utils/mockData";
 import { useAppDispatch } from "../../app/hook";
 import { getGeneralLeaderboard } from "../../utils/AuthSlice";
 function PointsOverview() {
-  const [loadingData, setLoadingData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isGeneral, setIsGeneral] = useState(true);
   const [leaderboardData, setLeaderBoardData] = useState([]);
   const dispatch = useAppDispatch();
@@ -17,23 +17,32 @@ function PointsOverview() {
       const generalLeaderBoardData = await dispatch(
         getGeneralLeaderboard()
       ).unwrap();
-      setLeaderBoardData(generalLeaderBoardData?.leaderboard || []);
-      console.log(generalLeaderBoardData);
+      if (generalLeaderBoardData?.leaderboard?.length > 0) {
+        const leaderboardCopy = [...generalLeaderBoardData.leaderboard];
+        const sortedData = leaderboardCopy.sort((a, b) => {
+          // Compare points first
+          if (b?.points !== a?.points) {
+            return b.points - a.points;
+          }
+          // If points are equal, compare rank multiplier
+          return b.rank.multiplier - a.rank.multiplier;
+        });
+        console.log("Sorted General Leaderboard Data:", sortedData);
+        setLeaderBoardData(sortedData);
+      }
     } catch (error) {
       console.log("Error fetching leaderboard data:", error);
     }
   };
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
-      setLoadingData(true);
       console.log("Fetching Leaderboard data...");
       await handleGetLeaderBoardData();
-      setLoadingData(false);
     };
+    setIsLoading(false);
     fetchData();
-    console.log(leaderboardData);
-    console.log(isGeneral);
-  }, []);
+  }, [leaderboardData]);
   return (
     <>
       <div className="flex justify-around items-center flex-col lg:flex-row ">
