@@ -128,9 +128,6 @@ const SignInContent = () => {
       navigate("/dashboard");
     } catch (error) {
       console.error("Error in fetchAndPostData:", error);
-      // Just for error fix
-      localStorage.removeItem("userAuth");
-      localStorage.removeItem("walletLinked");
       //logout();
     } finally {
       setPageLoading(false);
