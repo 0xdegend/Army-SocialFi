@@ -7,16 +7,21 @@ import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./Guard/Guard";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import WalletBallance from "./Components/WalletBallance/WalletBallance";
-import Overview from "./Components/Overview/Overview";
 import Leaderboard from "./pages/Dashboard/Leaderboard";
-import LoadingOverlay from "./Components/LoadingOverlay/LoadingOverlay";
 import MemeBankPage from "./pages/MemeBank";
 import MyPointsPage from "./pages/Points/MyPoints";
+import { LedgerWalletAdapter } from "@solana/wallet-adapter-ledger";
 import Campaigns from "./pages/Campaign";
 import { usePrivy } from "@privy-io/react-auth";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 const solanaConnectors = toSolanaWalletConnectors({
   // By default, shouldAutoConnect is enabled
+  connectors: [
+    new LedgerWalletAdapter({
+      network: WalletAdapterNetwork.Mainnet,
+      timeout: 10000, // optional
+    }),
+  ],
   shouldAutoConnect: true,
 });
 

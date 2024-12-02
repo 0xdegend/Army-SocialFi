@@ -23,12 +23,25 @@ const Leaderboard = () => {
       const generalLeaderBoardData = await dispatch(
         getGeneralLeaderboard()
       ).unwrap();
-      setupdatedGeneralLeaderBoardData(
-        generalLeaderBoardData?.leaderboard || []
-      );
-      console.log(generalLeaderBoardData);
+
+      console.log("Raw General Leaderboard Data:", generalLeaderBoardData);
+
+      if (generalLeaderBoardData?.leaderboard?.length > 0) {
+        const leaderboardCopy = [...generalLeaderBoardData.leaderboard];
+        const sortedData = leaderboardCopy.sort((a, b) => {
+          // Compare points first
+          if (b?.points !== a?.points) {
+            return b.points - a.points;
+          }
+          // If points are equal, compare rank multiplier
+          return b.rank.multiplier - a.rank.multiplier;
+        });
+
+        console.log("Sorted General Leaderboard Data:", sortedData);
+        setupdatedGeneralLeaderBoardData(sortedData);
+      }
     } catch (error) {
-      console.log("Error fetching leaderboard data:", error);
+      console.error("Error fetching leaderboard data:", error);
     }
   };
 
@@ -43,7 +56,7 @@ const Leaderboard = () => {
           (a, b) => b.campaignPoints - a.campaignPoints
         );
       setCampaignLeaderBoard(sortedCampaignsData || []);
-      console.log(sortedCampaignsData)
+      console.log(sortedCampaignsData);
     } catch (error) {
       console.log("Error fetching campaigns data:", error);
     }
@@ -59,7 +72,7 @@ const Leaderboard = () => {
     fetchData();
     console.log(updatedGeneralLeaderBoardData);
     console.log(campaignLeaderBoard);
-  }, []);
+  }, [updatedGeneralLeaderBoardData]);
   return (
     <DashboardLayout current={2}>
       <div className="w-full  overflow-x-hidden ">
