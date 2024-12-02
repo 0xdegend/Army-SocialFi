@@ -26,41 +26,50 @@ const OverviewContent = () => {
   const [index, setIndex] = useState<number>(0);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [loopNum, setLoopNum] = useState<number>(0);
-  const [typingSpeed, setTypingSpeed] = useState<number>(450);
-  const langs = [
-    "Welcome to Barracks Soldier",
-    "English",
-    "Spanish",
-    "Hausa",
-    "Igbo",
-    "Chinese",
+  const [typingSpeed, setTypingSpeed] = useState<number>(50);
+  const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
+  const armyText = [
+    `Welcome to Barracks, ${rankName}🪖`,
+    "You’ve joined an unstoppable force—$ARMY.",
+    "The Dev team left, but the community didn't.",
+    "We didn’t falter—we picked up the banner, united, and kept building. 💪",
+    "Here in the Army Barracks, every soldier is a leader. ",
+    "Welcome to the revolution.",
+    " Welcome to $ARMY.",
+    "The mission has just begun.🚀",
   ];
-  useEffect(() => {
-    let typingTimeout: NodeJS.Timeout;
 
-    if (!isDeleting && displayText === langs[index]) {
-      typingTimeout = setTimeout(() => setIsDeleting(true), 1000); // Pause at end of word
-    } else if (isDeleting && displayText === "") {
-      setIsDeleting(false);
-      setIndex((prevIndex) => (prevIndex + 1) % langs.length); // Move to next language
-    } else {
-      typingTimeout = setTimeout(() => {
+  useEffect(() => {
+    if (!isTypingActive) return;
+
+    const handleTyping = () => {
+      if (!isDeleting && displayText === armyText[index]) {
+        // Pause when typing is complete
+        setTimeout(() => setIsDeleting(true), 500);
+      } else if (isDeleting && displayText === "") {
+        // Move to the next string
+        setIsDeleting(false);
+        setIndex((prevIndex) => (prevIndex + 1) % armyText.length);
+      } else {
+        // Update the display text
         const nextDisplayText = isDeleting
-          ? langs[index].substring(0, displayText.length - 1)
-          : langs[index].substring(0, displayText.length + 1);
+          ? armyText[index].substring(0, displayText.length - 1)
+          : armyText[index].substring(0, displayText.length + 1);
 
         setDisplayText(nextDisplayText);
 
-        if (!isDeleting && nextDisplayText === langs[index]) {
-          setTypingSpeed(150); // Pause after typing the word
+        if (!isDeleting && nextDisplayText === armyText[index]) {
+          setTypingSpeed(500); // Pause at the end of the word
         } else {
-          setTypingSpeed(isDeleting ? 75 : 150);
+          setTypingSpeed(isDeleting ? 30 : 50); // Typing and deleting speeds
         }
-      }, typingSpeed);
-    }
+      }
+    };
 
-    return () => clearTimeout(typingTimeout);
-  }, [displayText, isDeleting, index, typingSpeed]);
+    const interval = setInterval(handleTyping, typingSpeed);
+
+    return () => clearInterval(interval); // Cleanup interval
+  }, [isDeleting, displayText, index, typingSpeed, isTypingActive]);
 
   //@ts-ignore
   const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
@@ -182,7 +191,10 @@ const OverviewContent = () => {
             <div className="flex items-center gap-4">
               <button
                 className="font-soli button-56 "
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                  setOpen(true);
+                  setIsTypingActive(true);
+                }}
               >
                 Claim
               </button>
@@ -204,20 +216,23 @@ const OverviewContent = () => {
       <ReUseModal open={open} setOpen={setOpen}>
         <div className="w-full flex flex-col">
           <div className="flex items-center justify-between">
-            <h1 className="text-white font-inconsolata text-2xl">
+            <h1 className="text-white font-inconsolata text-3xl mb-8">
               Claim Points!
             </h1>
             <span
               className="text-secondary text-xl cursor-pointer"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                setIsTypingActive(false);
+                setOpen(false);
+              }}
             >
               <FaTimes />
             </span>
           </div>
-          <h1 className="text-white  text-xl sm:text-2xl  xl:text-3xl  font-bold red-hat xl:leading-[60px]  ">
+          <h1 className="text-white  text-xl sm:text-2xl  xl:text-3xl  font-bold red-hat xl:leading-[40px]  ">
             <span className="text-white font-inconsolata">{displayText}</span>
-            <span className="border-r-0 border-white text-white animate-blink">
-              |
+            <span className="border-r-0 border-white text-white animate-blink font-inconsolata">
+              _
             </span>
           </h1>
           <button className="sign-in-button font-soli mt-6">Tweet Now</button>
