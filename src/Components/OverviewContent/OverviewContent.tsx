@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import camoImage from "../../assets/images/camo-background.svg";
 import twitterIcon from "../../assets/images/twitter-icon.svg";
 //@ts-ignore
@@ -12,12 +12,56 @@ import rankIcons from "../../utils/rankIcons";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import { store } from "../../app/store";
 import { truncateWalletAddress } from "../../utils";
+import ReUseModal from "../Modal/ReuseableModal";
+import { FaTimes } from "react-icons/fa";
+import ActionButton from "../utils/buttons/ActionButton";
 
 const OverviewContent = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
   const { user } = usePrivy();
+  const [open, setOpen] = useState(false);
   const rankName = userData?.userMainData?.rank?.name;
+  const [displayText, setDisplayText] = useState<string>("");
+  const [index, setIndex] = useState<number>(0);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [loopNum, setLoopNum] = useState<number>(0);
+  const [typingSpeed, setTypingSpeed] = useState<number>(450);
+  const langs = [
+    "Welcome to Barracks Soldier",
+    "English",
+    "Spanish",
+    "Hausa",
+    "Igbo",
+    "Chinese",
+  ];
+  useEffect(() => {
+    let typingTimeout: NodeJS.Timeout;
+
+    if (!isDeleting && displayText === langs[index]) {
+      typingTimeout = setTimeout(() => setIsDeleting(true), 1000); // Pause at end of word
+    } else if (isDeleting && displayText === "") {
+      setIsDeleting(false);
+      setIndex((prevIndex) => (prevIndex + 1) % langs.length); // Move to next language
+    } else {
+      typingTimeout = setTimeout(() => {
+        const nextDisplayText = isDeleting
+          ? langs[index].substring(0, displayText.length - 1)
+          : langs[index].substring(0, displayText.length + 1);
+
+        setDisplayText(nextDisplayText);
+
+        if (!isDeleting && nextDisplayText === langs[index]) {
+          setTypingSpeed(150); // Pause after typing the word
+        } else {
+          setTypingSpeed(isDeleting ? 75 : 150);
+        }
+      }, typingSpeed);
+    }
+
+    return () => clearTimeout(typingTimeout);
+  }, [displayText, isDeleting, index, typingSpeed]);
+
   //@ts-ignore
   const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
   return (
@@ -131,21 +175,54 @@ const OverviewContent = () => {
               </a>
             </div>
           </div>
-          <div>
-            <button
-              className="font-soli sign-in-button "
-              onClick={() => {
-                window.open(
-                  "https://jup.ag/swap/SOL-ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC",
-                  "_blank"
-                );
-              }}
-            >
-              Buy $ARMY
-            </button>
+          <div className="flex flex-col">
+            <p className="text-customYellow text-opacity-60 font-inconsolata text-[20px] mt-3 text-center mb-5">
+              Claim 100 points
+            </p>
+            <div className="flex items-center gap-4">
+              <button
+                className="font-soli button-56 "
+                onClick={() => setOpen(true)}
+              >
+                Claim
+              </button>
+              <button
+                className="font-soli sign-in-button "
+                onClick={() => {
+                  window.open(
+                    "https://jup.ag/swap/SOL-ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC",
+                    "_blank"
+                  );
+                }}
+              >
+                Buy $ARMY
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <ReUseModal open={open} setOpen={setOpen}>
+        <div className="w-full flex flex-col">
+          <div className="flex items-center justify-between">
+            <h1 className="text-white font-inconsolata text-2xl">
+              Claim Points!
+            </h1>
+            <span
+              className="text-secondary text-xl cursor-pointer"
+              onClick={() => setOpen(false)}
+            >
+              <FaTimes />
+            </span>
+          </div>
+          <h1 className="text-white  text-xl sm:text-2xl  xl:text-3xl  font-bold red-hat xl:leading-[60px]  ">
+            <span className="text-white font-inconsolata">{displayText}</span>
+            <span className="border-r-0 border-white text-white animate-blink">
+              |
+            </span>
+          </h1>
+          <button className="sign-in-button font-soli mt-6">Tweet Now</button>
+        </div>
+      </ReUseModal>
     </div>
   );
 };
