@@ -59,7 +59,7 @@ const LeaderboardTable = ({
           return b?.points - a?.points;
         }
         // If points are equal, compare rank multiplier
-        return b?.rank.multiplier - a?.rank.multiplier;
+        return b?.rank?.multiplier - a?.rank?.multiplier;
       });
       setCurrentData(sortedData);
       setIsLoading(false);
