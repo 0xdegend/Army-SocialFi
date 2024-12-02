@@ -49,10 +49,9 @@ const LeaderboardTable = ({
     }
   }, [query, data, userData]);
 
-
   useEffect(() => {
     setIsLoading(true);
-  
+
     if (data?.length > 0) {
       const sortedData = [...data]?.sort((a, b) => {
         // Compare points first
@@ -83,7 +82,7 @@ const LeaderboardTable = ({
       </div>
       {/* end of input space */}
       <div className="w-full flow-hide-x">
-        <table className="table-auto lg:min-h-[220px]  lg:min-w-full w-full min-w-[700px]">
+        <table className="table-auto lg:min-h-[200px]  lg:min-w-full w-full min-w-[700px]">
           <thead className="w-full bg-secondary h-12 flex items-center rounded-md  ">
             <tr className="w-full grid grid-cols-4 text-white place-items-center   px-4 gap-2 min-w-full ">
               <th className=" w-full flex justify-start">Rank</th>
@@ -102,8 +101,14 @@ const LeaderboardTable = ({
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">
-            {currentData.length > 0 ? (
-              currentData.map((item: any, index: number) => (
+            {isLoading ? (
+              <tr>
+                <td colSpan={5} className="text-center">
+                  <LoadingComponent />
+                </td>
+              </tr>
+            ) : currentData?.length > 0 ? (
+              currentData?.map((item, index) => (
                 <SingleRow
                   item={item}
                   index={index}
@@ -114,15 +119,9 @@ const LeaderboardTable = ({
                 />
               ))
             ) : (
-              <tr className="w-full">
+              <tr>
                 <td colSpan={5} className="text-center">
-                  {isLoading ? (
-                    <>
-                      <LoadingComponent />
-                    </>
-                  ) : (
-                    "No leaderboard data available."
-                  )}
+                  No leaderboard data available.
                 </td>
               </tr>
             )}
