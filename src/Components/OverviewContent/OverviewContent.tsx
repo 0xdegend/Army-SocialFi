@@ -26,6 +26,7 @@ const OverviewContent = () => {
   const [index, setIndex] = useState<number>(0);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [loopNum, setLoopNum] = useState<number>(0);
+  const [confirmTweet, setConfirmTweet] = useState<boolean>(false);
   const [typingSpeed, setTypingSpeed] = useState<number>(50);
   const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
@@ -77,6 +78,25 @@ const OverviewContent = () => {
 
     return () => clearInterval(interval); // Cleanup interval
   }, [isDeleting, displayText, index, typingSpeed, isTypingActive]);
+
+  const handleTweetLaunch = () => {
+    setConfirmTweet(true);
+
+    // Pre-fill tweet message (optional)
+    const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy
+    https://army-barrack.vercel.app/`;
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      tweetMessage
+    )}`;
+
+    const tweetWindow = window.open(tweetUrl, "_blank");
+    if (tweetWindow) {
+      tweetWindow.focus();
+    }
+
+    console.log("Tweeted");
+    setConfirmTweet(false);
+  };
 
   //@ts-ignore
   const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
@@ -193,7 +213,7 @@ const OverviewContent = () => {
           </div>
           <div className="flex flex-col">
             <p className="text-customYellow text-opacity-60 font-inconsolata text-[20px] mt-3 text-center mb-5">
-              Claim 100 points
+              Claim Your 100 $ARMY points
             </p>
             <div className="flex items-center gap-4">
               <button
@@ -243,7 +263,13 @@ const OverviewContent = () => {
             </span>
           </h1>
           {isTypingComplete && (
-            <button className="sign-in-button font-soli mt-6">Tweet Now</button>
+            <ActionButton
+              isLoading={confirmTweet}
+              isValid={confirmTweet}
+              onPress={handleTweetLaunch}
+              text={"Tweet Now"}
+              buttonType="sign-in-button"
+            />
           )}
         </div>
       </ReUseModal>
