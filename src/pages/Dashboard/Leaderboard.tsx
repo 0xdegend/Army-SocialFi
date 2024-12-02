@@ -31,10 +31,10 @@ const Leaderboard = () => {
         const sortedData = leaderboardCopy.sort((a, b) => {
           // Compare points first
           if (b?.points !== a?.points) {
-            return b.points - a.points;
+            return b?.points - a?.points;
           }
           // If points are equal, compare rank multiplier
-          return b.rank.multiplier - a.rank.multiplier;
+          return b?.rank?.multiplier - a?.rank?.multiplier;
         });
 
         console.log("Sorted General Leaderboard Data:", sortedData);
@@ -72,7 +72,7 @@ const Leaderboard = () => {
     fetchData();
     console.log(updatedGeneralLeaderBoardData);
     console.log(campaignLeaderBoard);
-  }, [updatedGeneralLeaderBoardData]);
+  }, []);
   return (
     <DashboardLayout current={2}>
       <div className="w-full  overflow-x-hidden ">
