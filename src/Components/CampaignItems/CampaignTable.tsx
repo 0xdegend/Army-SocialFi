@@ -53,6 +53,7 @@ const CampaignTable = ({
     }
   }, [data]);
 
+
   return (
     <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide">
       <div className="flex items-center gap-5 mb-4 ">

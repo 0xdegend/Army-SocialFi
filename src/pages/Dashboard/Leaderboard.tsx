@@ -42,11 +42,20 @@ const Leaderboard = () => {
         getAllCampaigns()
       ).unwrap();
 
-      const sortedCampaignsData =
-        allCampaignsLeaderBoardData?.campaigns[0]?.users.sort(
-          (a, b) => b.campaignPoints - a.campaignPoints
-        );
-      setCampaignLeaderBoard(sortedCampaignsData || []);
+      if (allCampaignsLeaderBoardData?.campaigns[0]?.users.length > 0) {
+        const leaderboardCopy = [
+          ...allCampaignsLeaderBoardData?.campaigns[0]?.users,
+        ];
+        const sortedData = leaderboardCopy.sort((a, b) => {
+          // Compare points first
+          if (b?.campaignPoints !== a?.campaignPoints) {
+            return b?.campaignPoints - a?.campaignPoints;
+          }
+          // If points are equal, compare rank multiplier
+          return b.userId?.rank?.multiplier - a.userId?.rank?.multiplier;
+        });
+        setCampaignLeaderBoard(sortedData || []);
+      }
     } catch (error) {
       console.log("Error fetching campaigns data:", error);
     }
@@ -60,8 +69,8 @@ const Leaderboard = () => {
       setLoadingData(false);
     };
     fetchData();
-    console.log(updatedGeneralLeaderBoardData);
-    console.log(campaignLeaderBoard);
+    // console.log(updatedGeneralLeaderBoardData);
+    // console.log(campaignLeaderBoard);
   }, []);
   return (
     <DashboardLayout current={2}>
