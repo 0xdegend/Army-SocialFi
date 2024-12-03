@@ -35,14 +35,14 @@ function PointsOverview() {
     }
   };
   useEffect(() => {
-    setIsLoading(true);
     const fetchData = async () => {
+      setIsLoading(true);
       console.log("Fetching Leaderboard data...");
       await handleGetLeaderBoardData();
+      setIsLoading(false);
     };
-    setIsLoading(false);
     fetchData();
-  }, [leaderboardData]);
+  }, []);
   return (
     <>
       <div className="flex justify-around items-center flex-col lg:flex-row ">
@@ -50,7 +50,11 @@ function PointsOverview() {
         <Missions />
       </div>
       <div className="mt-5 pb-4">
-        <LeaderboardTable data={leaderboardData} isGeneral={isGeneral} />
+        <LeaderboardTable
+          data={leaderboardData}
+          isGeneral={isGeneral}
+          isLoading={isLoading}
+        />
       </div>
     </>
   );

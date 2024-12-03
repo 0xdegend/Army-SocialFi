@@ -15,6 +15,7 @@ import { truncateWalletAddress } from "../../utils";
 import ReUseModal from "../Modal/ReuseableModal";
 import { FaTimes } from "react-icons/fa";
 import ActionButton from "../utils/buttons/ActionButton";
+import { claimWelcomePoints } from "../../utils/AuthSlice";
 
 const OverviewContent = () => {
   const dispatch = useAppDispatch();
@@ -31,13 +32,11 @@ const OverviewContent = () => {
   const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const armyText = [
-    `Welcome to Barracks, ${rankName}🪖`,
-    "You’ve joined an unstoppable force—$ARMY.",
+    `Welcome to Barrack, ${rankName}🪖`,
     "The Dev team left, but the community didn't.",
     "We didn’t falter—we picked up the banner, united, and kept building. 💪",
-    "Here in the Army Barracks, every soldier is a leader. ",
-    "Welcome to the revolution.",
-    " Welcome to $ARMY.",
+    "Welcome to the revolution.🫡",
+    "Welcome to $ARMY.🪖",
     "The mission has just begun.🚀",
   ];
 
@@ -79,18 +78,52 @@ const OverviewContent = () => {
     return () => clearInterval(interval); // Cleanup interval
   }, [isDeleting, displayText, index, typingSpeed, isTypingActive]);
 
-  const handleTweetLaunch = () => {
-    setConfirmTweet(true);
+  const handleTweetLaunch = async () => {
+    console.log();
+    const data = {
+      userID: `${userData?.userMainData?._id}`,
+    };
 
-    // Pre-fill tweet message (optional)
-    const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy\n\nhttps://army-barrack.vercel.app/`;
-    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      tweetMessage
-    )}`;
+    try {
+      // Pre-fill tweet message
+      const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy\n\nhttps://army-barrack.vercel.app/`;
+      const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        tweetMessage
+      )}`;
+      const tweetWindow = window.open(tweetUrl, "_blank");
 
-    const tweetWindow = window.open(tweetUrl, "_blank");
-    if (tweetWindow) {
-      tweetWindow.focus();
+      if (tweetWindow) {
+        tweetWindow.focus();
+
+        // Poll for window closure
+        const pollTimer = setInterval(() => {
+          if (tweetWindow.closed) {
+            clearInterval(pollTimer); // Stop polling
+            console.log("Tweet window closed");
+
+            // Set loading state before calling the endpoint
+            setConfirmTweet(true);
+
+            // Call the endpoint after the tweet window closes
+            dispatch(claimWelcomePoints(data))
+              .unwrap()
+              .then((response) => {
+                console.log("Claimed welcome points:", response);
+              })
+              .catch((error) => {
+                console.log("Error claiming welcome points:", error);
+              })
+              .finally(() => {
+                // Reset loading state after the endpoint call is complete
+                setConfirmTweet(false);
+              });
+          }
+        }, 500); // Poll every 500ms
+      } else {
+        console.error("Failed to open tweet window.");
+      }
+    } catch (error) {
+      console.log(error);
     }
 
     console.log("Tweeted");
@@ -221,8 +254,11 @@ const OverviewContent = () => {
                   setOpen(true);
                   setIsTypingActive(true);
                 }}
+                disabled={userData?.userMainData?.bonusPointsAwarded}
               >
-                Claim
+                {userData?.userMainData?.bonusPointsAwarded
+                  ? "Claimed"
+                  : "Claim"}
               </button>
               <button
                 className="font-soli sign-in-button "
@@ -266,7 +302,7 @@ const OverviewContent = () => {
               isLoading={confirmTweet}
               isValid={confirmTweet}
               onPress={handleTweetLaunch}
-              text={"Tweet Now"}
+              text={confirmTweet ? "Tweeting..." : "Tweet Now"}
               buttonType="sign-in-button"
             />
           )}

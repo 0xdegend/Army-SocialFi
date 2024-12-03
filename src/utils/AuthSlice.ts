@@ -76,6 +76,9 @@ const userSlice = createSlice({
       })
       .addCase(endCampaign.fulfilled, (state, { payload }) => {
         toast.success("🫡 Aye Aye, Campaign Ended");
+      })
+      .addCase(claimWelcomePoints.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Welcome Points Claimed");
       });
   },
 });
@@ -217,6 +220,24 @@ export const endCampaign = createAsyncThunk(
     const token = localStorage.getItem("userAuth");
     try {
       const { data } = await APIService.get(`${url.endCampaign}${campaignID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
+export const claimWelcomePoints = createAsyncThunk(
+  "claimWelcomePoints",
+  async ({ userID, ...payload }: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.get(`${url.welcomePoints}${userID}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data;

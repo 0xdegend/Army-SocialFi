@@ -3,10 +3,6 @@ import { useState, useEffect } from "react";
 import LeaderboardTable from "../../Components/LeaderboardTable/LeaderboardTable";
 import OverviewContent from "../../Components/OverviewContent/OverviewContent";
 import armyBackground from "../../assets/images/army-background.webp";
-import {
-  generalLeaderBoardData,
-  campaignLeaderBoardData,
-} from "../../utils/mockData";
 import DashboardLayout from "../../layout/DashboardLayout";
 import { useAppDispatch } from "../../app/hook";
 import { getAllCampaigns, getGeneralLeaderboard } from "../../utils/AuthSlice";
@@ -23,9 +19,6 @@ const Leaderboard = () => {
       const generalLeaderBoardData = await dispatch(
         getGeneralLeaderboard()
       ).unwrap();
-
-      console.log("Raw General Leaderboard Data:", generalLeaderBoardData);
-
       if (generalLeaderBoardData?.leaderboard?.length > 0) {
         const leaderboardCopy = [...generalLeaderBoardData.leaderboard];
         const sortedData = leaderboardCopy.sort((a, b) => {
@@ -36,8 +29,6 @@ const Leaderboard = () => {
           // If points are equal, compare rank multiplier
           return b?.rank?.multiplier - a?.rank?.multiplier;
         });
-
-        console.log("Sorted General Leaderboard Data:", sortedData);
         setupdatedGeneralLeaderBoardData(sortedData);
       }
     } catch (error) {
@@ -51,12 +42,20 @@ const Leaderboard = () => {
         getAllCampaigns()
       ).unwrap();
 
-      const sortedCampaignsData =
-        allCampaignsLeaderBoardData?.campaigns[0]?.users.sort(
-          (a, b) => b.campaignPoints - a.campaignPoints
-        );
-      setCampaignLeaderBoard(sortedCampaignsData || []);
-      console.log(sortedCampaignsData);
+      if (allCampaignsLeaderBoardData?.campaigns[0]?.users.length > 0) {
+        const leaderboardCopy = [
+          ...allCampaignsLeaderBoardData?.campaigns[0]?.users,
+        ];
+        const sortedData = leaderboardCopy.sort((a, b) => {
+          // Compare points first
+          if (b?.campaignPoints !== a?.campaignPoints) {
+            return b?.campaignPoints - a?.campaignPoints;
+          }
+          // If points are equal, compare rank multiplier
+          return b.userId?.rank?.multiplier - a.userId?.rank?.multiplier;
+        });
+        setCampaignLeaderBoard(sortedData || []);
+      }
     } catch (error) {
       console.log("Error fetching campaigns data:", error);
     }
@@ -70,8 +69,8 @@ const Leaderboard = () => {
       setLoadingData(false);
     };
     fetchData();
-    console.log(updatedGeneralLeaderBoardData);
-    console.log(campaignLeaderBoard);
+    // console.log(updatedGeneralLeaderBoardData);
+    // console.log(campaignLeaderBoard);
   }, []);
   return (
     <DashboardLayout current={2}>
@@ -106,12 +105,14 @@ const Leaderboard = () => {
                 <LeaderboardTable
                   data={updatedGeneralLeaderBoardData}
                   isGeneral={isGeneral}
+                  isLoading={loadingData}
                 />
               )}
               {!isGeneral && (
                 <LeaderboardTable
                   data={campaignLeaderBoard}
                   isGeneral={isGeneral}
+                  isLoading={loadingData}
                 />
               )}
             </div>
