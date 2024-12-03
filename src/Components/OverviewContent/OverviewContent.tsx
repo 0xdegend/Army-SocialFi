@@ -79,10 +79,8 @@ const OverviewContent = () => {
   }, [isDeleting, displayText, index, typingSpeed, isTypingActive]);
 
   const handleTweetLaunch = async () => {
-    console.log(userData?.userMainData?._id);
-
     const data = {
-      userID: "",
+      userID: `${userData?.userMainData?._id}`,
     };
 
     try {

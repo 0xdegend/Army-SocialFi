@@ -76,6 +76,9 @@ const userSlice = createSlice({
       })
       .addCase(endCampaign.fulfilled, (state, { payload }) => {
         toast.success("🫡 Aye Aye, Campaign Ended");
+      })
+      .addCase(claimWelcomePoints.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Welcome Points Claimed");
       });
   },
 });
