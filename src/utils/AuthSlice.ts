@@ -228,6 +228,24 @@ export const endCampaign = createAsyncThunk(
   }
 );
 
+export const claimWelcomePoints = createAsyncThunk(
+  "claimWelcomePoints",
+  async ({ userID, ...payload }: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.get(`${url.welcomePoints}${userID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
 export const { setUserData } = userSlice.actions;
 
 export default userSlice.reducer;

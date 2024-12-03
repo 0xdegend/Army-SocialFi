@@ -41,24 +41,26 @@ export const getSimplifiedError = (error: object | any) => {
     // console.error(error?.response?.error);
     return errorObject?.message;
   } else if (error?.response?.status === 401) {
-    toast.error(`Stand down, Soldier! Claim your daily points by signing in.`);
-    //toast.error(errorObject?.message);
+    //@ts-ignore
+    if (!toast.isActive("authError")) {
+      // Prevent duplicate toasts
+      toast.error(
+        `Stand down, Soldier! Claim your daily points by signing in.`,
+        {
+          //@ts-ignore
+          toastId: "authError",
+        }
+      );
+    }
+
+    localStorage.setItem("userAuth", "");
+    localStorage.removeItem("privy:token");
+
     setTimeout(() => {
       window.location.replace("/");
     }, 1000);
-    localStorage.setItem("userAuth", ""); //log here and perform action below
-    localStorage.removeItem("privy:token");
-    if (errorObject?.message === "Please authenticate") {
-      setTimeout(() => {
-        window.location.replace("/");
-      }, 1000);
-    }
-    if (errorObject?.message === "Forbidden: Not Verified or Not Permitted") {
-      setTimeout(() => {
-        window.location.replace("/");
-      }, 1000);
-    }
-    return "Token has expired, please log in";
+
+    return errorObject?.message;
   } else {
     //Check for possible phone number unique issues
     return "Something went wrong";
