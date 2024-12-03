@@ -3,10 +3,6 @@ import { useState, useEffect } from "react";
 import LeaderboardTable from "../../Components/LeaderboardTable/LeaderboardTable";
 import OverviewContent from "../../Components/OverviewContent/OverviewContent";
 import armyBackground from "../../assets/images/army-background.webp";
-import {
-  generalLeaderBoardData,
-  campaignLeaderBoardData,
-} from "../../utils/mockData";
 import DashboardLayout from "../../layout/DashboardLayout";
 import { useAppDispatch } from "../../app/hook";
 import { getAllCampaigns, getGeneralLeaderboard } from "../../utils/AuthSlice";
