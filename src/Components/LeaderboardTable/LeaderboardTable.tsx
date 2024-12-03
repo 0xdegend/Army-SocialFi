@@ -14,19 +14,20 @@ import { updateAccessLevel } from "../../utils/AuthSlice";
 const LeaderboardTable = ({
   data,
   isGeneral,
+  isLoading,
 }: {
   data: {}[] | any;
   isGeneral: boolean;
+  isLoading: boolean;
 }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const userData = useAppSelector((state) => state.user);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
+
     const filtered = !query
       ? data
       : data.filter((item: any) =>
@@ -39,7 +40,7 @@ const LeaderboardTable = ({
                 ?.includes(query.toLowerCase())
         );
     setCurrentData(filtered);
-    setIsLoading(false);
+   
 
     if (
       userData?.userMainData?.accessLevel === "super admin" ||
@@ -50,7 +51,7 @@ const LeaderboardTable = ({
   }, [query, data, userData]);
 
   useEffect(() => {
-    setIsLoading(true);
+   
 
     if (data?.length > 0) {
       const sortedData = [...data]?.sort((a, b) => {
@@ -62,7 +63,7 @@ const LeaderboardTable = ({
         return b?.rank?.multiplier - a?.rank?.multiplier;
       });
       setCurrentData(sortedData);
-      setIsLoading(false);
+     
     }
   }, [data]);
 
@@ -107,23 +108,27 @@ const LeaderboardTable = ({
                   <LoadingComponent />
                 </td>
               </tr>
-            ) : currentData?.length > 0 ? (
-              currentData?.map((item, index) => (
-                <SingleRow
-                  item={item}
-                  index={index}
-                  key={item.id || index}
-                  isAdmin={isAdmin}
-                  isGeneral={isGeneral}
-                  total={currentData?.length}
-                />
-              ))
             ) : (
-              <tr>
-                <td colSpan={5} className="text-center">
-                  No leaderboard data available.
-                </td>
-              </tr>
+              <>
+                {currentData?.length > 0 ? (
+                  currentData?.map((item, index) => (
+                    <SingleRow
+                      item={item}
+                      index={index}
+                      key={item.id || index}
+                      isAdmin={isAdmin}
+                      isGeneral={isGeneral}
+                      total={currentData?.length}
+                    />
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="text-center">
+                      No leaderboard data available.
+                    </td>
+                  </tr>
+                )}
+              </>
             )}
           </tbody>
         </table>
@@ -150,12 +155,14 @@ const SingleRow = ({
   isAdmin,
   isGeneral,
   total,
+  isLoading
 }: {
   item: any;
   index: number;
   isAdmin: boolean;
   isGeneral: boolean;
   total: number;
+  isLoading: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   // const [openAdd, setOpenAdd] = useState(false);

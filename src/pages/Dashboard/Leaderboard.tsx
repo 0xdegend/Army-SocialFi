@@ -106,12 +106,14 @@ const Leaderboard = () => {
                 <LeaderboardTable
                   data={updatedGeneralLeaderBoardData}
                   isGeneral={isGeneral}
+                  isLoading={loadingData}
                 />
               )}
               {!isGeneral && (
                 <LeaderboardTable
                   data={campaignLeaderBoard}
                   isGeneral={isGeneral}
+                  isLoading={loadingData}
                 />
               )}
             </div>

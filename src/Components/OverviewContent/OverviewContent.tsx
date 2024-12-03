@@ -31,13 +31,11 @@ const OverviewContent = () => {
   const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const armyText = [
-    `Welcome to Barracks, ${rankName}🪖`,
-    "You’ve joined an unstoppable force—$ARMY.",
+    `Welcome to Barrack, ${rankName}🪖`,
     "The Dev team left, but the community didn't.",
     "We didn’t falter—we picked up the banner, united, and kept building. 💪",
-    "Here in the Army Barracks, every soldier is a leader. ",
-    "Welcome to the revolution.",
-    " Welcome to $ARMY.",
+    "Welcome to the revolution.🫡",
+    "Welcome to $ARMY.🪖",
     "The mission has just begun.🚀",
   ];
 
