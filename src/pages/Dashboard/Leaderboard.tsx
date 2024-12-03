@@ -23,9 +23,6 @@ const Leaderboard = () => {
       const generalLeaderBoardData = await dispatch(
         getGeneralLeaderboard()
       ).unwrap();
-
-      console.log("Raw General Leaderboard Data:", generalLeaderBoardData);
-
       if (generalLeaderBoardData?.leaderboard?.length > 0) {
         const leaderboardCopy = [...generalLeaderBoardData.leaderboard];
         const sortedData = leaderboardCopy.sort((a, b) => {
@@ -36,8 +33,6 @@ const Leaderboard = () => {
           // If points are equal, compare rank multiplier
           return b?.rank?.multiplier - a?.rank?.multiplier;
         });
-
-        console.log("Sorted General Leaderboard Data:", sortedData);
         setupdatedGeneralLeaderBoardData(sortedData);
       }
     } catch (error) {
@@ -56,7 +51,6 @@ const Leaderboard = () => {
           (a, b) => b.campaignPoints - a.campaignPoints
         );
       setCampaignLeaderBoard(sortedCampaignsData || []);
-      console.log(sortedCampaignsData);
     } catch (error) {
       console.log("Error fetching campaigns data:", error);
     }
