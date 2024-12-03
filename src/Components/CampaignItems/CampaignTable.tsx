@@ -1,5 +1,5 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
-//@ts-ignore
 import Pagination from "../pagination/pagination";
 import Options from "../Options/OptionsMenu";
 import { Spin } from "antd";
@@ -14,7 +14,13 @@ import {
   getAllCampaigns,
 } from "../../utils/AuthSlice";
 import Toggler from "../Toggler";
-const CampaignTable = ({ data }: { data: {}[] | any }) => {
+const CampaignTable = ({
+  data,
+  fetchCampaigns,
+}: {
+  data: {}[];
+  fetchCampaigns: () => Promise<void>;
+}) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
@@ -80,6 +86,7 @@ const CampaignTable = ({ data }: { data: {}[] | any }) => {
                   index={index}
                   key={item.id || index}
                   isAdmin={isAdmin}
+                  fetchCampaigns={fetchCampaigns}
                 />
               ))
             ) : (
@@ -118,16 +125,17 @@ const SingleRow = ({
   item,
   index,
   isAdmin,
+  fetchCampaigns,
 }: {
   item: any;
   index: number;
   isAdmin: boolean;
+  fetchCampaigns: () => Promise<void>;
 }) => {
   const [open, setOpen] = useState(false);
   const [endCampaignModalOpen, setEndCampaignModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [endingCampaign, setEndingCampaign] = useState(false);
-  const [isSyncing, setIsSyncing] = useState(false);
   const [tweetLink, setTweetLink] = useState("");
   const [tweetID, setTweetID] = useState("");
   const [userName, setUsername] = useState("");
@@ -155,9 +163,7 @@ const SingleRow = ({
     try {
       const response = await dispatch(addCampaignTweet(data)).unwrap();
       console.log(response);
-      //@ts-ignore
-      // const latestCampaign = await dispatch(getAllCampaigns()).unwrap();
-      // console.log(latestCampaign);
+      await fetchCampaigns();
       setIsLoading(false);
       setOpen(false);
     } catch (error) {
@@ -176,6 +182,7 @@ const SingleRow = ({
     try {
       const response = await dispatch(endCampaign(data)).unwrap();
       console.log(response);
+      await fetchCampaigns();
       setEndingCampaign(false);
     } catch (error) {
       console.error("Error ending campaign:", error);

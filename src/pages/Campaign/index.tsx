@@ -43,7 +43,7 @@ const Campaigns = () => {
           <MainPointsOverview />
           <Missions />
         </div>
-        <CampaignTable data={allCampaigns} />
+        <CampaignTable data={allCampaigns} fetchCampaigns={handleGetAllCampaigns}/>
       </div>
     </DashboardLayout>
   );
