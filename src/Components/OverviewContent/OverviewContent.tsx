@@ -66,7 +66,7 @@ const OverviewContent = () => {
         setDisplayText(nextDisplayText);
 
         if (!isDeleting && nextDisplayText === armyText[index]) {
-          setTypingSpeed(500); // Pause at the end of the word
+          setTypingSpeed(500);
         } else {
           setTypingSpeed(isDeleting ? 30 : 50); // Typing and deleting speeds
         }
