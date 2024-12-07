@@ -58,7 +58,6 @@ const OverviewContent = () => {
         setIsDeleting(false);
         setIndex((prevIndex) => (prevIndex + 1) % armyText.length);
       } else {
-        // Update the display text
         const nextDisplayText = isDeleting
           ? armyText[index].substring(0, displayText.length - 1)
           : armyText[index].substring(0, displayText.length + 1);
