@@ -85,7 +85,7 @@ const OverviewContent = () => {
 
     try {
       // Pre-fill tweet message
-      const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy\n\nhttps://onchainarmy.xyz/`;
+      const tweetMessage = `PacMoon is dead,\n $ARMY Lives Forever! @onchainarmy\n\nhttps://onchainarmy.xyz/`;
       const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         tweetMessage
       )}`;
