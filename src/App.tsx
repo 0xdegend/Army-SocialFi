@@ -46,7 +46,7 @@ function App() {
               theme: "dark",
               accentColor: "#1E2211",
               logo: "https://www.onchainarmy.xyz/logo192.png",
-              landingHeader: "Connect Wallet",
+              landingHeader: "Login or Sign up",
             },
             externalWallets: {
               solana: {

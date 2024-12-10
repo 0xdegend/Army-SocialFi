@@ -58,7 +58,6 @@ const OverviewContent = () => {
         setIsDeleting(false);
         setIndex((prevIndex) => (prevIndex + 1) % armyText.length);
       } else {
-        // Update the display text
         const nextDisplayText = isDeleting
           ? armyText[index].substring(0, displayText.length - 1)
           : armyText[index].substring(0, displayText.length + 1);
@@ -66,7 +65,7 @@ const OverviewContent = () => {
         setDisplayText(nextDisplayText);
 
         if (!isDeleting && nextDisplayText === armyText[index]) {
-          setTypingSpeed(500); // Pause at the end of the word
+          setTypingSpeed(500);
         } else {
           setTypingSpeed(isDeleting ? 30 : 50); // Typing and deleting speeds
         }
@@ -86,7 +85,7 @@ const OverviewContent = () => {
 
     try {
       // Pre-fill tweet message
-      const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy\n\nhttps://army-barrack.vercel.app/`;
+      const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy\n\nhttps://onchainarmy.xyz/`;
       const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         tweetMessage
       )}`;
