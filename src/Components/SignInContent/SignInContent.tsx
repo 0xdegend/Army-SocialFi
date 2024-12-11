@@ -52,14 +52,13 @@ const SignInContent = () => {
         tokenPublicKey,
         publicKey
       );
-
       const tokenAccount = await getAccount(connection, associatedTokenAddress);
       //@ts-ignore
       const tokenAmount = bigInt(tokenAccount.amount);
       const balance = tokenAmount / 1_000_000;
       armyBalance = balance;
       setTokenBalance(tokenAmount / 1000000);
-      console.log("Token balance:", balance);
+      console.log("Token balance:", parseInt(balance));
       return balance;
     } catch (error) {
       console.error("Error fetching token balance", error);
@@ -113,7 +112,7 @@ const SignInContent = () => {
         address: address,
         twitterHandle: `${user?.twitter?.username}`,
         twitterUsername: user?.twitter?.name,
-        balance: balance,
+        balance: parseInt(balance),
       };
       setPageLoading(true);
 

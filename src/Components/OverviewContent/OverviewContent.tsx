@@ -85,7 +85,7 @@ const OverviewContent = () => {
 
     try {
       // Pre-fill tweet message
-      const tweetMessage = `PacMoon is dead, $ARMY Lives Forever! @onchainarmy\n\nhttps://onchainarmy.xyz/`;
+      const tweetMessage = `Just got recruited into the ARMY Barracks!,\n\nPacMoon is dead $ARMY Lives Forever!\n\nJoin me in the trenches with @onchainarmy https://onchainarmy.xyz/`;
       const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         tweetMessage
       )}`;
@@ -259,6 +259,18 @@ const OverviewContent = () => {
                   ? "Claimed"
                   : "Claim"}
               </button>
+
+                  {/* Testing */}
+              {/* <button
+                className="font-soli button-56 "
+                onClick={() => {
+                  setOpen(true);
+                  setIsTypingActive(true);
+                }}
+              >
+                Claim
+              </button> */}
+
               <button
                 className="font-soli sign-in-button "
                 onClick={() => {
