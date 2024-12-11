@@ -244,7 +244,7 @@ const OverviewContent = () => {
           </div>
           <div className="flex flex-col">
             <p className="text-customYellow text-opacity-60 font-inconsolata text-[20px] mt-3 text-center mb-5">
-              Claim Your 00 $ARMY points
+              Claim Your 100 $ARMY points
             </p>
             <div className="flex items-center gap-4">
               <button
