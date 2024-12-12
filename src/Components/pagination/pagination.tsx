@@ -8,6 +8,7 @@ interface paginationData {
   currentData: any;
 }
 const Pagination = ({ data, itemsPerPage, setCurrentData }: paginationData) => {
+ 
   const [currentPage, setCurrentPage] = useState<any>(1);
   const [pages, setPages] = useState<any>([]);
 
@@ -19,7 +20,10 @@ const Pagination = ({ data, itemsPerPage, setCurrentData }: paginationData) => {
   useEffect(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
+    
     setCurrentData(data?.slice(startIndex, endIndex));
+    const result = data?.slice(startIndex, endIndex);
+ 
   }, [data, currentPage, itemsPerPage]);
 
   const goToPage = (pageNumber: any) => {
@@ -81,19 +85,6 @@ const Pagination = ({ data, itemsPerPage, setCurrentData }: paginationData) => {
           </button>
         </div>
 
-        <div className="flex gap-4">
-       {/* {pages.map((pageNumber: any) => (
-          <button
-           key={pageNumber}
-           onClick={() => goToPage(pageNumber)}
-           disabled={currentPage === pageNumber}
-           className={`${currentPage === pageNumber ? "border border-customYellow":""} hover:border-[#DFC865] hover:border hover:rounded-[100px] hover:px-2 hover:text-[#fff] `}
-          >
-            {pageNumber}
-          </button>
-        ))} */}
-
-       </div>
         <div className="flex gap-8 text-[#8A8577] text-[12px]">
           {renderPageNumbers()}
         </div>
