@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../layout/DashboardLayout";
 import OverviewContent from "../../Components/OverviewContent/OverviewContent";
@@ -33,17 +34,22 @@ const Campaigns = () => {
   }, []);
 
   useEffect(() => {
-
+    console.log(allCampaigns);
   }, [allCampaigns]);
+
   return (
     <DashboardLayout current={1}>
       <div className="w-full flex flex-col min-h-screen pt-6">
         <OverviewContent />
         <div className="flex justify-around items-center mb-10 flex-col lg:flex-row">
           <MainPointsOverview />
+
           <Missions />
         </div>
-        <CampaignTable data={allCampaigns} fetchCampaigns={handleGetAllCampaigns}/>
+        <CampaignTable
+          data={allCampaigns}
+          fetchCampaigns={handleGetAllCampaigns}
+        />
       </div>
     </DashboardLayout>
   );
