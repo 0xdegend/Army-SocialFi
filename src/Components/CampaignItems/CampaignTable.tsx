@@ -228,10 +228,10 @@ const SingleRow = ({
       a.click();
       document.body.removeChild(a);
     }
-
+   
     // Generate and download CSV
     const csvData = convertToCSV(result);
-    downloadCSV(csvData, `${item?.name}.csv`);
+    downloadCSV(csvData, `${item?.nam}.csv`);
   };
   return (
     <tr
