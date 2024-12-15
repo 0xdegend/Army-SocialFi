@@ -231,7 +231,7 @@ const SingleRow = ({
    
     // Generate and download CSV
     const csvData = convertToCSV(result);
-    downloadCSV(csvData, `${item?.nam}.csv`);
+    downloadCSV(csvData, `${item?.name}.csv`);
   };
   return (
     <tr
