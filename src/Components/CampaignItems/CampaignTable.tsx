@@ -205,8 +205,6 @@ const SingleRow = ({
       return b.userId?.rank?.multiplier - a.userId?.rank?.multiplier;
     });
     const data = sortedData;
-
-    console.log(data);
     const result = data.map((item: any) => ({
       //@ts-ignore
       twitterUsername: item?.userId?.twitterUsername,
@@ -215,7 +213,6 @@ const SingleRow = ({
       //@ts-ignore
       address: item?.userId?.address,
     }));
-    console.log(result);
 
     function convertToCSV(result) {
       const headers = Object.keys(result[0]).join(","); // Extract headers
