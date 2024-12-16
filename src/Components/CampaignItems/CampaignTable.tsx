@@ -53,7 +53,6 @@ const CampaignTable = ({
     }
   }, [data]);
 
-
   return (
     <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide">
       <div className="flex items-center gap-5 mb-4 ">
@@ -194,6 +193,53 @@ const SingleRow = ({
   const handleSyncTweets = async () => {
     console.log("Synced");
   };
+
+  const handleExportCampaign = () => {
+    const leaderboardCopy = [...item?.users];
+    const sortedData = leaderboardCopy.sort((a, b) => {
+      // Compare points first
+      if (b?.campaignPoints !== a?.campaignPoints) {
+        return b?.campaignPoints - a?.campaignPoints;
+      }
+      // If points are equal, compare rank multiplier
+      return b.userId?.rank?.multiplier - a.userId?.rank?.multiplier;
+    });
+    const data = sortedData;
+    const result = data.map((item: any) => ({
+      //@ts-ignore
+      twitterUsername: item?.userId?.twitterUsername,
+      //@ts-ignore
+      campaignPoints: item?.campaignPoints,
+      //@ts-ignore
+      address: item?.userId?.address,
+    }));
+
+    function convertToCSV(result) {
+      const headers = Object.keys(result[0]).join(","); // Extract headers
+      const rows = result.map((row) =>
+        Object.values(row)
+          .map((value) => `"${value}"`)
+          .join(",")
+      ); // Escape values
+      return [headers, ...rows].join("\n");
+    }
+
+    // Export CSV
+    function downloadCSV(csv, filename) {
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.setAttribute("href", url);
+      a.setAttribute("download", filename);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Generate and download CSV
+    const csvData = convertToCSV(result);
+    downloadCSV(csvData, `${item?.name}.csv`);
+  };
   return (
     <tr
       className="w-full grid grid-cols-4  gap-2 text-white place-items-center   px-4 h-10 mt-3 "
@@ -227,18 +273,34 @@ const SingleRow = ({
           <span>
             <Options>
               <div className="w-full flex flex-col py-2 px-4 gap-0 items-start">
+                {item?.is_campaign_active === true ? (
+                  <button
+                    className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md"
+                    onClick={() => setOpen(true)}
+                  >
+                    Add Tweet
+                  </button>
+                ) : (
+                  <></>
+                )}
+
                 <button
                   className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md"
-                  onClick={() => setOpen(true)}
+                  onClick={handleExportCampaign}
                 >
-                  Add Tweet
+                  Export Winners
                 </button>
-                <button
-                  className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md"
-                  onClick={() => setEndCampaignModalOpen(true)}
-                >
-                  End Campaign
-                </button>
+
+                {item?.is_campaign_active === true ? (
+                  <button
+                    className="text-white w-full pl-2 text-start font-inconsolata font-semibold cursor-pointer text-sm hover:bg-secondary h-10 rounded-md"
+                    onClick={() => setEndCampaignModalOpen(true)}
+                  >
+                    End Campaign
+                  </button>
+                ) : (
+                  <></>
+                )}
               </div>
             </Options>
           </span>
