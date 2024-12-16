@@ -195,9 +195,19 @@ const SingleRow = ({
   };
 
   const handleExportCampaign = () => {
-    const data = [item?.users];
+    const leaderboardCopy = [...item?.users];
+    const sortedData = leaderboardCopy.sort((a, b) => {
+      // Compare points first
+      if (b?.campaignPoints !== a?.campaignPoints) {
+        return b?.campaignPoints - a?.campaignPoints;
+      }
+      // If points are equal, compare rank multiplier
+      return b.userId?.rank?.multiplier - a.userId?.rank?.multiplier;
+    });
+    const data = sortedData;
+
     console.log(data);
-    const result = data[0].map((item: any) => ({
+    const result = data.map((item: any) => ({
       //@ts-ignore
       twitterUsername: item?.userId?.twitterUsername,
       //@ts-ignore
@@ -228,7 +238,7 @@ const SingleRow = ({
       a.click();
       document.body.removeChild(a);
     }
-   
+
     // Generate and download CSV
     const csvData = convertToCSV(result);
     downloadCSV(csvData, `${item?.name}.csv`);
