@@ -247,7 +247,6 @@ const SingleRow = ({
         ) : (
           <>
             <p className="text-base capitalize">{item?.twitterUsername}</p>
-            <img src={points} alt="points" className="w-5 h-5 rounded-full" />
           </>
         )}
       </td>
