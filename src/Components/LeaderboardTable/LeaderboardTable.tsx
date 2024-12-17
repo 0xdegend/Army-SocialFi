@@ -27,114 +27,106 @@ const LeaderboardTable = ({
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-
-    const filtered = !query
-      ? data
-      : data.filter((item: any) =>
-        isGeneral
-          ? item?.twitterUsername
-            ?.toLowerCase()
-            ?.includes(query.toLowerCase())
-          : item?.userId?.twitterUsername
-            ?.toLowerCase()
-            ?.includes(query.toLowerCase())
-      );
-    setFilteredData(filtered);
-   
-
+    // Check admin status
     if (
       userData?.userMainData?.accessLevel === "super admin" ||
       userData?.userMainData?.accessLevel === "admin"
     ) {
       setIsAdmin(true);
     }
-  }, [query, data, userData]);
+  }, [userData]);
 
   useEffect(() => {
-   
+    // Filter data based on search query
+    const filtered = !query
+      ? data
+      : data.filter((item: any) =>
+          isGeneral
+            ? item?.twitterUsername
+                ?.toLowerCase()
+                ?.includes(query.toLowerCase())
+            : item?.userId?.twitterUsername
+                ?.toLowerCase()
+                ?.includes(query.toLowerCase())
+        );
 
-    if (data?.length > 0) {
-      const sortedData = [...data]?.sort((a, b) => {
-        // Compare points first
+    setFilteredData(filtered);
+  }, [query, data, isGeneral]);
+
+  useEffect(() => {
+    // Sort and set initial data
+    if (filteredData?.length > 0) {
+      const sortedData = [...filteredData]?.sort((a, b) => {
         if (b?.points !== a?.points) {
           return b?.points - a?.points;
         }
-        // If points are equal, compare rank multiplier
         return b?.rank?.multiplier - a?.rank?.multiplier;
       });
-      setCurrentData(sortedData);
-     
+      setCurrentData(sortedData.slice(0, 10));
+    } else {
+      setCurrentData([]);
     }
-  }, [data]);
- 
+  }, [filteredData]);
 
   return (
-    <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4  flow-hide ">
-      <div className="flex items-center gap-5 mb-4 ">
-        <h1 className="text-white ">Search:</h1>
-        <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100  h-10 px-2 flex items-center">
+    <div className="w-full font-inconsolata text-[20px] font-[600] clip-top-left-bottom-right flex flex-col bg-primary rounded-md p-3 lg:p-4 flow-hide">
+      <div className="flex items-center gap-5 mb-4">
+        <h1 className="text-white">Search:</h1>
+        <div className="w-full lg:w-1/2 max-w-[250px] border styled-border-radius border-white border-opacity-100 h-10 px-2 flex items-center">
           <input
             placeholder="Search Username..."
             type="text"
-            className=" w-full border-none outline-none bg-transparent text-white "
+            className="w-full border-none outline-none bg-transparent text-white"
             value={query}
             onChange={(e: any) => setQuery(e.target.value)}
           />
         </div>
       </div>
-      {/* end of input space */}
-      <div className="w-full flow-hide-x">
-        <table className="table-auto lg:min-h-[200px]  lg:min-w-full w-full min-w-[700px]">
-          <thead className="w-full bg-secondary h-12 flex items-center rounded-md  ">
-            <tr className="w-full grid grid-cols-4 text-white place-items-center   px-4 gap-2 min-w-full ">
-              <th className=" w-full flex justify-start">Rank</th>
-              <th className=" w-full flex justify-start">Name</th>
-              {!isGeneral ? (
-                <th className=" w-full flex justify-start">Points</th>
-              ) : (
-                <th className=" w-full flex justify-start">Activity Points</th>
-              )}
 
-              {!isGeneral ? (
-                <th className=" w-full flex justify-start">Tweets</th>
-              ) : (
-                <th className=" w-full flex justify-start">Multiplier</th>
-              )}
+      <div className="w-full flow-hide-x">
+        <table className="table-auto lg:min-h-[200px] lg:min-w-full w-full min-w-[700px]">
+          <thead className="w-full bg-secondary h-12 flex items-center rounded-md">
+            <tr className="w-full grid grid-cols-4 text-white place-items-center px-4 gap-2 min-w-full">
+              <th className="w-full flex justify-start">Rank</th>
+              <th className="w-full flex justify-start">Name</th>
+              <th className="w-full flex justify-start">
+                {isGeneral ? "Activity Points" : "Points"}
+              </th>
+              <th className="w-full flex justify-start">
+                {isGeneral ? "Multiplier" : "Tweets"}
+              </th>
             </tr>
           </thead>
           <tbody className="gap-4 mt-4">
             {isLoading ? (
               <tr>
-                <td colSpan={5} className="text-center">
+                <td colSpan={4} className="text-center">
                   <LoadingComponent />
                 </td>
               </tr>
+            ) : currentData.length > 0 ? (
+              currentData.map((item, index) => (
+                <SingleRow
+                  key={item.id || index}
+                  item={item}
+                  index={index}
+                  isAdmin={isAdmin}
+                  isGeneral={isGeneral}
+                  total={currentData.length}
+                />
+              ))
             ) : (
-              <>
-                {currentData?.length > 0 ? (
-                  currentData?.map((item, index) => (
-                    <SingleRow
-                      item={item}
-                      index={index}
-                      key={item.id || index}
-                      isAdmin={isAdmin}
-                      isGeneral={isGeneral}
-                      total={currentData?.length}
-                    />
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="text-center">
-                      No leaderboard data available.
-                    </td>
-                  </tr>
-                )}
-              </>
+              <tr>
+                <td colSpan={4} className="text-center">
+                  No leaderboard data available.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
       </div>
-      {data?.length > 10 && (
+
+      {filteredData.length > 10 && (
         <div className="w-full px-4 mt-8">
           <Pagination
             data={filteredData}
@@ -147,6 +139,7 @@ const LeaderboardTable = ({
     </div>
   );
 };
+
 
 export default LeaderboardTable;
 
