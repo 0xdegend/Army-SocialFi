@@ -10,13 +10,13 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user, logout, ready } = usePrivy();
   const isAuthenticated = user && user.twitter?.username;
-  const hasSolanaWallet = user?.wallet?.chainType === "solana";
+  //@ts-ignore
+  const hasSolanaWallet = user?.linkedAccounts[1]?.chainType === "solana";
   const userAuth = localStorage.getItem("userAuth");
-
 
   if (!ready) {
     // Show a loading indicator while waiting for Privy to initialize
-    return <Spin fullscreen/>;
+    return <Spin fullscreen />;
   }
 
   if (!isAuthenticated || !hasSolanaWallet || !userAuth) {

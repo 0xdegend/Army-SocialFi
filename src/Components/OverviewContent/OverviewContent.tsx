@@ -1,7 +1,8 @@
+//@ts-nocheck
 import React, { useState, useEffect } from "react";
 import camoImage from "../../assets/images/camo-background.svg";
 import twitterIcon from "../../assets/images/twitter-icon.svg";
-//@ts-ignore
+
 import armyBadge from "../../assets/images/general-rank.PNG";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
@@ -20,7 +21,7 @@ import { claimWelcomePoints } from "../../utils/AuthSlice";
 const OverviewContent = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
-  const { user } = usePrivy();
+  const { user, linkWallet } = usePrivy();
   const [open, setOpen] = useState(false);
   const rankName = userData?.userMainData?.rank?.name;
   const [displayText, setDisplayText] = useState<string>("");
@@ -129,6 +130,17 @@ const OverviewContent = () => {
     setConfirmTweet(false);
   };
 
+  const handleLinkEvmWallet = async () => {
+    console.log("Linking EVM Wallet");
+    try {
+      //@ts-ignore
+      await linkWallet({ loginMethods: ["wallet"], chains: ["ethereum"] });
+      console.log(user);
+    } catch (error) {
+      console.error("Error linking EVM wallet:", error);
+    }
+  };
+
   //@ts-ignore
   const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
   return (
@@ -170,7 +182,7 @@ const OverviewContent = () => {
             </div>
             <div className="flex">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate hidden md:flex ">
-                {user?.wallet?.address}
+                {user?.linkedAccounts[1]?.address}
               </h5>
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate flex md:hidden ">
                 {truncateWalletAddress(user?.wallet?.address)}
@@ -260,7 +272,7 @@ const OverviewContent = () => {
                   : "Claim"}
               </button>
 
-                  {/* Testing */}
+              {/* Testing */}
               {/* <button
                 className="font-soli button-56 "
                 onClick={() => {
@@ -281,6 +293,12 @@ const OverviewContent = () => {
                 }}
               >
                 Buy $ARMY
+              </button>
+              <button
+                className="font-soli button-56 "
+                onClick={handleLinkEvmWallet}
+              >
+                Link EVM Wallet
               </button>
             </div>
           </div>
