@@ -81,7 +81,7 @@ const userSlice = createSlice({
         toast.success("🫡 Welcome Points Claimed");
       })
       .addCase(linkEvmWallet.fulfilled, (state, { payload }) => {
-        toast.success("🫡 Roger that, Wallet linked successfully");
+        toast.success("🫡 Roger that, Wallet linked");
       });
   },
 });
