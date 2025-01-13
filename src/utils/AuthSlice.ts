@@ -79,6 +79,9 @@ const userSlice = createSlice({
       })
       .addCase(claimWelcomePoints.fulfilled, (state, { payload }) => {
         toast.success("🫡 Welcome Points Claimed");
+      })
+      .addCase(linkEvmWallet.fulfilled, (state, { payload }) => {
+        toast.success("🫡 Roger that, Wallet linked successfully");
       });
   },
 });
@@ -159,6 +162,28 @@ export const addCampaignTweet = createAsyncThunk(
     try {
       const { data } = await APIService.post(
         `${url.addTweet}${campaignID}`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(
+        getSimplifiedError(error.response ? error : error)
+      );
+    }
+  }
+);
+
+export const linkEvmWallet = createAsyncThunk(
+  "linkEvmWallet",
+  async ({ userID, ...payload }: any, { rejectWithValue, getState }) => {
+    const { user }: any = getState();
+    const token = localStorage.getItem("userAuth");
+    try {
+      const { data } = await APIService.post(
+        `${url.linkAddress}${userID}`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
