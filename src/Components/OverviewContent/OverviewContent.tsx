@@ -122,7 +122,7 @@ const OverviewContent = () => {
                 setConfirmTweet(false);
               });
           }
-        }, 500); // Poll every 500ms
+        }, 500); 
       } else {
         console.error("Failed to open tweet window.");
       }
