@@ -10,5 +10,6 @@ export const url = {
   addTweet: "/admin/campaign/",
   updateAccessLevel: "/admin/update-accesslevel",
   endCampaign: "/admin/campaign/",
-  welcomePoints: "/user/bonus/"
+  welcomePoints: "/user/bonus/",
+  linkAddress: "/user/link-address/",
 };

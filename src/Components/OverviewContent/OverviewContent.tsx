@@ -1,7 +1,8 @@
+//@ts-nocheck
 import React, { useState, useEffect } from "react";
 import camoImage from "../../assets/images/camo-background.svg";
 import twitterIcon from "../../assets/images/twitter-icon.svg";
-//@ts-ignore
+
 import armyBadge from "../../assets/images/general-rank.PNG";
 import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
@@ -15,18 +16,22 @@ import { truncateWalletAddress } from "../../utils";
 import ReUseModal from "../Modal/ReuseableModal";
 import { FaTimes } from "react-icons/fa";
 import ActionButton from "../utils/buttons/ActionButton";
-import { claimWelcomePoints } from "../../utils/AuthSlice";
+import { claimWelcomePoints, linkEvmWallet } from "../../utils/AuthSlice";
+import { Spin } from "antd";
+import SemiButton from "../utils/buttons/SemiButton";
 
 const OverviewContent = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
-  const { user } = usePrivy();
+  const { user, linkWallet } = usePrivy();
   const [open, setOpen] = useState(false);
   const rankName = userData?.userMainData?.rank?.name;
   const [displayText, setDisplayText] = useState<string>("");
   const [index, setIndex] = useState<number>(0);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [loopNum, setLoopNum] = useState<number>(0);
+  const [linkingWallet, setLinkingWallet] = useState(false);
+  const [walletLinked, setWalletLinked] = useState(false);
   const [confirmTweet, setConfirmTweet] = useState<boolean>(false);
   const [typingSpeed, setTypingSpeed] = useState<number>(50);
   const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
@@ -129,8 +134,54 @@ const OverviewContent = () => {
     setConfirmTweet(false);
   };
 
+  const handleLinkEvmWallet = async () => {
+    console.log("Linking EVM Wallet");
+    try {
+      //@ts-ignore
+      const walletLinkResult = await linkWallet({
+        loginMethods: ["wallet"],
+        chains: ["ethereum"],
+      });
+
+      console.log("Wallet linked successfully:", walletLinkResult);
+
+      setWalletLinked(true);
+    } catch (error) {
+      console.error("Error linking EVM wallet:", error);
+      setLinkingWallet(false);
+    }
+  };
+
+  useEffect(() => {
+    const evmAddress = user?.linkedAccounts[2]?.address;
+    const userInfo = userData?.userMainData?._id;
+    const data = {
+      userID: userInfo,
+      address: {
+        evm: evmAddress,
+      },
+    };
+    const linkEvmWalletCall = async () => {
+      setLinkingWallet(true);
+      const response = await dispatch(linkEvmWallet(data)).unwrap();
+
+      console.log(user);
+      console.log("EVM wallet linked:", response);
+
+      setLinkingWallet(false);
+    };
+    if (data.userID && data.address.evm && walletLinked) {
+      linkEvmWalletCall();
+    } else {
+      console.error("UserID or EVM address is missing.");
+    }
+  }, [user, userData, walletLinked]);
+
   //@ts-ignore
   const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
+
+  const isLinkedTrace = userData?.userMainData?.addresses?.length > 0;
+  const buttonText = isLinkedTrace ? "Linked" : "Link Evm";
   return (
     <div className="bg-[#1D2211] p-5 relative clip-top-left-bottom-right ">
       <img
@@ -170,10 +221,10 @@ const OverviewContent = () => {
             </div>
             <div className="flex">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate hidden md:flex ">
-                {user?.wallet?.address}
+                {user?.linkedAccounts[1]?.address}
               </h5>
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate flex md:hidden ">
-                {truncateWalletAddress(user?.wallet?.address)}
+                {truncateWalletAddress(user?.linkedAccounts[1]?.address)}
               </h5>
             </div>
           </div>
@@ -242,25 +293,39 @@ const OverviewContent = () => {
               </a>
             </div>
           </div>
-          <div className="flex flex-col">
-            <p className="text-customYellow text-opacity-60 font-inconsolata text-[20px] mt-3 text-center mb-5">
-              Claim Your 100 $ARMY points
-            </p>
-            <div className="flex items-center gap-4">
-              <button
-                className="font-soli button-56 "
-                onClick={() => {
-                  setOpen(true);
-                  setIsTypingActive(true);
-                }}
-                disabled={userData?.userMainData?.bonusPointsAwarded}
-              >
-                {userData?.userMainData?.bonusPointsAwarded
-                  ? "Claimed"
-                  : "Claim"}
-              </button>
+          <div className="flex items-center flex-col">
+            {userData?.userMainData?.bonusPointsAwarded ? (
+              <></>
+            ) : (
+              <>
+                <>
+                  <p className="text-customYellow text-opacity-60 font-inconsolata text-[20px] mt-3 text-center mb-5">
+                    Claim Your 100 $ARMY points
+                  </p>
+                </>
+              </>
+            )}
+            <div className="flex items-center gap-4 mt-2">
+              {userData?.userMainData?.bonusPointsAwarded ? (
+                <></>
+              ) : (
+                <>
+                  <button
+                    className="font-soli button-56 "
+                    onClick={() => {
+                      setOpen(true);
+                      setIsTypingActive(true);
+                    }}
+                    disabled={userData?.userMainData?.bonusPointsAwarded}
+                  >
+                    {userData?.userMainData?.bonusPointsAwarded
+                      ? "Claimed"
+                      : "Claim"}
+                  </button>
+                </>
+              )}
 
-                  {/* Testing */}
+              {/* Testing */}
               {/* <button
                 className="font-soli button-56 "
                 onClick={() => {
@@ -282,6 +347,13 @@ const OverviewContent = () => {
               >
                 Buy $ARMY
               </button>
+              <SemiButton
+                onPress={!linkingWallet ? handleLinkEvmWallet : undefined}
+                text={buttonText}
+                isLoading={linkingWallet}
+                buttonType="sign-in-button"
+                isValid={isLinkedTrace}
+              />
             </div>
           </div>
         </div>

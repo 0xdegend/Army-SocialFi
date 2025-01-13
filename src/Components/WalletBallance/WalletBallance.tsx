@@ -20,7 +20,7 @@ const WalletBallance = () => {
   const { user } = usePrivy();
   const [tokenBalance, setTokenBalance] = useState(0);
   const armyAddress = "ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC";
-  const address = user?.wallet?.address;
+  const address = user?.linkedAccounts?.[1]?.address;
 
   const formatTokenBalance = (balance: any) => {
     if (balance === null) return "Loading...";
@@ -89,7 +89,7 @@ const WalletBallance = () => {
         <div className="flex gap-4 p-4">
           <div className="button-55 ">
             <p className="text-[#FFF] text-[19px] font-soli text-center">
-              {loading ? <Spin/> : `${solHolding.toFixed(2)} SOL`}
+              {loading ? <Spin /> : `${solHolding.toFixed(2)} SOL`}
             </p>
           </div>
           <div className="  button-56">

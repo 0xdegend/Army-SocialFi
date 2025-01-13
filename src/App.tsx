@@ -42,7 +42,8 @@ function App() {
           appId={`${process.env.REACT_APP_PRIVY_APP_ID}`}
           config={{
             appearance: {
-              walletChainType: "solana-only",
+              walletChainType: "ethereum-and-solana",
+              walletList: ["detected_ethereum_wallets", "detected_solana_wallets"],
               theme: "dark",
               accentColor: "#1E2211",
               logo: "https://www.onchainarmy.xyz/logo192.png",

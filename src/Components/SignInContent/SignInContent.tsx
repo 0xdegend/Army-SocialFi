@@ -33,7 +33,7 @@ const SignInContent = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const { linkWallet, login, user, ready, authenticated, logout } = usePrivy();
 
-  const address = user?.wallet?.address;
+  const address = user?.linkedAccounts?.[1]?.address;
   //Getting ARMY Balance Implementation
   const armyAddress = "ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC";
   const isWalletLinked = localStorage.getItem("walletLinked");
@@ -139,8 +139,7 @@ const SignInContent = () => {
     } else if (user && address && isUserExpired) {
       navigate("/dashboard");
     }
-  }, [shouldFetchData, user, address, isUserExpired]);
-
+  },[]);
   return (
     <div>
       {pageLoading && <Spin fullscreen />}
