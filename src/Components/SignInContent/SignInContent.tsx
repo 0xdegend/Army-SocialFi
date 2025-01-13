@@ -139,7 +139,7 @@ const SignInContent = () => {
     } else if (user && address && isUserExpired) {
       navigate("/dashboard");
     }
-  },[]);
+  }, [user, address, shouldFetchData]);
   return (
     <div>
       {pageLoading && <Spin fullscreen />}
