@@ -8,7 +8,7 @@ import telegramIcon from "../../assets/images/telegram-icon.svg";
 import dexscreenerIcon from "../../assets/images/dexscreener.svg";
 import coingeckoIcon from "../../assets/svg/coingecko.svg";
 import cmcIcon from "../../assets/svg/cmc.webp";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, useLinkAccount } from "@privy-io/react-auth";
 import rankIcons from "../../utils/rankIcons";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import { store } from "../../app/store";
@@ -16,14 +16,18 @@ import { truncateWalletAddress } from "../../utils";
 import ReUseModal from "../Modal/ReuseableModal";
 import { FaTimes } from "react-icons/fa";
 import ActionButton from "../utils/buttons/ActionButton";
-import { claimWelcomePoints, linkEvmWallet } from "../../utils/AuthSlice";
+import {
+  claimWelcomePoints,
+  getUserProfile,
+  linkEvmWallet,
+} from "../../utils/AuthSlice";
 import { Spin } from "antd";
 import SemiButton from "../utils/buttons/SemiButton";
 
 const OverviewContent = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
-  const { user, linkWallet } = usePrivy();
+  const { user, ready, authenticated } = usePrivy();
   const [open, setOpen] = useState(false);
   const rankName = userData?.userMainData?.rank?.name;
   const [displayText, setDisplayText] = useState<string>("");
@@ -122,7 +126,7 @@ const OverviewContent = () => {
                 setConfirmTweet(false);
               });
           }
-        }, 500); 
+        }, 500);
       } else {
         console.error("Failed to open tweet window.");
       }
@@ -134,49 +138,34 @@ const OverviewContent = () => {
     setConfirmTweet(false);
   };
 
-  const handleLinkEvmWallet = async () => {
-    console.log("Linking EVM Wallet");
-    try {
-      //@ts-ignore
-      const walletLinkResult = await linkWallet({
-        loginMethods: ["wallet"],
-        chains: ["ethereum"],
-      });
+  const { linkWallet } = useLinkAccount({
+    onSuccess: async (res) => {
+      console.log(res);
+      const evmAddress = user?.linkedAccounts[2]?.address;
+      const userInfo = userData?.userMainData?._id;
+      const data = {
+        userID: userInfo,
+        address: {
+          evm: evmAddress,
+        },
+      };
 
-      console.log("Wallet linked successfully:", walletLinkResult);
-
-      setWalletLinked(true);
-    } catch (error) {
-      console.error("Error linking EVM wallet:", error);
-      setLinkingWallet(false);
-    }
-  };
-
-  useEffect(() => {
-    const evmAddress = user?.linkedAccounts[2]?.address;
-    const userInfo = userData?.userMainData?._id;
-    const data = {
-      userID: userInfo,
-      address: {
-        evm: evmAddress,
-      },
-    };
-    const linkEvmWalletCall = async () => {
       setLinkingWallet(true);
       const response = await dispatch(linkEvmWallet(data)).unwrap();
-
-      console.log(user);
       console.log("EVM wallet linked:", response);
-
+      await dispatch(getUserProfile()).unwrap();
       setLinkingWallet(false);
-    };
-    if (data.userID && data.address.evm && walletLinked) {
-      linkEvmWalletCall();
-    } else {
-      console.error("UserID or EVM address is missing.");
-    }
-  }, [user, userData, walletLinked]);
+    },
+    onError: (error, details) => {
+      console.log(error, details);
+      // Any logic you'd like to execute after a user exits the link flow or there is an error
+    },
+  });
 
+  useEffect(() => {
+    console.log(ready);
+    console.log(user);
+  }, [ready, user]);
   //@ts-ignore
   const badgeSrc = rankIcons[rankName] || "path-to-default-badge.png";
 
@@ -348,7 +337,7 @@ const OverviewContent = () => {
                 Buy $ARMY
               </button>
               <SemiButton
-                onPress={!linkingWallet ? handleLinkEvmWallet : undefined}
+                onPress={!linkingWallet ? linkWallet : undefined}
                 text={buttonText}
                 isLoading={linkingWallet}
                 buttonType="sign-in-button"
