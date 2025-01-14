@@ -21,6 +21,7 @@ import {
   setUserData,
 } from "../../utils/AuthSlice";
 import { Spin } from "antd";
+import { toast } from "react-hot-toast";
 
 const SignInContent = () => {
   const dispatch = useAppDispatch();
@@ -31,9 +32,10 @@ const SignInContent = () => {
   const { connection } = useConnection();
   const navigate = useNavigate();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const { linkWallet, login, user, ready, authenticated, logout } = usePrivy();
+  const { linkWallet, user, ready, authenticated, logout } = usePrivy();
 
   const address = user?.linkedAccounts?.[1]?.address;
+
   //Getting ARMY Balance Implementation
   const armyAddress = "ARMYZt71GXq4vw4mtDs5LnEp4ZgwWKEE2CdMU3WNnFEC";
   const isWalletLinked = localStorage.getItem("walletLinked");
@@ -68,6 +70,31 @@ const SignInContent = () => {
       setLoading(false);
     }
   };
+
+  const { login } = useLogin({
+    onComplete: (res) => {
+      console.log(res, "This is a success response");
+      const chainType1 = res?.linkedAccounts[1]?.chainType;
+      const chainType2 = res?.linkedAccounts[0]?.chainType;
+      console.log(chainType1, res?.linkedAccounts?.length);
+      if (res?.linkedAccounts?.length > 1 && chainType1 !== "solana") {
+        toast.error("You need to connect your wallet to Solana network");
+        logout();
+      }
+      if (
+        res?.linkedAccounts?.length === 1 &&
+        res?.linkedAccounts[0].address &&
+        chainType2
+      ) {
+        toast.error("You need to connect your wallet to Solana network");
+        logout();
+      }
+    },
+    onError: (error) => {
+      console.log(error, "This is error response");
+    },
+  });
+
   const handleConnectTwitter = async () => {
     try {
       if (isWalletLinked === ENCODED_TRUE) {
@@ -93,15 +120,17 @@ const SignInContent = () => {
         await linkWallet({ loginMethods: ["wallet"], chains: ["solana"] });
         setIsWalletConnected(true);
       }
-      setShouldFetchData(true);
-      console.log(user);
     } catch (error) {
       console.error("Error signing in:", error);
       setIsWalletConnected(false);
     }
   };
   const fetchAndPostData = async () => {
-    if (!user || !address) return;
+    console.log(user);
+    console.log(address);
+    if (!user || !address) {
+      return;
+    }
 
     localStorage.setItem("walletLinked", ENCODED_TRUE);
     try {
