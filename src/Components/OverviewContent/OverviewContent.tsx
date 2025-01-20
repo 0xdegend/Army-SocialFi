@@ -224,6 +224,9 @@ const OverviewContent = () => {
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate flex md:hidden ">
                 {truncateWalletAddress(user?.linkedAccounts[1]?.address)}
               </h5>
+              <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate flex md:hidden ">
+                {truncateWalletAddress(user?.linkedAccounts[2]?.address)}
+              </h5>
             </div>
           </div>
         </div>
