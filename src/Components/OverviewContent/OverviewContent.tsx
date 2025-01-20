@@ -213,12 +213,12 @@ const OverviewContent = () => {
                 <span className="text-white font-inconsolata mr-2">
                   Solana:
                 </span>{" "}
-                {truncateWalletAddress(user?.linkedAccounts[1]?.address)}
+                {truncateWalletAddress(user?.linkedAccounts[1]?.address, 17)}
               </h5>
 
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate hidden md:flex ">
                 <span className="text-white font-inconsolata mr-2">EVM:</span>{" "}
-                {truncateWalletAddress(user?.linkedAccounts[2]?.address)}
+                {truncateWalletAddress(user?.linkedAccounts[2]?.address, 17)}
               </h5>
 
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate flex md:hidden ">
