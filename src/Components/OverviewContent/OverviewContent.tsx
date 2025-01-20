@@ -208,10 +208,19 @@ const OverviewContent = () => {
                 className="w-[45px] h-[38px]"
               />
             </div>
-            <div className="flex">
+            <div className="flex flex-col">
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate hidden md:flex ">
-                {user?.linkedAccounts[1]?.address}
+                <span className="text-white font-inconsolata mr-2">
+                  Solana:
+                </span>{" "}
+                {truncateWalletAddress(user?.linkedAccounts[1]?.address)}
               </h5>
+
+              <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate hidden md:flex ">
+                <span className="text-white font-inconsolata mr-2">EVM:</span>{" "}
+                {truncateWalletAddress(user?.linkedAccounts[2]?.address)}
+              </h5>
+
               <h5 className="mt-3 cursor-pointer font-soli text-[#F83726] truncate flex md:hidden ">
                 {truncateWalletAddress(user?.linkedAccounts[1]?.address)}
               </h5>
