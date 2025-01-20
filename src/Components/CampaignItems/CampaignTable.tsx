@@ -212,6 +212,8 @@ const SingleRow = ({
       campaignPoints: item?.campaignPoints,
       //@ts-ignore
       address: item?.userId?.address,
+      //ts-ignore
+      evmAddress: item?.userId?.addresses?.[0]?.evm,
     }));
 
     function convertToCSV(result) {
