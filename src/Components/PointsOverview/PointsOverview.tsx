@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import MainPointsOverview from "../MainPointsOverview/MainPointsOverview";
 import Missions from "../Missions/Missions";
 import LeaderboardTable from "../LeaderboardTable/LeaderboardTable";
-import { generalLeaderBoardData } from "../../utils/mockData";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import { getGeneralLeaderboard } from "../../utils/AuthSlice";
 function PointsOverview() {
