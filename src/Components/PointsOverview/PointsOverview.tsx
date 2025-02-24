@@ -54,7 +54,7 @@ function PointsOverview() {
 
     // Filter leaderboard based on rank
     const filteredData = leaderboardData.filter(
-      (army) => army.rank?.name === rankFilter
+      (army) => army.rank?.name === rankFilter && army.addresses?.length > 0
     );
 
     if (filteredData.length === 0) {
@@ -66,7 +66,7 @@ function PointsOverview() {
     const csvHeaders = ["Points", "Rank", "Multiplier", "EVM Wallet"];
     const csvRows = filteredData.map((army) => [
       army.points,
-      army.rank?.name, // Use `.title` (not `.name`) if it's consistent
+      army.rank?.name,
       army.rank.multiplier,
       army.addresses[0]?.evm,
     ]);
