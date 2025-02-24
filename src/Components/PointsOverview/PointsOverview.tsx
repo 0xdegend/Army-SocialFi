@@ -54,9 +54,9 @@ function PointsOverview() {
 
     // Filter leaderboard based on rank
     const filteredData = leaderboardData.filter(
-      (army) => army.rank?.name === rankFilter && army.addresses?.length > 0
+      (army) => army.rank?.name === rankFilter && army.addresses[0]?.evm
     );
-
+    console.log("Filtered Data:", filteredData);
     if (filteredData.length === 0) {
       console.log(`No army found with rank: ${rankFilter}`);
       return;
